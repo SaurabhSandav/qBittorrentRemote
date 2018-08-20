@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<full-backup-content>
+    <!-- Exclude specific shared preferences that contain GCM registration Id -->
+    <include
+        domain="sharedpref"
+        path="." />
+    <exclude domain="file" />
+    <exclude domain="database" />
+    <exclude domain="external" />
+    <exclude domain="root" />
+</full-backup-content>
