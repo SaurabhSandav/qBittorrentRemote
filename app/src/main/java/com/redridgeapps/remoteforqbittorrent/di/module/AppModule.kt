@@ -6,6 +6,7 @@ import android.content.res.Resources
 import android.preference.PreferenceManager
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.CoroutineCallAdapterFactory
 import com.readystatesoftware.chuck.ChuckInterceptor
+import com.redridgeapps.remoteforqbittorrent.api.QBittorrentInterceptor
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.squareup.moshi.Moshi
 import dagger.Module
@@ -68,10 +69,12 @@ object AppModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(
+            qBittorrentInterceptor: QBittorrentInterceptor,
             chuckInterceptor: ChuckInterceptor
     ): OkHttpClient {
         return OkHttpClient()
                 .newBuilder()
+                .addInterceptor(qBittorrentInterceptor)
                 .addInterceptor(chuckInterceptor)
                 .build()
     }
