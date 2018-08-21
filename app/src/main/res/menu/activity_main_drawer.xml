@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
 
+    <item android:title="@string/main_drawer_group">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/item_filter_all"
+                    android:title="@string/main_drawer_item_filter_all" />
+                <item
+                    android:id="@+id/item_filter_downloading"
+                    android:title="@string/main_drawer_item_filter_downloading" />
+                <item
+                    android:id="@+id/item_filter_completed"
+                    android:title="@string/main_drawer_item_filter_completed" />
+                <item
+                    android:id="@+id/item_filter_paused"
+                    android:title="@string/main_drawer_item_filter_paused" />
+                <item
+                    android:id="@+id/item_filter_active"
+                    android:title="@string/main_drawer_item_filter_active" />
+                <item
+                    android:id="@+id/item_filter_inactive"
+                    android:title="@string/main_drawer_item_filter_inactive" />
+            </group>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/item_log"
+        android:title="@string/main_drawer_item_log" />
+
+    <item
+        android:id="@+id/item_settings"
+        android:title="@string/main_drawer_item_settings" />
 </menu>

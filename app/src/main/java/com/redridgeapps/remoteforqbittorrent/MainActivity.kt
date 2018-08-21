@@ -12,6 +12,7 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
 import com.redridgeapps.remoteforqbittorrent.databinding.ActivityMainBinding
 import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import dagger.android.AndroidInjection
@@ -57,6 +58,17 @@ class MainActivity : AppCompatActivity(),
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+        val filter: String = when (item.itemId) {
+            R.id.item_filter_all -> Filter.ALL
+            R.id.item_filter_downloading -> Filter.DOWNLOADING
+            R.id.item_filter_completed -> Filter.COMPLETED
+            R.id.item_filter_paused -> Filter.PAUSED
+            R.id.item_filter_active -> Filter.ACTIVE
+            R.id.item_filter_inactive -> Filter.INACTIVE
+            else -> TODO()
+        }
+
         return true
     }
 
