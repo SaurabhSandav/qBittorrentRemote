@@ -1,6 +1,6 @@
 package com.redridgeapps.remoteforqbittorrent.ui.config
 
-import androidx.lifecycle.ViewModel
+import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import javax.inject.Inject
 
-class ConfigViewModel @Inject constructor() : ViewModel()
+class ConfigViewModel @Inject constructor() : BaseViewModel()
