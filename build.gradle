@@ -41,5 +41,7 @@ ext {
 
     aac_navigation_version = '1.0.0-alpha06'
 
+    dagger_version = '2.16'
+
     leak_canary_version = '1.6.1'
 }

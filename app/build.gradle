@@ -58,6 +58,12 @@ dependencies {
     // Android Architecture Components
     implementation "android.arch.navigation:navigation-fragment-ktx:$aac_navigation_version"
 
+    // Dagger
+    implementation "com.google.dagger:dagger:$dagger_version"
+    implementation "com.google.dagger:dagger-android-support:$dagger_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
