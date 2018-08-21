@@ -1,4 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="key_pref_initial_config_finished" translatable="false">INITIAL_CONFIG_FINISHED</string>
+    <string name="key_pref_base_url" translatable="false">BASE_URL</string>
+    <string name="key_pref_username" translatable="false">USERNAME</string>
+    <string name="key_pref_password" translatable="false">PASSWORD</string>
+    <string name="key_pref_sid" translatable="false">SID</string>
 </resources>
