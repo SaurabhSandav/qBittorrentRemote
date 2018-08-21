@@ -2,6 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.api
 
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import kotlinx.coroutines.experimental.Deferred
+import okhttp3.HttpUrl
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -21,7 +22,22 @@ interface QBittorrentService {
 
         private const val HEADER_LABEL_REFERER = "Referer"
 
+        private const val SCHEME_HTTP = "http"
+        private const val SCHEME_HTTPS = "https"
+
+        fun buildBaseURL(host: String, port: Int, useHttps: Boolean): String {
+            return HttpUrl.Builder()
+                    .scheme(getScheme(useHttps))
+                    .host(host)
+                    .port(port)
+                    .build()
+                    .url()
+                    .toString()
+        }
+
         private fun buildURL(baseUrl: String, path: String): String = baseUrl + path
+
+        private fun getScheme(useHttps: Boolean) = if (useHttps) SCHEME_HTTPS else SCHEME_HTTP
     }
 
     object Filter {
