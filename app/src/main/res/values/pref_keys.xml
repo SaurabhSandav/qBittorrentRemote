@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="key_pref_initial_config_finished" translatable="false">INITIAL_CONFIG_FINISHED</string>
+</resources>
