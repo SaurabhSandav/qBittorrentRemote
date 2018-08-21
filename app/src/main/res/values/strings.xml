@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">qBittorrent Remote</string>
+
+    <string name="hint_host">Host</string>
+    <string name="hint_port">Port</string>
+    <string name="hint_use_https">Use HTTPS</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_lets_go">Let\'s go</string>
 </resources>
