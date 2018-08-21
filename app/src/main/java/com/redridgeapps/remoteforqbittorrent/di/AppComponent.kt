@@ -4,6 +4,7 @@ import android.app.Application
 import com.redridgeapps.remoteforqbittorrent.App
 import com.redridgeapps.remoteforqbittorrent.di.module.ActivityBuilder
 import com.redridgeapps.remoteforqbittorrent.di.module.AppModule
+import com.redridgeapps.remoteforqbittorrent.di.module.FragmentBuilder
 import com.redridgeapps.remoteforqbittorrent.di.module.ViewModelFactoryModule
 import dagger.BindsInstance
 import dagger.Component
@@ -17,6 +18,7 @@ import javax.inject.Singleton
             AndroidSupportInjectionModule::class,
             ActivityBuilder::class,
             ViewModelFactoryModule::class,
+            FragmentBuilder::class,
             AppModule::class
         ]
 )
