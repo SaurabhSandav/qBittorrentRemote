@@ -1,5 +1,7 @@
 package com.redridgeapps.remoteforqbittorrent.api
 
+import arrow.core.Option
+import arrow.core.toOption
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import kotlinx.coroutines.experimental.Deferred
 import okhttp3.HttpUrl
@@ -21,9 +23,12 @@ interface QBittorrentService {
         private const val TORRENTS_INFO = "api/v2/torrents/info"
 
         private const val HEADER_LABEL_REFERER = "Referer"
+        private const val HEADER_SET_COOKIE = "Set-Cookie"
 
         private const val SCHEME_HTTP = "http"
         private const val SCHEME_HTTPS = "https"
+
+        private const val SID_REGEX_PATTERN = """SID=(.+?);"""
 
         fun buildBaseURL(host: String, port: Int, useHttps: Boolean): String {
             return HttpUrl.Builder()
@@ -35,7 +40,14 @@ interface QBittorrentService {
                     .toString()
         }
 
-        private fun buildURL(baseUrl: String, path: String): String = baseUrl + path
+        fun buildURL(baseUrl: String, path: String): String = baseUrl + path
+
+        fun extractSID(resp: okhttp3.Response): Option<String> {
+            return resp.headers().get(HEADER_SET_COOKIE)
+                    .toOption()
+                    .map { Regex(SID_REGEX_PATTERN).find(it)?.groupValues?.get(1) }
+                    .map { "SID=$it" }
+        }
 
         private fun getScheme(useHttps: Boolean) = if (useHttps) SCHEME_HTTPS else SCHEME_HTTP
     }

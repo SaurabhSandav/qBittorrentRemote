@@ -1,5 +1,6 @@
 package com.redridgeapps.remoteforqbittorrent.repo
 
+import arrow.core.Some
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import kotlinx.coroutines.experimental.Deferred
@@ -24,6 +25,23 @@ class QBittorrentRepository @Inject constructor(
             baseUrl = QBittorrentService.buildBaseURL(host, port, useHttps)
             username = usernameStr
             password = passwordStr
+        }
+    }
+
+    suspend fun login(): Try<Unit> {
+
+        val request = qBitService.login(
+                baseUrl = prefRepo.baseUrl,
+                username = prefRepo.username,
+                password = prefRepo.password
+        )
+
+        return request.processResponse().map { response ->
+            val sid = QBittorrentService.extractSID(response.raw())
+            if (sid is Some) {
+                prefRepo.initialConfigFinished = true
+                prefRepo.sid = sid.t
+            }
         }
     }
 
