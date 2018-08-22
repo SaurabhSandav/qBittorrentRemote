@@ -3,6 +3,24 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:icon="@drawable/ic_add_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/torrentlist_menu_label_add"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/action_add_link"
+                android:title="@string/torrentlist_menu_label_link" />
+            <item
+                android:id="@+id/action_add_file"
+                android:title="@string/torrentlist_menu_label_file" />
+            <item
+                android:id="@+id/action_add_folder"
+                android:title="@string/torrentlist_menu_label_folder" />
+        </menu>
+    </item>
+
+    <item
         android:icon="@drawable/ic_sort_white_24dp"
         android:orderInCategory="10"
         android:title="@string/torrentlist_menu_label_sort"

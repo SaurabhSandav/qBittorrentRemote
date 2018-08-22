@@ -45,6 +45,10 @@
     <string name="torrentlist_menu_label_reverse">Reverse</string>
     <string name="torrentlist_menu_label_pause_all">Pause All</string>
     <string name="torrentlist_menu_label_resume_all">Resume All</string>
+    <string name="torrentlist_menu_label_add">Add</string>
+    <string name="torrentlist_menu_label_link">Link</string>
+    <string name="torrentlist_menu_label_file">File</string>
+    <string name="torrentlist_menu_label_folder">Folder</string>
 
     <string name="error_generic">Operation Failed</string>
 </resources>
