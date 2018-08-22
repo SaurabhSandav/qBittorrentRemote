@@ -7,4 +7,5 @@
     <string name="key_pref_sid" translatable="false">SID</string>
     <string name="key_pref_torrent_list_sort" translatable="false">TORRENT_LIST_SORT</string>
     <string name="key_pref_torrent_list_sort_reverse" translatable="false">TORRENT_LIST_SORT_REVERSE</string>
+    <string name="key_pref_log_list_sort_latest" translatable="false">LOG_LIST_SORT_LATEST</string>
 </resources>

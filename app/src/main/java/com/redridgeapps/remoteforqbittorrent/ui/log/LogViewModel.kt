@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.ResIdMapper
+import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
@@ -14,10 +15,18 @@ import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
 class LogViewModel @Inject constructor(
-        private val qBitRepo: QBittorrentRepository
+        private val qBitRepo: QBittorrentRepository,
+        private val prefRepo: PreferenceRepository
 ) : BaseViewModel() {
+
+    var sortLatest by Delegates.observable(prefRepo.logListSort) { _, _, newValue ->
+        prefRepo.logListSort = newValue
+        updateList()
+        logListLiveData.asMutable().postValue(Try.just(Unit))
+    }
 
     var logList: List<LogListItem> = ArrayList()
     val logListLiveData: LiveData<Try<Unit>> = MutableLiveData()
@@ -29,15 +38,20 @@ class LogViewModel @Inject constructor(
     }
 
     fun refreshLogList() = launch {
-        val result = qBitRepo.getLog(lastId = lastId).map(this@LogViewModel::updateList)
+        val result = qBitRepo.getLog(lastId = lastId).map(::updateList)
 
         logListLiveData.asMutable().postValue(result)
     }
 
-    private fun updateList(newLogs: List<QBittorrentLog>) {
-        if (newLogs.isNotEmpty()) lastId = newLogs.last().id
+    private fun updateList(newLogs: List<QBittorrentLog>? = null) {
+        if (newLogs?.isNotEmpty() == true) lastId = newLogs.last().id
 
-        logList = ArrayList(logList).apply { addAll(newLogs.mapToLogItem()) }
+        logList = ArrayList(logList).let { list ->
+            if (newLogs != null) list.addAll(newLogs.mapToLogItem())
+
+            if (sortLatest) list.sortedByDescending { it.id }
+            else list.sortedBy { it.id }
+        }
     }
 
     private fun List<QBittorrentLog>.mapToLogItem() = map {

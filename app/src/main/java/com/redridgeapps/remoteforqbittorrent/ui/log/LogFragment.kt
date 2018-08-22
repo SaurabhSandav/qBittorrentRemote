@@ -1,9 +1,7 @@
 package com.redridgeapps.remoteforqbittorrent.ui.log
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,6 +22,7 @@ class LogFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = getViewModel(LogViewModel::class.java)
     }
 
@@ -41,6 +40,25 @@ class LogFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeViewModel()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.log_options_menu, menu)
+
+        val id = if (viewModel.sortLatest) R.id.item_sort_latest else R.id.item_sort_oldest
+        menu?.findItem(id)?.isChecked = true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var result = true
+
+        when (item.itemId) {
+            R.id.item_sort_latest -> setSort(item, true)
+            R.id.item_sort_oldest -> setSort(item, false)
+            else -> result = super.onOptionsItemSelected(item)
+        }
+
+        return result
     }
 
     private fun observeViewModel() {
@@ -62,5 +80,10 @@ class LogFragment : BaseFragment() {
         adapter = logListAdapter
         layoutManager = linearLayoutManager
         addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
+    }
+
+    private fun setSort(item: MenuItem, latest: Boolean) {
+        item.isChecked = true
+        viewModel.sortLatest = latest
     }
 }

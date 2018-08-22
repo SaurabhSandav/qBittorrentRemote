@@ -59,9 +59,16 @@ class PreferenceRepository @Inject constructor(
             res.getString(R.string.key_pref_torrent_list_sort_reverse),
             DEFAULT_TORRENT_LIST_SORT_REVERSE
     )
+
+    var logListSort by BooleanPrefDelegate(
+            prefs,
+            res.getString(R.string.key_pref_log_list_sort_latest),
+            DEFAULT_LOG_LIST_SORT_LATEST
+    )
 }
 
 private const val EMPTY_STR = ""
 private const val DEFAULT_INITIAL_CONFIG_FINISHED = false
 private const val DEFAULT_TORRENT_LIST_SORT = QBittorrentService.Sort.PRIORITY
 private const val DEFAULT_TORRENT_LIST_SORT_REVERSE = false
+private const val DEFAULT_LOG_LIST_SORT_LATEST = true
