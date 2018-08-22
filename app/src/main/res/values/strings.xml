@@ -19,4 +19,17 @@
     <string name="hint_username">Username</string>
     <string name="hint_password">Password</string>
     <string name="hint_lets_go">Let\'s go</string>
+
+    <string name="state_error">Error</string>
+    <string name="state_paused_up">Paused(UP)</string>
+    <string name="state_paused">Paused</string>
+    <string name="state_queued_up">Queued(UP)</string>
+    <string name="state_queued_dl">Queued(DL)</string>
+    <string name="state_seeding">Seeding</string>
+    <string name="state_stalled_up">Stalled(UP)</string>
+    <string name="state_checking">Checking</string>
+    <string name="state_downloading">Downloading</string>
+    <string name="state_stalled_dl">Stalled(DL)</string>
+    <string name="state_fetching_metadata">Fetching metadata</string>
+
 </resources>
