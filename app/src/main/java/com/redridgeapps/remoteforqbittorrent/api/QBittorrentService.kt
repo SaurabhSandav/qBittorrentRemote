@@ -21,6 +21,8 @@ interface QBittorrentService {
 
         const val AUTH_LOGIN = "api/v2/auth/login"
         private const val TORRENTS_INFO = "api/v2/torrents/info"
+        private const val TORRENTS_PAUSE = "api/v2/torrents/pause"
+        private const val TORRENTS_RESUME = "api/v2/torrents/resume"
 
         private const val HEADER_LABEL_REFERER = "Referer"
         private const val HEADER_SET_COOKIE = "Set-Cookie"
@@ -104,4 +106,20 @@ interface QBittorrentService {
             @Query("offset") offset: Int? = null,
             @Query("hashes") hashes: String? = null
     ): Deferred<List<Torrent>>
+
+    @FormUrlEncoded
+    @POST
+    fun pause(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, TORRENTS_PAUSE),
+            @Field("hashes") hashes: String
+    ): Deferred<Void>
+
+    @FormUrlEncoded
+    @POST
+    fun resume(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, TORRENTS_RESUME),
+            @Field("hashes") hashes: String
+    ): Deferred<Void>
 }

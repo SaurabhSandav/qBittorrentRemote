@@ -55,6 +55,26 @@ class QBittorrentRepository @Inject constructor(
         return request.processResult()
     }
 
+    suspend fun pause(hashes: List<String>? = null): Try<Unit> {
+        val request = qBitService.pause(
+                baseUrl = prefRepo.baseUrl,
+                hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
+                        ?: QBittorrentService.HASHES_ALL
+        )
+
+        return request.processResult().map { Unit }
+    }
+
+    suspend fun resume(hashes: List<String>? = null): Try<Unit> {
+        val request = qBitService.resume(
+                baseUrl = prefRepo.baseUrl,
+                hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
+                        ?: QBittorrentService.HASHES_ALL
+        )
+
+        return request.processResult().map { Unit }
+    }
+
     private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()
 
     private suspend fun <T> Deferred<T>.processResult() = Try { await() }

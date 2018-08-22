@@ -17,6 +17,7 @@ class TorrentListViewModel @Inject constructor(
         private val qBitRepo: QBittorrentRepository
 ) : BaseViewModel() {
 
+    val genericOpResultLiveData: LiveData<Try<Unit>> = MutableLiveData()
     val torrentListLiveData: LiveData<Try<List<TorrentListItem>>> = MutableLiveData()
 
     init {
@@ -26,6 +27,16 @@ class TorrentListViewModel @Inject constructor(
     fun refreshTorrentList() = launch {
         val result = qBitRepo.getTorrentList().map { it.mapToTorrentListItem() }
         torrentListLiveData.asMutable().postValue(result)
+    }
+
+    fun pauseAll() = launch {
+        val result = qBitRepo.pause()
+        genericOpResultLiveData.asMutable().postValue(result)
+    }
+
+    fun resumeAll() = launch {
+        val result = qBitRepo.resume()
+        genericOpResultLiveData.asMutable().postValue(result)
     }
 
     private fun List<Torrent>.mapToTorrentListItem() = map {

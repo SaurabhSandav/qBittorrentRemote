@@ -1,9 +1,7 @@
 package com.redridgeapps.remoteforqbittorrent.ui.torrentlist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,6 +22,7 @@ class TorrentListFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         viewModel = getViewModel(TorrentListViewModel::class.java)
     }
 
@@ -42,8 +41,31 @@ class TorrentListFragment : BaseFragment() {
         observeViewModel()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        inflater?.inflate(R.menu.torrentlist_options_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        var result = true
+
+        when (item.itemId) {
+            R.id.action_pause_all -> viewModel.pauseAll()
+            R.id.action_resume_all -> viewModel.resumeAll()
+            else -> result = super.onOptionsItemSelected(item)
+        }
+
+        return result
+    }
+
     private fun observeViewModel() {
+        observeGenericOperations()
         observeTorrentList()
+    }
+
+    private fun observeGenericOperations() {
+        viewModel.genericOpResultLiveData.observe(this, Observer { result ->
+            result.fold({ showError(R.string.error_generic) }, {})
+        })
     }
 
     private fun observeTorrentList() {
