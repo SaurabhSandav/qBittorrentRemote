@@ -3,6 +3,7 @@ package com.redridgeapps.remoteforqbittorrent.di.module
 import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment
+import com.redridgeapps.remoteforqbittorrent.ui.settings.SettingsFragment
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -21,4 +22,8 @@ abstract class FragmentBuilder {
     @PerFragment
     @ContributesAndroidInjector()
     abstract fun bindLogFragment(): LogFragment
+
+    @PerFragment
+    @ContributesAndroidInjector()
+    abstract fun bindSettingsFragment(): SettingsFragment
 }
