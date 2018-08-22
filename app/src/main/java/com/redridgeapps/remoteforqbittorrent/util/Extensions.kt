@@ -1,6 +1,11 @@
 package com.redridgeapps.remoteforqbittorrent.util
 
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -33,5 +38,18 @@ fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): 
             bytes / Math.pow(unit.toDouble(), exp.toDouble()),
             pre,
             speed
+    )
+}
+
+fun <T : ViewDataBinding> ViewGroup.recyclerDataBindingInflate(
+        @LayoutRes layoutRes: Int,
+        parent: ViewGroup = this,
+        attachToParent: Boolean = false
+): T {
+    return DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            layoutRes,
+            parent,
+            attachToParent
     )
 }
