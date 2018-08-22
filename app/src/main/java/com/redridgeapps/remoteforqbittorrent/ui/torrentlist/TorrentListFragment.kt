@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.FileFilter
 import com.afollestad.materialdialogs.files.fileChooser
+import com.afollestad.materialdialogs.files.folderChooser
 import com.afollestad.materialdialogs.input.input
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
@@ -102,6 +103,7 @@ class TorrentListFragment : BaseFragment() {
         when (item.itemId) {
             R.id.action_add_link -> addTorrentLink()
             R.id.action_add_file -> addTorrentFile()
+            R.id.action_add_folder -> addTorrentFilesFromFolder()
             R.id.action_sort_name -> setSort(item, Sort.NAME)
             R.id.action_sort_size -> setSort(item, Sort.SIZE)
             R.id.action_sort_eta -> setSort(item, Sort.ETA)
@@ -215,6 +217,21 @@ class TorrentListFragment : BaseFragment() {
 
         MaterialDialog(requireContext())
                 .fileChooser(filter = filter) { _, file -> viewModel.addTorrentFiles(listOf(file)) }
+                .negativeButton(android.R.string.cancel)
+                .show()
+    }
+
+    private fun addTorrentFilesFromFolder() = CoroutineScope(Dispatchers.Main + permissionJob).launch {
+        val permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val result = askPermissions(R.string.error_need_read_storage_permission, permissions)
+
+        if (!result.containsAll(permissions)) return@launch
+
+        MaterialDialog(requireContext())
+                .folderChooser { _, file ->
+                    val fileList = file.listFiles().toList().filter(fileFilter)
+                    viewModel.addTorrentFiles(fileList)
+                }
                 .negativeButton(android.R.string.cancel)
                 .show()
     }
