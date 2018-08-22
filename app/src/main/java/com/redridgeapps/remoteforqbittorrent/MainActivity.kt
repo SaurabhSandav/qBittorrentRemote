@@ -7,6 +7,8 @@ import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.navigateUp
@@ -15,6 +17,8 @@ import com.google.android.material.navigation.NavigationView
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
 import com.redridgeapps.remoteforqbittorrent.databinding.ActivityMainBinding
 import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
+import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
+import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -23,13 +27,16 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
         HasSupportFragmentInjector,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener,
+        DrawerActivityContract {
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
 
     @Inject
     lateinit var prefRepo: PreferenceRepository
+
+    override val navigationItemSelectionsLiveData: LiveData<String> = MutableLiveData()
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -69,6 +76,7 @@ class MainActivity : AppCompatActivity(),
             else -> TODO()
         }
 
+        navigationItemSelectionsLiveData.asMutable().postValue(filter)
         return true
     }
 
