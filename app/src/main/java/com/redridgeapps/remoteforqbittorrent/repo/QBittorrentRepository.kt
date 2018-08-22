@@ -80,6 +80,15 @@ class QBittorrentRepository @Inject constructor(
         return request.processResult().map { Unit }
     }
 
+    suspend fun addTorrentLinks(links: List<String>): Try<Unit> {
+        val request = qBitService.addTorrents(
+                baseUrl = prefRepo.baseUrl,
+                urls = links.joinToString("\n")
+        )
+
+        return request.processResult().map { Unit }
+    }
+
     private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()
 
     private suspend fun <T> Deferred<T>.processResult() = Try { await() }

@@ -54,6 +54,11 @@ class TorrentListViewModel @Inject constructor(
         genericOpResultLiveData.asMutable().postValue(result)
     }
 
+    fun addTorrentLinks(links: List<String>) = launch {
+        val result = qBitRepo.addTorrentLinks(links)
+        genericOpResultLiveData.asMutable().postValue(result)
+    }
+
     private fun List<Torrent>.mapToTorrentListItem() = map {
         val progress = it.progress * 100
 

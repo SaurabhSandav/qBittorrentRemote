@@ -5,6 +5,7 @@ import arrow.core.toOption
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import kotlinx.coroutines.experimental.Deferred
 import okhttp3.HttpUrl
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -21,6 +22,7 @@ interface QBittorrentService {
 
         const val AUTH_LOGIN = "api/v2/auth/login"
         private const val TORRENTS_INFO = "api/v2/torrents/info"
+        private const val TORRENTS_ADD = "api/v2/torrents/add"
         private const val TORRENTS_PAUSE = "api/v2/torrents/pause"
         private const val TORRENTS_RESUME = "api/v2/torrents/resume"
 
@@ -121,5 +123,25 @@ interface QBittorrentService {
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RESUME),
             @Field("hashes") hashes: String
+    ): Deferred<Void>
+
+    @Multipart
+    @POST
+    fun addTorrents(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, TORRENTS_ADD),
+            @Part("urls") urls: String? = null,
+            @Part torrents: List<MultipartBody.Part>? = null,
+            @Part("savepath") savepath: String? = null,
+            @Part("cookie") cookie: String? = null,
+            @Part("category") category: String? = null,
+            @Part("skip_checking") skip_checking: Boolean? = null,
+            @Part("paused") paused: Boolean? = null,
+            @Part("root_folder") rootFolder: Boolean? = null,
+            @Part("rename") rename: String? = null,
+            @Part("upLimit") upLimit: Int? = null,
+            @Part("dlLimit") dlLimit: Int? = null,
+            @Part("sequentialDownload") sequentialDownload: Boolean? = null,
+            @Part("firstLastPiecePrio") firstLastPiecePriority: Boolean? = null
     ): Deferred<Void>
 }

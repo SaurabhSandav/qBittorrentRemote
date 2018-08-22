@@ -1,11 +1,17 @@
 package com.redridgeapps.remoteforqbittorrent.ui.torrentlist
 
+import android.content.ClipDescription
+import android.content.ClipboardManager
 import android.os.Bundle
+import android.text.InputType
 import android.view.*
+import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.input.input
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
@@ -68,6 +74,7 @@ class TorrentListFragment : BaseFragment() {
         var result = true
 
         when (item.itemId) {
+            R.id.action_add_link -> addTorrentLink()
             R.id.action_sort_name -> setSort(item, Sort.NAME)
             R.id.action_sort_size -> setSort(item, Sort.SIZE)
             R.id.action_sort_eta -> setSort(item, Sort.ETA)
@@ -133,4 +140,44 @@ class TorrentListFragment : BaseFragment() {
         viewModel.listSortReverse = item.isChecked
         return true
     }
+
+    private fun addTorrentLink() {
+        val prefill = getLinkFromClipboard()
+        MaterialDialog(requireContext())
+                .title(R.string.torrentlist_dialog_label_add_link)
+                .input(
+                        hint = "http://, https://, magnet: or bc://bt/",
+                        prefill = prefill,
+                        inputType = InputType.TYPE_CLASS_TEXT
+                ) { _, text -> viewModel.addTorrentLinks(listOf(text.toString())) }
+                .positiveButton(android.R.string.ok)
+                .negativeButton(android.R.string.cancel)
+                .show()
+    }
+
+    private fun getLinkFromClipboard(): String? {
+
+        val clipboard = requireActivity().getSystemService<ClipboardManager>() ?: return null
+        if (!clipboard.hasPrimaryClip()) return null
+        val primaryClipDescription = clipboard.primaryClipDescription ?: return null
+        val primaryClip = clipboard.primaryClip ?: return null
+
+        var link: String? = null
+
+        if (primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) ||
+                primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML)
+        ) {
+            link = primaryClip.getItemAt(0)?.text?.toString()?.trim()
+        } else if (primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_URILIST)) {
+            link = primaryClip.getItemAt(0)?.uri?.toString()
+        }
+
+        return link?.takeIf {
+            LIST_SUPPORTED_LINKS
+                    .any { protocol -> it.startsWith(protocol) } || it.matches(Regex(INFO_HASH_PATTERN))
+        }
+    }
 }
+
+private const val INFO_HASH_PATTERN = """\b[0-9a-fA-F]{40}\b"""
+private val LIST_SUPPORTED_LINKS = listOf("http://", "https://", "magnet:", "bc://bt/")

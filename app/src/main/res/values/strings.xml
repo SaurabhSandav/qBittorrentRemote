@@ -50,5 +50,7 @@
     <string name="torrentlist_menu_label_file">File</string>
     <string name="torrentlist_menu_label_folder">Folder</string>
 
+    <string name="torrentlist_dialog_label_add_link">Add link</string>
+
     <string name="error_generic">Operation Failed</string>
 </resources>
