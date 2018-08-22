@@ -12,11 +12,13 @@ import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import com.redridgeapps.remoteforqbittorrent.util.humanReadableByteCount
 import kotlinx.coroutines.experimental.launch
 import javax.inject.Inject
+import kotlin.properties.Delegates
 
 class TorrentListViewModel @Inject constructor(
         private val qBitRepo: QBittorrentRepository
 ) : BaseViewModel() {
 
+    var filter: String? by Delegates.observable<String?>(null) { _, _, _ -> refreshTorrentList() }
     val genericOpResultLiveData: LiveData<Try<Unit>> = MutableLiveData()
     val torrentListLiveData: LiveData<Try<List<TorrentListItem>>> = MutableLiveData()
 
@@ -25,7 +27,7 @@ class TorrentListViewModel @Inject constructor(
     }
 
     fun refreshTorrentList() = launch {
-        val result = qBitRepo.getTorrentList().map { it.mapToTorrentListItem() }
+        val result = qBitRepo.getTorrentList(filter).map { it.mapToTorrentListItem() }
         torrentListLiveData.asMutable().postValue(result)
     }
 

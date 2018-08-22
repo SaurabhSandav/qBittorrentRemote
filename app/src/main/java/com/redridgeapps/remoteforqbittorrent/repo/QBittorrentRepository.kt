@@ -46,10 +46,13 @@ class QBittorrentRepository @Inject constructor(
         }
     }
 
-    suspend fun getTorrentList(): Try<List<Torrent>> {
+    suspend fun getTorrentList(
+            filter: String? = null
+    ): Try<List<Torrent>> {
 
         val request = qBitService.getTorrentList(
-                baseUrl = prefRepo.baseUrl
+                baseUrl = prefRepo.baseUrl,
+                filter = filter
         )
 
         return request.processResult()

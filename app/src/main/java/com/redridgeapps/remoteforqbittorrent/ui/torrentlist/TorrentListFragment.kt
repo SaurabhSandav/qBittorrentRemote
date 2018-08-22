@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
+import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
 import com.redridgeapps.remoteforqbittorrent.util.getViewModel
 import javax.inject.Inject
 
@@ -38,6 +39,7 @@ class TorrentListFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeActivity()
         observeViewModel()
     }
 
@@ -55,6 +57,14 @@ class TorrentListFragment : BaseFragment() {
         }
 
         return result
+    }
+
+    private fun observeActivity() {
+        val contractActivity = activity as? DrawerActivityContract ?: return
+
+        contractActivity.navigationItemSelectionsLiveData.observe(this, Observer {
+            viewModel.filter = it
+        })
     }
 
     private fun observeViewModel() {
