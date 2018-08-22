@@ -2,6 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.api
 
 import arrow.core.Option
 import arrow.core.toOption
+import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import kotlinx.coroutines.experimental.Deferred
 import okhttp3.HttpUrl
@@ -21,6 +22,7 @@ interface QBittorrentService {
         const val HASHES_SEPARATOR = "|"
 
         const val AUTH_LOGIN = "api/v2/auth/login"
+        private const val LOG_MAIN = "api/v2/log/main"
         private const val TORRENTS_INFO = "api/v2/torrents/info"
         private const val TORRENTS_ADD = "api/v2/torrents/add"
         private const val TORRENTS_PAUSE = "api/v2/torrents/pause"
@@ -95,6 +97,17 @@ interface QBittorrentService {
             @Field("username") username: String,
             @Field("password") password: String
     ): Deferred<Response<Void>>
+
+    @GET
+    fun getLog(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, LOG_MAIN),
+            @Query("normal") normal: Boolean? = null,
+            @Query("info") info: Boolean? = null,
+            @Query("warning") warning: Boolean? = null,
+            @Query("critical") critical: Boolean? = null,
+            @Query("last_known_id") lastKnownId: Int? = null
+    ): Deferred<List<QBittorrentLog>>
 
     @GET
     fun getTorrentList(

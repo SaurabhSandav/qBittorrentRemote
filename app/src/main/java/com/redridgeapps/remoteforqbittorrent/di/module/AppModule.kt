@@ -8,6 +8,7 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.experimental.Coroutin
 import com.readystatesoftware.chuck.ChuckInterceptor
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentInterceptor
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
+import com.redridgeapps.remoteforqbittorrent.util.moshitypeadapters.IntToLogMessageTypeAdapter
 import com.squareup.moshi.Moshi
 import dagger.Module
 import dagger.Provides
@@ -55,7 +56,9 @@ object AppModule {
     @Provides
     @Singleton
     fun provideMoshi(): Moshi {
-        return Moshi.Builder().build()
+        return Moshi.Builder()
+                .add(IntToLogMessageTypeAdapter())
+                .build()
     }
 
     @JvmStatic
