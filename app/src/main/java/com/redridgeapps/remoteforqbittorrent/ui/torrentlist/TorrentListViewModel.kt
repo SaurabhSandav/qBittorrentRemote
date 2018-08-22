@@ -12,6 +12,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListIte
 import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import com.redridgeapps.remoteforqbittorrent.util.humanReadableByteCount
 import kotlinx.coroutines.experimental.launch
+import java.io.File
 import javax.inject.Inject
 import kotlin.properties.Delegates
 
@@ -56,6 +57,11 @@ class TorrentListViewModel @Inject constructor(
 
     fun addTorrentLinks(links: List<String>) = launch {
         val result = qBitRepo.addTorrentLinks(links)
+        genericOpResultLiveData.asMutable().postValue(result)
+    }
+
+    fun addTorrentFiles(file: List<File>) = launch {
+        val result = qBitRepo.addTorrentFiles(file)
         genericOpResultLiveData.asMutable().postValue(result)
     }
 

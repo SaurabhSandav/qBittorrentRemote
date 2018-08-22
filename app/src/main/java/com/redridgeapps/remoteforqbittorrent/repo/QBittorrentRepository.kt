@@ -4,8 +4,13 @@ import arrow.core.Some
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
+import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import kotlinx.coroutines.experimental.Deferred
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
+import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -89,7 +94,23 @@ class QBittorrentRepository @Inject constructor(
         return request.processResult().map { Unit }
     }
 
+    suspend fun addTorrentFiles(files: List<File>): Try<Unit> {
+        val torrents = files.map {
+            val requestFile = RequestBody.create(MediaType.parse(MIME_TYPE_TORRENT_FILE), it)
+            MultipartBody.Part.createFormData(LABEL_PARAMETER_NAME_TORRENTS, it.name, requestFile)
+        }
+
+        val request = qBitService.addTorrents(
+                baseUrl = prefRepo.baseUrl,
+                torrents = torrents
+        )
+
+        return request.processResult().map { Unit }
+    }
+
     private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()
 
     private suspend fun <T> Deferred<T>.processResult() = Try { await() }
 }
+
+private const val LABEL_PARAMETER_NAME_TORRENTS = "torrents"

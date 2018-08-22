@@ -1,23 +1,34 @@
 package com.redridgeapps.remoteforqbittorrent.ui.torrentlist
 
+import android.Manifest
 import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.text.InputType
 import android.view.*
+import android.webkit.MimeTypeMap
 import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.files.FileFilter
+import com.afollestad.materialdialogs.files.fileChooser
 import com.afollestad.materialdialogs.input.input
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
+import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.getViewModel
+import kotlinx.coroutines.experimental.CoroutineScope
+import kotlinx.coroutines.experimental.Dispatchers
+import kotlinx.coroutines.experimental.Job
+import kotlinx.coroutines.experimental.android.Main
+import kotlinx.coroutines.experimental.launch
+import java.io.File
 import javax.inject.Inject
 
 class TorrentListFragment : BaseFragment() {
@@ -27,6 +38,11 @@ class TorrentListFragment : BaseFragment() {
 
     private lateinit var binding: FragmentTorrentListBinding
     private lateinit var viewModel: TorrentListViewModel
+    private lateinit var permissionJob: Job
+
+    private val fileFilter: (File) -> Boolean = {
+        MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +64,16 @@ class TorrentListFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         observeActivity()
         observeViewModel()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        permissionJob = Job()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        permissionJob.cancel()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -75,6 +101,7 @@ class TorrentListFragment : BaseFragment() {
 
         when (item.itemId) {
             R.id.action_add_link -> addTorrentLink()
+            R.id.action_add_file -> addTorrentFile()
             R.id.action_sort_name -> setSort(item, Sort.NAME)
             R.id.action_sort_size -> setSort(item, Sort.SIZE)
             R.id.action_sort_eta -> setSort(item, Sort.ETA)
@@ -176,6 +203,20 @@ class TorrentListFragment : BaseFragment() {
             LIST_SUPPORTED_LINKS
                     .any { protocol -> it.startsWith(protocol) } || it.matches(Regex(INFO_HASH_PATTERN))
         }
+    }
+
+    private fun addTorrentFile() = CoroutineScope(Dispatchers.Main + permissionJob).launch {
+        val permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+        val result = askPermissions(R.string.error_need_read_storage_permission, permissions)
+
+        if (!result.containsAll(permissions)) return@launch
+
+        val filter: FileFilter = { it.isDirectory || fileFilter(it) }
+
+        MaterialDialog(requireContext())
+                .fileChooser(filter = filter) { _, file -> viewModel.addTorrentFiles(listOf(file)) }
+                .negativeButton(android.R.string.cancel)
+                .show()
     }
 }
 
