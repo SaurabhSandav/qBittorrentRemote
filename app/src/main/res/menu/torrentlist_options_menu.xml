@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:icon="@drawable/ic_sort_white_24dp"
+        android:orderInCategory="10"
+        android:title="@string/torrentlist_menu_label_sort"
+        app:showAsAction="ifRoom">
+
+        <menu>
+
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/action_sort_name"
+                    android:title="@string/torrentlist_menu_label_name" />
+                <item
+                    android:id="@+id/action_sort_size"
+                    android:title="@string/torrentlist_menu_label_size" />
+                <item
+                    android:id="@+id/action_sort_eta"
+                    android:title="@string/torrentlist_menu_label_eta" />
+                <item
+                    android:id="@+id/action_sort_priority"
+                    android:checked="true"
+                    android:title="@string/torrentlist_menu_label_priority" />
+                <item
+                    android:id="@+id/action_sort_progress"
+                    android:title="@string/torrentlist_menu_label_progress" />
+                <item
+                    android:id="@+id/action_sort_ratio"
+                    android:title="@string/torrentlist_menu_label_ratio" />
+                <item
+                    android:id="@+id/action_sort_state"
+                    android:title="@string/torrentlist_menu_label_state" />
+                <item
+                    android:id="@+id/action_sort_download_speed"
+                    android:title="@string/torrentlist_menu_label_download_speed" />
+                <item
+                    android:id="@+id/action_sort_upload_speed"
+                    android:title="@string/torrentlist_menu_label_upload_speed" />
+
+            </group>
+
+            <item
+                android:id="@+id/action_sort_reverse"
+                android:checkable="true"
+                android:checked="false"
+                android:title="@string/torrentlist_menu_label_reverse" />
+
+        </menu>
+
+    </item>
 
     <item
         android:id="@+id/action_pause_all"

@@ -32,6 +32,17 @@
     <string name="state_stalled_dl">Stalled(DL)</string>
     <string name="state_fetching_metadata">Fetching metadata</string>
 
+    <string name="torrentlist_menu_label_sort">Sort</string>
+    <string name="torrentlist_menu_label_name">Name</string>
+    <string name="torrentlist_menu_label_size">Size</string>
+    <string name="torrentlist_menu_label_eta">ETA</string>
+    <string name="torrentlist_menu_label_priority">Priority</string>
+    <string name="torrentlist_menu_label_progress">Progress</string>
+    <string name="torrentlist_menu_label_ratio">Ratio</string>
+    <string name="torrentlist_menu_label_state">State</string>
+    <string name="torrentlist_menu_label_download_speed">Download Speed</string>
+    <string name="torrentlist_menu_label_upload_speed">Upload Speed</string>
+    <string name="torrentlist_menu_label_reverse">Reverse</string>
     <string name="torrentlist_menu_label_pause_all">Pause All</string>
     <string name="torrentlist_menu_label_resume_all">Resume All</string>
 

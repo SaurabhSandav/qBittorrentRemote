@@ -52,7 +52,9 @@ class QBittorrentRepository @Inject constructor(
 
         val request = qBitService.getTorrentList(
                 baseUrl = prefRepo.baseUrl,
-                filter = filter
+                filter = filter,
+                sort = prefRepo.torrentListSort,
+                reverse = prefRepo.torrentListSortReverse
         )
 
         return request.processResult()

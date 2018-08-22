@@ -5,4 +5,6 @@
     <string name="key_pref_username" translatable="false">USERNAME</string>
     <string name="key_pref_password" translatable="false">PASSWORD</string>
     <string name="key_pref_sid" translatable="false">SID</string>
+    <string name="key_pref_torrent_list_sort" translatable="false">TORRENT_LIST_SORT</string>
+    <string name="key_pref_torrent_list_sort_reverse" translatable="false">TORRENT_LIST_SORT_REVERSE</string>
 </resources>

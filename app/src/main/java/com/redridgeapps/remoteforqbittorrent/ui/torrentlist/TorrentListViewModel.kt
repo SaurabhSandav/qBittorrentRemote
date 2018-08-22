@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.model.ResIdMapper
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
+import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
@@ -15,10 +16,22 @@ import javax.inject.Inject
 import kotlin.properties.Delegates
 
 class TorrentListViewModel @Inject constructor(
-        private val qBitRepo: QBittorrentRepository
+        private val qBitRepo: QBittorrentRepository,
+        private val prefRepo: PreferenceRepository
 ) : BaseViewModel() {
 
     var filter: String? by Delegates.observable<String?>(null) { _, _, _ -> refreshTorrentList() }
+
+    var listSort by Delegates.observable(prefRepo.torrentListSort) { _, _, newValue ->
+        prefRepo.torrentListSort = newValue
+        refreshTorrentList()
+    }
+
+    var listSortReverse by Delegates.observable(prefRepo.torrentListSortReverse) { _, _, newValue ->
+        prefRepo.torrentListSortReverse = newValue
+        refreshTorrentList()
+    }
+
     val genericOpResultLiveData: LiveData<Try<Unit>> = MutableLiveData()
     val torrentListLiveData: LiveData<Try<List<TorrentListItem>>> = MutableLiveData()
 
