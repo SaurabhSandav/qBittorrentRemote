@@ -1,0 +1,3 @@
+package com.redridgeapps.remoteforqbittorrent.model
+
+object ResIdMapper
