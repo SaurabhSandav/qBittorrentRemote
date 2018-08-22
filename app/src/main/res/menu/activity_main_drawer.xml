@@ -29,10 +29,10 @@
     </item>
 
     <item
-        android:id="@+id/item_log"
+        android:id="@+id/action_torrentListFragment_to_logFragment"
         android:title="@string/main_drawer_item_log" />
 
     <item
-        android:id="@+id/item_settings"
+        android:id="@+id/action_torrentListFragment_to_settingsFragment"
         android:title="@string/main_drawer_item_settings" />
 </menu>

@@ -12,6 +12,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
@@ -73,7 +74,7 @@ class MainActivity : AppCompatActivity(),
             R.id.item_filter_paused -> Filter.PAUSED
             R.id.item_filter_active -> Filter.ACTIVE
             R.id.item_filter_inactive -> Filter.INACTIVE
-            else -> TODO()
+            else -> return item.onNavDestinationSelected(navController)
         }
 
         navigationItemSelectionsLiveData.asMutable().postValue(filter)

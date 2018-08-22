@@ -9,6 +9,27 @@
         android:id="@+id/torrentListFragment"
         android:name="com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_torrent_list" />
+        tools:layout="@layout/fragment_torrent_list">
+
+        <action
+            android:id="@+id/action_torrentListFragment_to_logFragment"
+            app:destination="@id/logFragment" />
+
+        <action
+            android:id="@+id/action_torrentListFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/logFragment"
+        android:name="com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment"
+        android:label="LogFragment"
+        tools:layout="@layout/fragment_log" />
+
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.redridgeapps.remoteforqbittorrent.ui.settings.SettingsFragment"
+        android:label="SettingsFragment" />
 
 </navigation>
