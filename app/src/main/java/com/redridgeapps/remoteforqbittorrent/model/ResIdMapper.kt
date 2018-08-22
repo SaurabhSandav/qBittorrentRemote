@@ -18,4 +18,13 @@ object ResIdMapper {
         TorrentState.STALLED_DL -> R.string.state_stalled_dl
         TorrentState.META_DL -> R.string.state_fetching_metadata
     }
+
+    fun LogMessageType.toResId(): Int {
+        return when (this) {
+            LogMessageType.NORMAL -> R.string.log_type_normal
+            LogMessageType.INFO -> R.string.log_type_info
+            LogMessageType.WARNING -> R.string.log_type_warning
+            LogMessageType.CRITICAL -> R.string.log_type_critical
+        }
+    }
 }

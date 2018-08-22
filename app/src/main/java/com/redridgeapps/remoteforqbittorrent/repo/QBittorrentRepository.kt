@@ -3,6 +3,7 @@ package com.redridgeapps.remoteforqbittorrent.repo
 import arrow.core.Some
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
+import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import kotlinx.coroutines.experimental.Deferred
@@ -106,6 +107,15 @@ class QBittorrentRepository @Inject constructor(
         )
 
         return request.processResult().map { Unit }
+    }
+
+    suspend fun getLog(lastId: Int = -1): Try<List<QBittorrentLog>> {
+        val request = qBitService.getLog(
+                baseUrl = prefRepo.baseUrl,
+                lastKnownId = lastId
+        )
+
+        return request.processResult()
     }
 
     private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()

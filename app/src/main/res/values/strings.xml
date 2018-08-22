@@ -32,6 +32,11 @@
     <string name="state_stalled_dl">Stalled(DL)</string>
     <string name="state_fetching_metadata">Fetching metadata</string>
 
+    <string name="log_type_normal">Normal</string>
+    <string name="log_type_info">Info</string>
+    <string name="log_type_warning">Warning</string>
+    <string name="log_type_critical">Critical</string>
+
     <string name="torrentlist_menu_label_sort">Sort</string>
     <string name="torrentlist_menu_label_name">Name</string>
     <string name="torrentlist_menu_label_size">Size</string>
