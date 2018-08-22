@@ -32,4 +32,5 @@
     <string name="state_stalled_dl">Stalled(DL)</string>
     <string name="state_fetching_metadata">Fetching metadata</string>
 
+    <string name="error_generic">Operation Failed</string>
 </resources>

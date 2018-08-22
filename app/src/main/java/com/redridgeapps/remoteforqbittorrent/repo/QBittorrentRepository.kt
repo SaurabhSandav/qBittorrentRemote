@@ -3,6 +3,7 @@ package com.redridgeapps.remoteforqbittorrent.repo
 import arrow.core.Some
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
+import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import kotlinx.coroutines.experimental.Deferred
 import retrofit2.Response
 import javax.inject.Inject
@@ -43,6 +44,15 @@ class QBittorrentRepository @Inject constructor(
                 prefRepo.sid = sid.t
             }
         }
+    }
+
+    suspend fun getTorrentList(): Try<List<Torrent>> {
+
+        val request = qBitService.getTorrentList(
+                baseUrl = prefRepo.baseUrl
+        )
+
+        return request.processResult()
     }
 
     private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()
