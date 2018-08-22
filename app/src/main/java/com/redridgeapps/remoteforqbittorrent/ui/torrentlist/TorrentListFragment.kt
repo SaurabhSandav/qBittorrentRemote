@@ -6,12 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.util.getViewModel
+import javax.inject.Inject
 
 class TorrentListFragment : BaseFragment() {
+
+    @Inject
+    lateinit var torrentListAdapter: TorrentListAdapter
 
     private lateinit var binding: FragmentTorrentListBinding
     private lateinit var viewModel: TorrentListViewModel
@@ -27,6 +33,7 @@ class TorrentListFragment : BaseFragment() {
         binding.srl.setOnRefreshListener { viewModel.refreshTorrentList() }
         binding.srl.isRefreshing = true
 
+        setupRecyclerView()
         return binding.root
     }
 
@@ -41,9 +48,18 @@ class TorrentListFragment : BaseFragment() {
 
     private fun observeTorrentList() {
         viewModel.torrentListLiveData.observe(this, Observer { result ->
-            result.fold({ showError(R.string.error_generic) }, {})
+            result.fold({ showError(R.string.error_generic) }, torrentListAdapter::submitList)
 
             binding.srl.isRefreshing = false
         })
+    }
+
+    private fun setupRecyclerView() = binding.recyclerView.run {
+        val linearLayoutManager = LinearLayoutManager(requireContext())
+
+        setHasFixedSize(true)
+        adapter = torrentListAdapter
+        layoutManager = linearLayoutManager
+        addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
     }
 }

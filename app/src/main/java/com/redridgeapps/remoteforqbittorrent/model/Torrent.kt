@@ -51,4 +51,13 @@ enum class TorrentState {
     STALLED_DL,
     @Json(name = "metaDL")
     META_DL;
+
+    fun isVolatile(): Boolean {
+        return this in arrayOf(
+                TorrentState.DOWNLOADING,
+                TorrentState.UPLOADING,
+                TorrentState.CHECKING_UP,
+                TorrentState.CHECKING_DL
+        )
+    }
 }
