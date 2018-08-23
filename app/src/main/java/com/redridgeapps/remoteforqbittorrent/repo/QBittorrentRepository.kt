@@ -109,9 +109,19 @@ class QBittorrentRepository @Inject constructor(
         return request.processResult().map { Unit }
     }
 
-    suspend fun getLog(lastId: Int = -1): Try<List<QBittorrentLog>> {
+    suspend fun getLog(
+            normal: Boolean = true,
+            info: Boolean = true,
+            warning: Boolean = true,
+            critical: Boolean = true,
+            lastId: Int = -1
+    ): Try<List<QBittorrentLog>> {
         val request = qBitService.getLog(
                 baseUrl = prefRepo.baseUrl,
+                normal = normal,
+                info = info,
+                warning = warning,
+                critical = critical,
                 lastKnownId = lastId
         )
 

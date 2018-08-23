@@ -8,6 +8,7 @@ import com.redridgeapps.remoteforqbittorrent.model.ResIdMapper
 import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
+import com.redridgeapps.remoteforqbittorrent.ui.log.model.FilterState
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
 import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import kotlinx.coroutines.experimental.launch
@@ -28,6 +29,12 @@ class LogViewModel @Inject constructor(
         logListLiveData.asMutable().postValue(Try.just(Unit))
     }
 
+    var filterState: FilterState by Delegates.observable(FilterState()) { _, _, _ ->
+        lastId = -1
+        logList = ArrayList()
+        refreshLogList()
+    }
+
     var logList: List<LogListItem> = ArrayList()
     val logListLiveData: LiveData<Try<Unit>> = MutableLiveData()
 
@@ -38,7 +45,13 @@ class LogViewModel @Inject constructor(
     }
 
     fun refreshLogList() = launch {
-        val result = qBitRepo.getLog(lastId = lastId).map(::updateList)
+        val result = qBitRepo.getLog(
+                normal = filterState.normal,
+                info = filterState.info,
+                warning = filterState.warning,
+                critical = filterState.critical,
+                lastId = lastId
+        ).map(::updateList)
 
         logListLiveData.asMutable().postValue(result)
     }

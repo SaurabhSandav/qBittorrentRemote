@@ -60,6 +60,7 @@
     <string name="log_menu_label_sort">Sort</string>
     <string name="log_menu_label_latest">Latest</string>
     <string name="log_menu_label_oldest">Oldest</string>
+    <string name="log_menu_label_filter">Filter</string>
 
     <string name="permission_label_settings">Settings</string>
 
