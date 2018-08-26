@@ -6,9 +6,11 @@ import android.os.Bundle
 import android.text.InputType
 import android.view.*
 import android.webkit.MimeTypeMap
+import androidx.appcompat.view.ActionMode
 import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
+import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import arrow.core.toOption
@@ -23,6 +25,7 @@ import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBind
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
+import com.redridgeapps.remoteforqbittorrent.util.compatActivity
 import com.redridgeapps.remoteforqbittorrent.util.getViewModel
 import kotlinx.coroutines.experimental.CoroutineScope
 import kotlinx.coroutines.experimental.Dispatchers
@@ -40,6 +43,8 @@ class TorrentListFragment : BaseFragment() {
     private lateinit var binding: FragmentTorrentListBinding
     private lateinit var viewModel: TorrentListViewModel
     private lateinit var permissionJob: Job
+    private lateinit var selectionTracker: SelectionTracker<String>
+    private var actionMode: ActionMode? = null
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
@@ -57,7 +62,7 @@ class TorrentListFragment : BaseFragment() {
         binding.srl.setOnRefreshListener { viewModel.refreshTorrentList() }
         binding.srl.isRefreshing = true
 
-        setupRecyclerView()
+        setupRecyclerView(savedInstanceState)
         return binding.root
     }
 
@@ -75,6 +80,11 @@ class TorrentListFragment : BaseFragment() {
     override fun onStop() {
         super.onStop()
         permissionJob.cancel()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        selectionTracker.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
@@ -149,13 +159,19 @@ class TorrentListFragment : BaseFragment() {
         })
     }
 
-    private fun setupRecyclerView() = binding.recyclerView.run {
+    private fun setupRecyclerView(savedInstanceState: Bundle?) = binding.recyclerView.run {
         val linearLayoutManager = LinearLayoutManager(requireContext())
 
         setHasFixedSize(true)
         adapter = torrentListAdapter
         layoutManager = linearLayoutManager
         addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
+
+        selectionTracker = torrentListAdapter.setupSelectionTracker(this, SelectionObserver())
+        selectionTracker.onRestoreInstanceState(savedInstanceState)
+
+        if (selectionTracker.selection.size() > 0)
+            actionMode = compatActivity.startSupportActionMode(ActionModeCallback())
     }
 
     private fun setSort(item: MenuItem, sort: String): Boolean {
@@ -224,6 +240,44 @@ class TorrentListFragment : BaseFragment() {
                 }
                 .negativeButton(android.R.string.cancel)
                 .show()
+    }
+
+    private inner class SelectionObserver : SelectionTracker.SelectionObserver<String>() {
+
+        override fun onSelectionChanged() {
+            super.onSelectionChanged()
+            val selectionSize = selectionTracker.selection.size()
+
+            when {
+                selectionSize <= 0 -> actionMode?.finish()
+                actionMode == null -> actionMode = compatActivity.startSupportActionMode(ActionModeCallback())
+                else -> actionMode?.invalidate()
+            }
+        }
+    }
+
+    private inner class ActionModeCallback : ActionMode.Callback {
+
+        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            return false
+        }
+
+        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            return true
+        }
+
+        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
+            val selectionSize = selectionTracker.selection.size()
+
+            mode?.title = selectionSize.toString()
+
+            return true
+        }
+
+        override fun onDestroyActionMode(mode: ActionMode?) {
+            selectionTracker.clearSelection()
+            actionMode = null
+        }
     }
 }
 
