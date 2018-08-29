@@ -13,6 +13,9 @@
     <string name="main_drawer_item_log">Log</string>
     <string name="main_drawer_item_settings">Settings</string>
 
+    <string name="menu_selection_select_all">Select All</string>
+    <string name="menu_selection_select_inverse">Select Inverse</string>
+
     <string name="hint_host">Host</string>
     <string name="hint_port">Port</string>
     <string name="hint_use_https">Use HTTPS</string>
