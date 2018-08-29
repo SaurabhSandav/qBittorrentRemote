@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_pause"
+        android:icon="@drawable/ic_pause_white_24dp"
+        android:orderInCategory="21"
+        android:title="@string/torrentlist_selection_pause"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_resume"
+        android:icon="@drawable/ic_play_arrow_white_24dp"
+        android:orderInCategory="22"
+        android:title="@string/torrentlist_selection_resume"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_recheck"
+        android:icon="@drawable/ic_refresh_white_24dp"
+        android:orderInCategory="23"
+        android:title="@string/torrentlist_selection_recheck"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete"
+        android:icon="@drawable/ic_delete_white_24dp"
+        android:orderInCategory="24"
+        android:title="@string/torrentlist_selection_delete"
+        app:showAsAction="never" />
+
+</menu>

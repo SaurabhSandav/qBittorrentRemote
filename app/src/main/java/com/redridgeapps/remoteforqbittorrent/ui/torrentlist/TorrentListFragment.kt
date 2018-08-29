@@ -262,6 +262,7 @@ class TorrentListFragment : BaseFragment() {
             when (item?.itemId) {
                 R.id.action_select_all -> selectAll()
                 R.id.action_select_inverse -> selectInverse()
+                R.id.action_pause, R.id.action_resume, R.id.action_recheck, R.id.action_delete -> TODO()
                 else -> return false
             }
 
@@ -270,6 +271,7 @@ class TorrentListFragment : BaseFragment() {
 
         override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
             mode?.menuInflater?.inflate(R.menu.selection_menu, menu)
+            mode?.menuInflater?.inflate(R.menu.torrentlist_selection_menu, menu)
 
             return true
         }
@@ -287,13 +289,14 @@ class TorrentListFragment : BaseFragment() {
             actionMode = null
         }
 
-        private fun selectAll() {
+        private fun selectAll(): Boolean {
             torrentListAdapter.torrentList
                     .map { it.hash }
                     .let { selectionTracker.setItemsSelected(it, true) }
+            return true
         }
 
-        private fun selectInverse() {
+        private fun selectInverse(): Boolean {
             torrentListAdapter.torrentList
                     .map { it.hash }
                     .partition { selectionTracker.isSelected(it) }
@@ -301,6 +304,7 @@ class TorrentListFragment : BaseFragment() {
                         selectionTracker.setItemsSelected(second, true)
                         selectionTracker.setItemsSelected(first, false)
                     }
+            return true
         }
     }
 }

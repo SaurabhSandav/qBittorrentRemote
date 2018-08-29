@@ -58,6 +58,11 @@
     <string name="torrentlist_menu_label_file">File</string>
     <string name="torrentlist_menu_label_folder">Folder</string>
 
+    <string name="torrentlist_selection_pause">Pause</string>
+    <string name="torrentlist_selection_resume">Resume</string>
+    <string name="torrentlist_selection_recheck">Recheck</string>
+    <string name="torrentlist_selection_delete">Delete</string>
+
     <string name="torrentlist_dialog_label_add_link">Add link</string>
 
     <string name="log_menu_label_sort">Sort</string>
