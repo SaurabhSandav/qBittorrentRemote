@@ -45,13 +45,13 @@ class TorrentListViewModel @Inject constructor(
         torrentListLiveData.asMutable().postValue(result)
     }
 
-    fun pauseAll() = launch {
-        val result = qBitRepo.pause()
+    fun pause(hashes: List<String>? = null) = launch {
+        val result = qBitRepo.pause(hashes)
         genericOpResultLiveData.asMutable().postValue(result)
     }
 
-    fun resumeAll() = launch {
-        val result = qBitRepo.resume()
+    fun resume(hashes: List<String>? = null) = launch {
+        val result = qBitRepo.resume(hashes)
         genericOpResultLiveData.asMutable().postValue(result)
     }
 

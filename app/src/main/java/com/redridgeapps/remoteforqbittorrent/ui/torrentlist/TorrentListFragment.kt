@@ -124,8 +124,8 @@ class TorrentListFragment : BaseFragment() {
             R.id.action_sort_download_speed -> setSort(item, Sort.DLSPEED)
             R.id.action_sort_upload_speed -> setSort(item, Sort.UPSPEED)
             R.id.action_sort_reverse -> setSortReverse(item)
-            R.id.action_pause_all -> viewModel.pauseAll()
-            R.id.action_resume_all -> viewModel.resumeAll()
+            R.id.action_pause_all -> viewModel.pause()
+            R.id.action_resume_all -> viewModel.resume()
             else -> result = super.onOptionsItemSelected(item)
         }
 
@@ -259,10 +259,17 @@ class TorrentListFragment : BaseFragment() {
     private inner class ActionModeCallback : ActionMode.Callback {
 
         override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+            fun finishMode(operation: () -> Unit) {
+                operation()
+                mode?.finish()
+            }
+
             when (item?.itemId) {
                 R.id.action_select_all -> selectAll()
                 R.id.action_select_inverse -> selectInverse()
-                R.id.action_pause, R.id.action_resume, R.id.action_recheck, R.id.action_delete -> TODO()
+                R.id.action_pause -> finishMode { viewModel.pause(selectionTracker.selection.toList()) }
+                R.id.action_resume -> finishMode { viewModel.resume(selectionTracker.selection.toList()) }
+                R.id.action_recheck, R.id.action_delete -> TODO()
                 else -> return false
             }
 
