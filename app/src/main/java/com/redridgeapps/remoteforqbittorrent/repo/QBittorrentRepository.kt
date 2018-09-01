@@ -86,6 +86,30 @@ class QBittorrentRepository @Inject constructor(
         return request.processResult().map { Unit }
     }
 
+    suspend fun delete(
+            deleteFiles: Boolean,
+            hashes: List<String>? = null
+    ): Try<Unit> {
+        val request = qBitService.delete(
+                baseUrl = prefRepo.baseUrl,
+                hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
+                        ?: QBittorrentService.HASHES_ALL,
+                deleteFiles = deleteFiles
+        )
+
+        return request.processResult().map { Unit }
+    }
+
+    suspend fun recheck(hashes: List<String>? = null): Try<Unit> {
+        val request = qBitService.recheck(
+                baseUrl = prefRepo.baseUrl,
+                hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
+                        ?: QBittorrentService.HASHES_ALL
+        )
+
+        return request.processResult().map { Unit }
+    }
+
     suspend fun addTorrentLinks(links: List<String>): Try<Unit> {
         val request = qBitService.addTorrents(
                 baseUrl = prefRepo.baseUrl,

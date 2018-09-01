@@ -3,6 +3,8 @@
 
     <string name="title_config_fragment">Configure Server</string>
 
+    <string name="label_cancel">Cancel</string>
+
     <string name="main_drawer_group">Status</string>
     <string name="main_drawer_item_filter_all">All</string>
     <string name="main_drawer_item_filter_downloading">Downloading</string>
@@ -64,6 +66,8 @@
     <string name="torrentlist_selection_delete">Delete</string>
 
     <string name="torrentlist_dialog_label_add_link">Add link</string>
+    <string name="torrentlist_dialog_label_are_you_sure">Are you sure?</string>
+    <string name="torrentlist_dialog_label_delete_with_data">Delete with data</string>
 
     <string name="log_menu_label_sort">Sort</string>
     <string name="log_menu_label_latest">Latest</string>

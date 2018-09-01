@@ -55,6 +55,19 @@ class TorrentListViewModel @Inject constructor(
         genericOpResultLiveData.asMutable().postValue(result)
     }
 
+    fun delete(
+            deleteFiles: Boolean,
+            hashes: List<String>? = null
+    ) = launch {
+        val result = qBitRepo.delete(deleteFiles, hashes)
+        genericOpResultLiveData.asMutable().postValue(result)
+    }
+
+    fun recheck(hashes: List<String>? = null) = launch {
+        val result = qBitRepo.recheck(hashes)
+        genericOpResultLiveData.asMutable().postValue(result)
+    }
+
     fun addTorrentLinks(links: List<String>) = launch {
         val result = qBitRepo.addTorrentLinks(links)
         genericOpResultLiveData.asMutable().postValue(result)

@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import arrow.core.toOption
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
+import com.afollestad.materialdialogs.checkbox.isCheckPromptChecked
 import com.afollestad.materialdialogs.files.FileFilter
 import com.afollestad.materialdialogs.files.fileChooser
 import com.afollestad.materialdialogs.files.folderChooser
@@ -269,7 +271,8 @@ class TorrentListFragment : BaseFragment() {
                 R.id.action_select_inverse -> selectInverse()
                 R.id.action_pause -> finishMode { viewModel.pause(selectionTracker.selection.toList()) }
                 R.id.action_resume -> finishMode { viewModel.resume(selectionTracker.selection.toList()) }
-                R.id.action_recheck, R.id.action_delete -> TODO()
+                R.id.action_recheck -> finishMode { viewModel.recheck(selectionTracker.selection.toList()) }
+                R.id.action_delete -> deleteTorrents(mode)
                 else -> return false
             }
 
@@ -312,6 +315,20 @@ class TorrentListFragment : BaseFragment() {
                         selectionTracker.setItemsSelected(first, false)
                     }
             return true
+        }
+
+        private fun deleteTorrents(mode: ActionMode?) {
+            MaterialDialog(requireContext())
+                    .title(R.string.torrentlist_dialog_label_are_you_sure)
+                    .checkBoxPrompt(R.string.torrentlist_dialog_label_delete_with_data) {}
+                    .positiveButton(R.string.torrentlist_selection_delete) { dialog ->
+                        val isChecked = dialog.isCheckPromptChecked()
+                        viewModel.delete(isChecked, selectionTracker.selection.toList())
+
+                        mode?.finish()
+                    }
+                    .negativeButton(R.string.label_cancel)
+                    .show()
         }
     }
 }

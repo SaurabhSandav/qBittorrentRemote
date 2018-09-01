@@ -27,6 +27,8 @@ interface QBittorrentService {
         private const val TORRENTS_ADD = "api/v2/torrents/add"
         private const val TORRENTS_PAUSE = "api/v2/torrents/pause"
         private const val TORRENTS_RESUME = "api/v2/torrents/resume"
+        private const val TORRENTS_DELETE = "api/v2/torrents/delete"
+        private const val TORRENTS_RECHECK = "api/v2/torrents/recheck"
 
         private const val HEADER_LABEL_REFERER = "Referer"
         private const val HEADER_SET_COOKIE = "Set-Cookie"
@@ -135,6 +137,23 @@ interface QBittorrentService {
     fun resume(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RESUME),
+            @Field("hashes") hashes: String
+    ): Deferred<Void>
+
+    @FormUrlEncoded
+    @POST
+    fun delete(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, TORRENTS_DELETE),
+            @Field("hashes") hashes: String,
+            @Field("deleteFiles") deleteFiles: Boolean
+    ): Deferred<Void>
+
+    @FormUrlEncoded
+    @POST
+    fun recheck(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String,
+            @Url url: String = buildURL(baseUrl, TORRENTS_RECHECK),
             @Field("hashes") hashes: String
     ): Deferred<Void>
 
