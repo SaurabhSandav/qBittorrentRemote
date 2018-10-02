@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.Coroutines
+
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
@@ -36,11 +38,16 @@ androidExtensions {
     experimental = true
 }
 
+kotlin {
+    experimental.coroutines = Coroutines.ENABLE
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
 
     // Testing
     testImplementation "junit:junit:$junit_version"
