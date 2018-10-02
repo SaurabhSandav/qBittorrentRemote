@@ -57,4 +57,9 @@ dependencies {
 
     // Android Architecture Components
     implementation "android.arch.navigation:navigation-fragment-ktx:$aac_navigation_version"
+
+    // LeakCanary
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary_version"
 }
