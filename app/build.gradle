@@ -60,6 +60,7 @@ dependencies {
     // Jetpack
     implementation "androidx.appcompat:appcompat:$jetpack_version"
     implementation "androidx.core:core-ktx:$jetpack_version"
+    implementation "androidx.preference:preference-ktx:$jetpack_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     // Android Architecture Components
