@@ -99,4 +99,9 @@ dependencies {
 
     // Arrow
     implementation "io.arrow-kt:arrow-core:$arrow_version"
+
+    // Material Dialogs
+    implementation "com.afollestad.material-dialogs:core:$material_dialogs_version"
+    implementation "com.afollestad.material-dialogs:files:$material_dialogs_version"
+    implementation "com.afollestad.material-dialogs:input:$material_dialogs_version"
 }
