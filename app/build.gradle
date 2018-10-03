@@ -104,4 +104,7 @@ dependencies {
     implementation "com.afollestad.material-dialogs:core:$material_dialogs_version"
     implementation "com.afollestad.material-dialogs:files:$material_dialogs_version"
     implementation "com.afollestad.material-dialogs:input:$material_dialogs_version"
+
+    // Dexter
+    implementation "com.karumi:dexter:5.0.0"
 }
