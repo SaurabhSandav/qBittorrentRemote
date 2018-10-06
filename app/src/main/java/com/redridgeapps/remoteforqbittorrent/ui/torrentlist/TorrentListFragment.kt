@@ -1,7 +1,6 @@
 package com.redridgeapps.remoteforqbittorrent.ui.torrentlist
 
 import android.Manifest
-import android.content.ClipDescription
 import android.content.ClipboardManager
 import android.os.Bundle
 import android.text.InputType
@@ -12,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import arrow.core.toOption
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.files.FileFilter
 import com.afollestad.materialdialogs.files.fileChooser
@@ -185,26 +185,16 @@ class TorrentListFragment : BaseFragment() {
     }
 
     private fun getLinkFromClipboard(): String? {
-
-        val clipboard = requireActivity().getSystemService<ClipboardManager>() ?: return null
-        if (!clipboard.hasPrimaryClip()) return null
-        val primaryClipDescription = clipboard.primaryClipDescription ?: return null
-        val primaryClip = clipboard.primaryClip ?: return null
-
-        var link: String? = null
-
-        if (primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_PLAIN) ||
-                primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_HTML)
-        ) {
-            link = primaryClip.getItemAt(0)?.text?.toString()?.trim()
-        } else if (primaryClipDescription.hasMimeType(ClipDescription.MIMETYPE_TEXT_URILIST)) {
-            link = primaryClip.getItemAt(0)?.uri?.toString()
-        }
-
-        return link?.takeIf {
-            LIST_SUPPORTED_LINKS
-                    .any { protocol -> it.startsWith(protocol) } || it.matches(Regex(INFO_HASH_PATTERN))
-        }
+        return requireActivity().getSystemService<ClipboardManager>()
+                .toOption()
+                .filter { it.hasPrimaryClip() }
+                .flatMap { it.primaryClip.toOption() }
+                .map { it.getItemAt(0).coerceToText(requireContext()).toString() }
+                .orNull()
+                ?.takeIf {
+                    LIST_SUPPORTED_LINKS
+                            .any { protocol -> it.startsWith(protocol) } || it.matches(Regex(INFO_HASH_PATTERN))
+                }
     }
 
     private fun addTorrentFile() = CoroutineScope(Dispatchers.Main + permissionJob).launch {
