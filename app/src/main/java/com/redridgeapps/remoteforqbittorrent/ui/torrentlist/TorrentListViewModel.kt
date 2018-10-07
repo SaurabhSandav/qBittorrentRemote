@@ -11,7 +11,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import com.redridgeapps.remoteforqbittorrent.util.humanReadableByteCount
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 import kotlin.properties.Delegates

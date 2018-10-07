@@ -4,7 +4,7 @@ import arrow.core.Option
 import arrow.core.toOption
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import okhttp3.HttpUrl
 import okhttp3.MultipartBody
 import retrofit2.Response

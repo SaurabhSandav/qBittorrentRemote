@@ -13,7 +13,8 @@ import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsLi
 import com.redridgeapps.remoteforqbittorrent.R
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
-import kotlin.coroutines.experimental.suspendCoroutine
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 abstract class BaseFragment : Fragment() {
 

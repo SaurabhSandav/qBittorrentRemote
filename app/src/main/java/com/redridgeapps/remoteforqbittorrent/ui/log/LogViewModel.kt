@@ -11,7 +11,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.FilterState
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
 import com.redridgeapps.remoteforqbittorrent.util.asMutable
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject

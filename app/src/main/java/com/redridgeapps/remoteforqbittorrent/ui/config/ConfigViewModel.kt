@@ -6,7 +6,7 @@ import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.util.asMutable
-import kotlinx.coroutines.experimental.launch
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ConfigViewModel @Inject constructor(

@@ -6,7 +6,7 @@ import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
-import kotlinx.coroutines.experimental.Deferred
+import kotlinx.coroutines.Deferred
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
