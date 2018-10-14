@@ -36,6 +36,10 @@ androidExtensions {
     experimental = true
 }
 
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions.freeCompilerArgs = ['-progressive', '-Xnew-inference']
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
