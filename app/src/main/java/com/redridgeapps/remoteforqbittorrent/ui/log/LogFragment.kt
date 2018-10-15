@@ -3,7 +3,6 @@ package com.redridgeapps.remoteforqbittorrent.ui.log
 import android.os.Bundle
 import android.view.*
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -71,11 +70,11 @@ class LogFragment : BaseFragment() {
     }
 
     private fun observeLogList() {
-        viewModel.logListLiveData.observe(this, Observer { result ->
+        viewModel.logListLiveData.observe(this) { result ->
             result.fold({ showError(R.string.error_generic) }, { logListAdapter.submitList(viewModel.logList) })
 
             binding.srl.isRefreshing = false
-        })
+        }
     }
 
     private fun setupRecyclerView() = binding.recyclerView.run {

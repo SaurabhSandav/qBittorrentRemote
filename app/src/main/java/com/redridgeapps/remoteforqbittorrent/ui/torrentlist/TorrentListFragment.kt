@@ -9,7 +9,6 @@ import android.webkit.MimeTypeMap
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -136,9 +135,9 @@ class TorrentListFragment : BaseFragment() {
     private fun observeActivity() {
         val contractActivity = activity as? DrawerActivityContract ?: return
 
-        contractActivity.navigationItemSelectionsLiveData.observe(this, Observer {
+        contractActivity.navigationItemSelectionsLiveData.observe(this) {
             viewModel.filter = it
-        })
+        }
     }
 
     private fun observeViewModel() {
@@ -147,17 +146,17 @@ class TorrentListFragment : BaseFragment() {
     }
 
     private fun observeGenericOperations() {
-        viewModel.genericOpResultLiveData.observe(this, Observer { result ->
+        viewModel.genericOpResultLiveData.observe(this) { result ->
             result.fold({ showError(R.string.error_generic) }, {})
-        })
+        }
     }
 
     private fun observeTorrentList() {
-        viewModel.torrentListLiveData.observe(this, Observer { result ->
+        viewModel.torrentListLiveData.observe(this) { result ->
             result.fold({ showError(R.string.error_generic) }, torrentListAdapter::submitList)
 
             binding.srl.isRefreshing = false
-        })
+        }
     }
 
     private fun setupRecyclerView(savedInstanceState: Bundle?) = binding.recyclerView.run {

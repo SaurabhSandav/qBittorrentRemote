@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
@@ -41,9 +40,9 @@ class ConfigFragment : BaseFragment() {
     }
 
     private fun observeLogin() {
-        viewModel.loginResultLiveData.observe(this, Observer { result ->
+        viewModel.loginResultLiveData.observe(this) { result ->
             result.fold({ showError(text = it.message) }, { launchMainActivity() })
-        })
+        }
     }
 
     private fun launchMainActivity() = findNavController().run {
