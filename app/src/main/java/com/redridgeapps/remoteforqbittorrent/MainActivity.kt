@@ -11,6 +11,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
@@ -51,7 +52,6 @@ class MainActivity : AppCompatActivity(),
 
         setSupportActionBar(binding.toolbar)
         setupNavigation()
-        setupDrawer()
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity(),
         } else super.onBackPressed()
     }
 
-    override fun onSupportNavigateUp() = binding.drawerLayout.navigateUp(navController)
+    override fun onSupportNavigateUp() = navController.navigateUp(binding.drawerLayout)
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -81,24 +81,31 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    private fun setupNavigation() {
-        try {
-            navController.graph
-        } catch (e: IllegalStateException) {
-            val graphResId = if (!prefRepo.initialConfigFinished) R.navigation.config_graph else R.navigation.nav_graph
-            navController.setGraph(graphResId)
-        }
+    private fun setupNavigation() = with(navController) {
+        inflateGraph()
 
-        navController.addOnNavigatedListener { _, destination ->
-            if (destination.id == R.id.torrentListFragment)
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED)
-            else
-                binding.drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+        binding.navView.setNavigationItemSelectedListener(this@MainActivity)
+
+        val appBarConfiguration = AppBarConfiguration(
+                setOf(R.id.torrentListFragment, R.id.configFragment),
+                binding.drawerLayout
+        )
+
+        setupActionBarWithNavController(this, appBarConfiguration)
+
+        addOnNavigatedListener { _, destination ->
+            binding.drawerLayout.setDrawerLockMode(
+                    if (destination.id == R.id.torrentListFragment) DrawerLayout.LOCK_MODE_UNLOCKED
+                    else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+            )
         }
     }
 
-    private fun setupDrawer() {
-        binding.navView.setNavigationItemSelectedListener(this)
-        setupActionBarWithNavController(navController, binding.drawerLayout)
+    private fun NavController.inflateGraph() {
+        val graph = navInflater.inflate(R.navigation.nav_graph)
+
+        if (!prefRepo.initialConfigFinished) graph.startDestination = R.id.configFragment
+
+        setGraph(graph)
     }
 }

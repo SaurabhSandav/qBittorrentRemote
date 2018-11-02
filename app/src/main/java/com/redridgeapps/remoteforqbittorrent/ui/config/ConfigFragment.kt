@@ -1,6 +1,5 @@
 package com.redridgeapps.remoteforqbittorrent.ui.config
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,14 +17,10 @@ class ConfigFragment : BaseFragment() {
     private lateinit var binding: FragmentConfigBinding
     private lateinit var viewModel: ConfigViewModel
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        compatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = getViewModel(ConfigViewModel::class.java)
+        compatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,7 +42,7 @@ class ConfigFragment : BaseFragment() {
 
     private fun launchMainActivity() = findNavController().run {
         setGraph(R.navigation.nav_graph)
-        navigate(R.id.action_configFragment_to_nav_graph)
+        navigate(ConfigFragmentDirections.actionConfigFragmentToTorrentListFragment())
     }
 
     private fun letsGoClicked() = viewModel.login(

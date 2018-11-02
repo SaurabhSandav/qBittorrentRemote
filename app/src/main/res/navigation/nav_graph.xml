@@ -22,6 +22,20 @@
     </fragment>
 
     <fragment
+        android:id="@+id/configFragment"
+        android:name="com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment"
+        android:label="@string/title_config_fragment"
+        tools:layout="@layout/fragment_config">
+
+        <action
+            android:id="@+id/action_configFragment_to_torrentListFragment"
+            app:destination="@id/torrentListFragment"
+            app:popUpTo="@+id/configFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
         android:id="@+id/logFragment"
         android:name="com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment"
         android:label="LogFragment"
