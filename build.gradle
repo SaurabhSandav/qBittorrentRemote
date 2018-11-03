@@ -29,6 +29,7 @@ detekt {
     input = files("$projectDir")
     config = files("$projectDir/detekt-config.yml")
     filters = ".*/resources/.*,.*/build/.*"
+    baseline = file("$projectDir/baseline.xml")
 }
 
 allprojects {

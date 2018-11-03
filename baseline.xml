@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+<SmellBaseline>
+    <Blacklist timestamp="1541244328889"></Blacklist>
+    <Whitelist timestamp="1541244328889">
+        <ID>ComplexMethod:Extensions.kt$fun Long.humanReadableByteCount(isSpeed: Boolean = false,
+            si: Boolean = false): String
+        </ID>
+        <ID>ComplexMethod:ResIdMapper.kt$ResIdMapper$fun TorrentState.toResId()</ID>
+        <ID>ComplexMethod:TorrentListFragment.kt$TorrentListFragment$override fun
+            onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?)
+        </ID>
+        <ID>ComplexMethod:TorrentListFragment.kt$TorrentListFragment$override fun
+            onOptionsItemSelected(item: MenuItem): Boolean
+        </ID>
+        <ID>LongParameterList:QBittorrentService.kt$QBittorrentService$(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String, @Url url: String = buildURL(baseUrl,
+            LOG_MAIN), @Query("normal") normal: Boolean? = null, @Query("info") info: Boolean? =
+            null, @Query("warning") warning: Boolean? = null, @Query("critical") critical: Boolean?
+            = null, @Query("last_known_id") lastKnownId: Int? = null )
+        </ID>
+        <ID>LongParameterList:QBittorrentService.kt$QBittorrentService$(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String, @Url url: String = buildURL(baseUrl,
+            TORRENTS_ADD), @Part("urls") urls: String? = null, @Part torrents: List&lt;MultipartBody.Part&gt;?
+            = null, @Part("savepath") savepath: String? = null, @Part("cookie") cookie: String? =
+            null, @Part("category") category: String? = null, @Part("skip_checking") skipChecking:
+            Boolean? = null, @Part("paused") paused: Boolean? = null, @Part("root_folder")
+            rootFolder: Boolean? = null, @Part("rename") rename: String? = null, @Part("upLimit")
+            upLimit: Int? = null, @Part("dlLimit") dlLimit: Int? = null, @Part("sequentialDownload")
+            sequentialDownload: Boolean? = null, @Part("firstLastPiecePrio") firstLastPiecePriority:
+            Boolean? = null )
+        </ID>
+        <ID>LongParameterList:QBittorrentService.kt$QBittorrentService$(
+            @Header(HEADER_LABEL_REFERER) baseUrl: String, @Url url: String = buildURL(baseUrl,
+            TORRENTS_INFO), @Query("filter") filter: String? = null, @Query("category") category:
+            String? = null, @Query("sort") sort: String? = null, @Query("reverse") reverse: Boolean?
+            = null, @Query("limit") limit: Int? = null, @Query("offset") offset: Int? = null,
+            @Query("hashes") hashes: String? = null )
+        </ID>
+    </Whitelist>
+</SmellBaseline>
