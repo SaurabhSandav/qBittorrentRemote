@@ -10,6 +10,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProviders
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.list.MultiChoiceListener
+import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 
 val BaseFragment.compatActivity
@@ -53,3 +56,13 @@ fun <T : ViewDataBinding> ViewGroup.recyclerDataBindingInflate(
             attachToParent
     )
 }
+
+fun MaterialDialog.listItemsMultiChoiceCustom(
+        items: List<String>,
+        initialSelection: List<String>,
+        selection: MultiChoiceListener
+) = listItemsMultiChoice(
+        items = items,
+        initialSelection = initialSelection.map { items.indexOf(it) }.toIntArray(),
+        selection = selection
+)

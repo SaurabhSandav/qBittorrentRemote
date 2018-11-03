@@ -12,12 +12,14 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.MultiChoiceListener
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentLogBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
-import com.redridgeapps.remoteforqbittorrent.ui.log.model.FilterState
+import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogFilter
+import com.redridgeapps.remoteforqbittorrent.ui.log.model.asLogFilterList
+import com.redridgeapps.remoteforqbittorrent.ui.log.model.getFilterState
 import com.redridgeapps.remoteforqbittorrent.util.getViewModel
+import com.redridgeapps.remoteforqbittorrent.util.listItemsMultiChoiceCustom
 import javax.inject.Inject
 
 class LogFragment : BaseFragment() {
@@ -98,35 +100,19 @@ class LogFragment : BaseFragment() {
 
     private fun setFilter() {
 
-        val filterItems = ArrayList<String>(4)
-        filterItems.add(LABEL_LOG_TYPE_NORMAL_INDEX, getString(R.string.log_type_normal))
-        filterItems.add(LABEL_LOG_TYPE_INFO_INDEX, getString(R.string.log_type_info))
-        filterItems.add(LABEL_LOG_TYPE_WARNING_INDEX, getString(R.string.log_type_warning))
-        filterItems.add(LABEL_LOG_TYPE_CRITICAL_INDEX, getString(R.string.log_type_critical))
+        val logFilterValues = LogFilter.values().toList()
 
-        val selectedIndices = ArrayList<Int>()
-
-        viewModel.run {
-            if (filterState.normal) selectedIndices.add(LABEL_LOG_TYPE_NORMAL_INDEX)
-            if (filterState.info) selectedIndices.add(LABEL_LOG_TYPE_INFO_INDEX)
-            if (filterState.warning) selectedIndices.add(LABEL_LOG_TYPE_WARNING_INDEX)
-            if (filterState.critical) selectedIndices.add(LABEL_LOG_TYPE_CRITICAL_INDEX)
-        }
-
+        val items = logFilterValues.map { getString(it.resId) }
+        val initialSelection = viewModel.filterState.asLogFilterList().map { getString(it.resId) }
         val itemsCallbackMultiChoice: MultiChoiceListener = { _, indices, _ ->
-            viewModel.filterState = FilterState(
-                    normal = indices.contains(LABEL_LOG_TYPE_NORMAL_INDEX),
-                    info = indices.contains(LABEL_LOG_TYPE_INFO_INDEX),
-                    warning = indices.contains(LABEL_LOG_TYPE_WARNING_INDEX),
-                    critical = indices.contains(LABEL_LOG_TYPE_CRITICAL_INDEX)
-            )
+            viewModel.filterState = indices.map { logFilterValues[it] }.getFilterState()
         }
 
         MaterialDialog(requireContext())
                 .title(R.string.log_menu_label_filter)
-                .listItemsMultiChoice(
-                        items = filterItems,
-                        initialSelection = selectedIndices.toIntArray(),
+                .listItemsMultiChoiceCustom(
+                        items = items,
+                        initialSelection = initialSelection,
                         selection = itemsCallbackMultiChoice
                 )
                 .positiveButton(android.R.string.ok)
@@ -134,8 +120,3 @@ class LogFragment : BaseFragment() {
                 .show()
     }
 }
-
-const val LABEL_LOG_TYPE_NORMAL_INDEX = 0
-const val LABEL_LOG_TYPE_INFO_INDEX = 1
-const val LABEL_LOG_TYPE_WARNING_INDEX = 2
-const val LABEL_LOG_TYPE_CRITICAL_INDEX = 3
