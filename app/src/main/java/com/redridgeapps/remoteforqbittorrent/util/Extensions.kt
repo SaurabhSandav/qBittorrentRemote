@@ -15,6 +15,9 @@ import com.afollestad.materialdialogs.list.MultiChoiceListener
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 
+private const val SI_UNITS = 1000
+private const val BINARY_UNITS = 1024
+
 val BaseFragment.compatActivity
     get() = requireActivity() as AppCompatActivity
 
@@ -28,7 +31,7 @@ fun <T> LiveData<T>.asMutable(): MutableLiveData<T> {
 
 fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): String {
     val bytes = this
-    val unit = if (si) 1000 else 1024
+    val unit = if (si) SI_UNITS else BINARY_UNITS
     val speed = if (isSpeed) "/s" else ""
 
     if (bytes < unit) return bytes.toString() + " B" + speed

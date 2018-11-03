@@ -15,10 +15,10 @@ class IntToLogMessageTypeAdapter {
     @EnumLogMessageType
     fun fromJson(value: Int): LogMessageType {
         return when (value) {
-            1 -> LogMessageType.NORMAL
-            2 -> LogMessageType.INFO
-            4 -> LogMessageType.WARNING
-            8 -> LogMessageType.CRITICAL
+            INT_NORMAL -> LogMessageType.NORMAL
+            INT_INFO -> LogMessageType.INFO
+            INT_WARNING -> LogMessageType.WARNING
+            INT_CRITICAL -> LogMessageType.CRITICAL
             else -> throw IllegalArgumentException("Unknown argument: $value")
         }
     }
@@ -26,10 +26,15 @@ class IntToLogMessageTypeAdapter {
     @ToJson
     fun toJson(@EnumLogMessageType value: LogMessageType): Int {
         return when (value) {
-            LogMessageType.NORMAL -> 1
-            LogMessageType.INFO -> 2
-            LogMessageType.WARNING -> 4
-            LogMessageType.CRITICAL -> 8
+            LogMessageType.NORMAL -> INT_NORMAL
+            LogMessageType.INFO -> INT_INFO
+            LogMessageType.WARNING -> INT_WARNING
+            LogMessageType.CRITICAL -> INT_CRITICAL
         }
     }
 }
+
+private const val INT_NORMAL = 1
+private const val INT_INFO = 2
+private const val INT_WARNING = 4
+private const val INT_CRITICAL = 8

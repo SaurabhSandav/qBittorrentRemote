@@ -20,7 +20,7 @@ class QBittorrentInterceptor @Inject constructor(
         val origResponse = chain.proceed(origRequest.withAuth())
 
         // If request failed with Auth error
-        if (origResponse.code() == 403) {
+        if (origResponse.code() == ERROR_403_FORBIDDEN) {
 
             // Re-login
             val loginSucceeded = login(chain)
@@ -61,4 +61,5 @@ class QBittorrentInterceptor @Inject constructor(
     }
 }
 
+private const val ERROR_403_FORBIDDEN = 403
 private const val HEADER_LABEL_COOKIE = "Cookie"

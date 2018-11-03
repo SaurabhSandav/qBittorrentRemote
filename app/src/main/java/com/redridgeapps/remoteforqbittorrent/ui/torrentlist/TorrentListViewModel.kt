@@ -79,7 +79,7 @@ class TorrentListViewModel @Inject constructor(
     }
 
     private fun List<Torrent>.mapToTorrentListItem() = map {
-        val progress = it.progress * 100
+        val progress = it.progress * PERCENT_UNIT
 
         TorrentListItem(
                 hash = it.hash,
@@ -93,3 +93,5 @@ class TorrentListViewModel @Inject constructor(
         )
     }
 }
+
+private const val PERCENT_UNIT = 100
