@@ -175,7 +175,7 @@ interface QBittorrentService {
             @Part("savepath") savepath: String? = null,
             @Part("cookie") cookie: String? = null,
             @Part("category") category: String? = null,
-            @Part("skip_checking") skip_checking: Boolean? = null,
+            @Part("skip_checking") skipChecking: Boolean? = null,
             @Part("paused") paused: Boolean? = null,
             @Part("root_folder") rootFolder: Boolean? = null,
             @Part("rename") rename: String? = null,
