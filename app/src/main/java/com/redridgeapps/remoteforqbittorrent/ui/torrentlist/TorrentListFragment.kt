@@ -213,7 +213,7 @@ class TorrentListFragment : BaseFragment() {
                 .map { it.getItemAt(0).coerceToText(requireContext()).toString() }
                 .orNull()
                 ?.takeIf {
-                    LIST_SUPPORTED_LINKS
+                    listSupportedLinks
                             .any { protocol -> it.startsWith(protocol) } || it.matches(Regex(INFO_HASH_PATTERN))
                 }
     }
@@ -337,4 +337,4 @@ class TorrentListFragment : BaseFragment() {
 }
 
 private const val INFO_HASH_PATTERN = """\b[0-9a-fA-F]{40}\b"""
-private val LIST_SUPPORTED_LINKS = listOf("http://", "https://", "magnet:", "bc://bt/")
+private val listSupportedLinks = listOf("http://", "https://", "magnet:", "bc://bt/")
