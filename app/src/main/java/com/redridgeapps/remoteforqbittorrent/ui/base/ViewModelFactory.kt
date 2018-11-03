@@ -22,7 +22,7 @@ class ViewModelFactory @Inject constructor(
             @Suppress("UNCHECKED_CAST")
             creator.get() as T
         } catch (e: Exception) {
-            throw RuntimeException(e)
+            throw e
         }
     }
 }
