@@ -57,14 +57,19 @@ dependencies {
     implementation "com.google.android.material:material:$material_version"
 
     // Jetpack
-    implementation "androidx.appcompat:appcompat:$jetpack_version"
-    implementation "androidx.core:core-ktx:$jetpack_version"
-    implementation "androidx.preference:preference-ktx:$jetpack_version"
-    implementation "androidx.recyclerview:recyclerview-selection:$jetpack_version"
+    implementation "androidx.activity:activity-ktx:$jetpack_activity_ktx_version"
+    implementation "androidx.appcompat:appcompat:$jetpack_appcompat_version"
+    implementation "androidx.core:core-ktx:$jetpack_core_ktx_version"
+    implementation "androidx.fragment:fragment-ktx:$jetpack_fragment_ktx_version"
+    implementation "androidx.preference:preference-ktx:$jetpack_preference_ktx_version"
+    implementation "androidx.recyclerview:recyclerview:$jetpack_recyclerview_version"
+    implementation "androidx.recyclerview:recyclerview-selection:$jetpack_recyclerview_version"
     implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
 
     // Android Architecture Components
     implementation "androidx.lifecycle:lifecycle-extensions:$aac_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$aac_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$aac_lifecycle_version"
     kapt "androidx.lifecycle:lifecycle-compiler:$aac_lifecycle_version"
     implementation "android.arch.navigation:navigation-fragment-ktx:$aac_navigation_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$aac_navigation_version"

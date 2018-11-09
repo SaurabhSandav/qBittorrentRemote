@@ -92,8 +92,8 @@ class TorrentListFragment : BaseFragment() {
         selectionTracker.onSaveInstanceState(outState)
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.torrentlist_options_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.torrentlist_options_menu, menu)
 
         val id = when (viewModel.listSort) {
             Sort.NAME -> R.id.action_sort_name
@@ -108,8 +108,8 @@ class TorrentListFragment : BaseFragment() {
             else -> throw IllegalStateException("Unknown argument: ${viewModel.listSort}")
         }
 
-        menu?.findItem(id)?.isChecked = true
-        menu?.findItem(R.id.action_sort_reverse)?.isChecked = viewModel.listSortReverse
+        menu.findItem(id).isChecked = true
+        menu.findItem(R.id.action_sort_reverse).isChecked = viewModel.listSortReverse
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

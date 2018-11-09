@@ -52,11 +52,11 @@ class LogFragment : BaseFragment() {
         observeViewModel()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        inflater?.inflate(R.menu.log_options_menu, menu)
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.log_options_menu, menu)
 
         val id = if (viewModel.sortLatest) R.id.item_sort_latest else R.id.item_sort_oldest
-        menu?.findItem(id)?.isChecked = true
+        menu.findItem(id).isChecked = true
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
