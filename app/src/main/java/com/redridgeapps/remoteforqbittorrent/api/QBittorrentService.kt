@@ -106,7 +106,7 @@ interface QBittorrentService {
             @Url url: String = buildURL(baseUrl, AUTH_LOGIN),
             @Field("username") username: String,
             @Field("password") password: String
-    ): Deferred<Response<Void>>
+    ): Deferred<Response<Unit>>
 
     @GET
     fun getLog(
@@ -138,7 +138,7 @@ interface QBittorrentService {
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_PAUSE),
             @Field("hashes") hashes: String
-    ): Deferred<Void>
+    ): Deferred<Unit>
 
     @FormUrlEncoded
     @POST
@@ -146,7 +146,7 @@ interface QBittorrentService {
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RESUME),
             @Field("hashes") hashes: String
-    ): Deferred<Void>
+    ): Deferred<Unit>
 
     @FormUrlEncoded
     @POST
@@ -155,7 +155,7 @@ interface QBittorrentService {
             @Url url: String = buildURL(baseUrl, TORRENTS_DELETE),
             @Field("hashes") hashes: String,
             @Field("deleteFiles") deleteFiles: Boolean
-    ): Deferred<Void>
+    ): Deferred<Unit>
 
     @FormUrlEncoded
     @POST
@@ -163,7 +163,7 @@ interface QBittorrentService {
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RECHECK),
             @Field("hashes") hashes: String
-    ): Deferred<Void>
+    ): Deferred<Unit>
 
     @Multipart
     @POST
@@ -183,5 +183,5 @@ interface QBittorrentService {
             @Part("dlLimit") dlLimit: Int? = null,
             @Part("sequentialDownload") sequentialDownload: Boolean? = null,
             @Part("firstLastPiecePrio") firstLastPiecePriority: Boolean? = null
-    ): Deferred<Void>
+    ): Deferred<Unit>
 }

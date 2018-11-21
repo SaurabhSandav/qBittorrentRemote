@@ -16,6 +16,7 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.create
 import javax.inject.Singleton
 
 @Module
@@ -103,7 +104,5 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideQBittorrentWebService(retrofit: Retrofit): QBittorrentService {
-        return retrofit.create(QBittorrentService::class.java)
-    }
+    fun provideQBittorrentWebService(retrofit: Retrofit): QBittorrentService = retrofit.create()
 }

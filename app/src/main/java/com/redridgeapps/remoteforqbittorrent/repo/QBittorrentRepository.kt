@@ -73,7 +73,7 @@ class QBittorrentRepository @Inject constructor(
                         ?: QBittorrentService.HASHES_ALL
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun resume(hashes: List<String>? = null): Try<Unit> {
@@ -83,7 +83,7 @@ class QBittorrentRepository @Inject constructor(
                         ?: QBittorrentService.HASHES_ALL
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun delete(
@@ -97,7 +97,7 @@ class QBittorrentRepository @Inject constructor(
                 deleteFiles = deleteFiles
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun recheck(hashes: List<String>? = null): Try<Unit> {
@@ -107,7 +107,7 @@ class QBittorrentRepository @Inject constructor(
                         ?: QBittorrentService.HASHES_ALL
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun addTorrentLinks(links: List<String>): Try<Unit> {
@@ -116,7 +116,7 @@ class QBittorrentRepository @Inject constructor(
                 urls = links.joinToString("\n")
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun addTorrentFiles(files: List<File>): Try<Unit> {
@@ -130,7 +130,7 @@ class QBittorrentRepository @Inject constructor(
                 torrents = torrents
         )
 
-        return request.processResult().map { Unit }
+        return request.processResult()
     }
 
     suspend fun getLog(
