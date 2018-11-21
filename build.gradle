@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
@@ -40,6 +42,10 @@ allprojects {
         // TODO Temporary workaround (Unable to resolve dependencies)
         // https://github.com/afollestad/material-dialogs/issues/1575
         maven { url = uri("https://dl.bintray.com/drummer-aidan/maven/") }
+    }
+
+    tasks.withType(KotlinCompile).all {
+        kotlinOptions.freeCompilerArgs = ['-progressive', '-Xnew-inference']
     }
 }
 
