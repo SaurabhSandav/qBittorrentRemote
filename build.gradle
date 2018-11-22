@@ -23,15 +23,7 @@ buildscript {
 }
 
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.0.0-RC12")
-}
-
-detekt {
-    version = "1.0.0-RC12"
-    input = files("$projectDir")
-    config = files("$projectDir/detekt-config.yml")
-    filters = ".*/resources/.*,.*/build/.*"
-    baseline = file("$projectDir/baseline.xml")
+    id "io.gitlab.arturbosch.detekt"  version "1.0.0-RC12"
 }
 
 allprojects {
@@ -47,6 +39,8 @@ allprojects {
     tasks.withType(KotlinCompile).all {
         kotlinOptions.freeCompilerArgs = ['-progressive', '-Xnew-inference']
     }
+
+    apply from: "$rootDir/detekt.gradle"
 }
 
 task clean(type: Delete) {
