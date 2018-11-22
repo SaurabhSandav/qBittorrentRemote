@@ -35,7 +35,7 @@ class ConfigFragment : BaseFragment() {
     }
 
     private fun observeLogin() {
-        viewModel.loginResultLiveData.observe(this) { result ->
+        viewModel.loginResultLiveData.observe(viewLifecycleOwner) { result ->
             result.fold({ showError(text = it.message) }, { launchMainActivity() })
         }
     }

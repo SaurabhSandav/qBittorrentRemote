@@ -140,7 +140,7 @@ class TorrentListFragment : BaseFragment() {
     private fun observeActivity() {
         val contractActivity = activity as? DrawerActivityContract ?: return
 
-        contractActivity.navigationItemSelectionsLiveData.observe(this) {
+        contractActivity.navigationItemSelectionsLiveData.observe(viewLifecycleOwner) {
             viewModel.filter = it
         }
     }
@@ -151,13 +151,13 @@ class TorrentListFragment : BaseFragment() {
     }
 
     private fun observeGenericOperations() {
-        viewModel.genericOpResultLiveData.observe(this) { result ->
+        viewModel.genericOpResultLiveData.observe(viewLifecycleOwner) { result ->
             result.fold({ showError(R.string.error_generic) }, {})
         }
     }
 
     private fun observeTorrentList() {
-        viewModel.torrentListLiveData.observe(this) { result ->
+        viewModel.torrentListLiveData.observe(viewLifecycleOwner) { result ->
             result.fold({ showError(R.string.error_generic) }, torrentListAdapter::submitList)
 
             binding.srl.isRefreshing = false

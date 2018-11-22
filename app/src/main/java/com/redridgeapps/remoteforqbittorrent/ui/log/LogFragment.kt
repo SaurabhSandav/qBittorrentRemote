@@ -77,7 +77,7 @@ class LogFragment : BaseFragment() {
     }
 
     private fun observeLogList() {
-        viewModel.logListLiveData.observe(this) { result ->
+        viewModel.logListLiveData.observe(viewLifecycleOwner) { result ->
             result.fold({ showError(R.string.error_generic) }, { logListAdapter.submitList(viewModel.logList) })
 
             binding.srl.isRefreshing = false
