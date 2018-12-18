@@ -3,7 +3,7 @@ package com.redridgeapps.remoteforqbittorrent.di.module
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.redridgeapps.remoteforqbittorrent.di.ViewModelKey
-import com.redridgeapps.remoteforqbittorrent.ui.base.ViewModelFactory
+import com.redridgeapps.remoteforqbittorrent.ui.base.DaggerViewModelFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListViewModel
@@ -12,10 +12,10 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
-abstract class ViewModelFactoryModule {
+abstract class ViewModelBuilder {
 
     @Binds
-    abstract fun bindViewModelFactory(factory: ViewModelFactory): ViewModelProvider.Factory
+    abstract fun bindViewModelFactory(factory: DaggerViewModelFactory): ViewModelProvider.Factory
 
     @Binds
     @IntoMap
