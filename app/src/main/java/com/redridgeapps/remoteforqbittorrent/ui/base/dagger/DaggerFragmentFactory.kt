@@ -1,8 +1,9 @@
-package com.redridgeapps.remoteforqbittorrent.ui.base
+package com.redridgeapps.remoteforqbittorrent.ui.base.dagger
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import javax.inject.Inject
 import javax.inject.Provider
 import javax.inject.Singleton

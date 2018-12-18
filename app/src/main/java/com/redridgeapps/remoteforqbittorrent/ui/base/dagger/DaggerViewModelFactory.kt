@@ -1,4 +1,4 @@
-package com.redridgeapps.remoteforqbittorrent.ui.base
+package com.redridgeapps.remoteforqbittorrent.ui.base.dagger
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider

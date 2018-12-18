@@ -4,7 +4,7 @@ import androidx.fragment.app.FragmentFactory
 import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.CustomNavHostFragment
-import com.redridgeapps.remoteforqbittorrent.ui.base.DaggerFragmentFactory
+import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerFragmentFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment
 import com.redridgeapps.remoteforqbittorrent.ui.settings.SettingsFragment

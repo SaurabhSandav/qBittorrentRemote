@@ -2,7 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.redridgeapps.remoteforqbittorrent.ui.base.DaggerViewModelFactory
+import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerViewModelFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListViewModel
