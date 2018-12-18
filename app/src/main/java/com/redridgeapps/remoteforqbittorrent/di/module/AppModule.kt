@@ -4,8 +4,8 @@ import android.app.Application
 import android.content.SharedPreferences
 import android.content.res.Resources
 import android.preference.PreferenceManager
+import com.ashokvarma.gander.GanderInterceptor
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
-import com.readystatesoftware.chuck.ChuckInterceptor
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentInterceptor
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.redridgeapps.remoteforqbittorrent.util.moshitypeadapters.IntToLogMessageTypeAdapter
@@ -37,7 +37,11 @@ object AppModule {
     @JvmStatic
     @Provides
     @Singleton
-    fun provideChuckInterceptor(app: Application): ChuckInterceptor = ChuckInterceptor(app)
+    fun provideGanderInterceptor(app: Application): GanderInterceptor {
+        return GanderInterceptor(app)
+                .showNotification(true)
+                .retainDataFor(GanderInterceptor.Period.FOREVER)
+    }
 
     @JvmStatic
     @Provides
@@ -74,12 +78,12 @@ object AppModule {
     @Singleton
     fun provideOkHttpClient(
             qBittorrentInterceptor: QBittorrentInterceptor,
-            chuckInterceptor: ChuckInterceptor
+            ganderInterceptor: GanderInterceptor
     ): OkHttpClient {
         return OkHttpClient()
                 .newBuilder()
                 .addInterceptor(qBittorrentInterceptor)
-                .addInterceptor(chuckInterceptor)
+                .addInterceptor(ganderInterceptor)
                 .build()
     }
 

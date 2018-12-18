@@ -95,9 +95,9 @@ dependencies {
     // OkHttp
     implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
 
-    // Chuck
-    debugImplementation "com.readystatesoftware.chuck:library:$chuck_version"
-    releaseImplementation "com.readystatesoftware.chuck:library-no-op:$chuck_version"
+    // Gander
+    debugImplementation "com.ashokvarma.android:gander:$gander_version"
+    releaseImplementation "com.ashokvarma.android:gander-no-op:$gander_version"
 
     // Arrow
     implementation "io.arrow-kt:arrow-core:$arrow_version"
