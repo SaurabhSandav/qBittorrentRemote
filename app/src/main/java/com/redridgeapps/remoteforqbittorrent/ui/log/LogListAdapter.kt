@@ -5,12 +5,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ItemLogListBinding
-import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
 import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
-@PerFragment
 class LogListAdapter @Inject constructor() :
         ListAdapter<LogListItem, LogListAdapter.ViewHolder>(LogListItem.DiffCallback) {
 

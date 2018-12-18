@@ -8,8 +8,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProviders
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.MultiChoiceListener
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
@@ -20,10 +18,6 @@ private const val BINARY_UNITS = 1024
 
 val BaseFragment.compatActivity
     get() = requireActivity() as AppCompatActivity
-
-fun <T : ViewModel> BaseFragment.getViewModel(viewModelClass: Class<T>): T {
-    return ViewModelProviders.of(this, viewModelFactory).get(viewModelClass)
-}
 
 fun <T> LiveData<T>.asMutable(): MutableLiveData<T> {
     return this as MutableLiveData<T>

@@ -8,6 +8,8 @@ import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.afollestad.materialdialogs.MaterialDialog
@@ -18,22 +20,20 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogFilter
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.asLogFilterList
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.getFilterState
-import com.redridgeapps.remoteforqbittorrent.util.getViewModel
 import com.redridgeapps.remoteforqbittorrent.util.listItemsMultiChoiceCustom
 import javax.inject.Inject
 
-class LogFragment : BaseFragment() {
-
-    @Inject
-    lateinit var logListAdapter: LogListAdapter
+class LogFragment @Inject constructor(
+        private val logListAdapter: LogListAdapter,
+        viewModelFactory: ViewModelProvider.Factory
+) : BaseFragment() {
 
     private lateinit var binding: FragmentLogBinding
-    private lateinit var viewModel: LogViewModel
+    private val viewModel by viewModels<LogViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = getViewModel(LogViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

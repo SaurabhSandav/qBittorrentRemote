@@ -11,12 +11,10 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ListItemTorrentBinding
-import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
-@PerFragment
 class TorrentListAdapter @Inject constructor()
     : ListAdapter<TorrentListItem, TorrentListAdapter.TorrentViewHolder>(TorrentListItem.DiffCallback) {
 

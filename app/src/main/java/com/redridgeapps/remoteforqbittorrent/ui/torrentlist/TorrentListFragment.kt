@@ -14,6 +14,8 @@ import android.webkit.MimeTypeMap
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -32,7 +34,6 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
-import com.redridgeapps.remoteforqbittorrent.util.getViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,16 +41,16 @@ import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
-class TorrentListFragment : BaseFragment() {
-
-    @Inject
-    lateinit var torrentListAdapter: TorrentListAdapter
+class TorrentListFragment @Inject constructor(
+        val torrentListAdapter: TorrentListAdapter,
+        viewModelFactory: ViewModelProvider.Factory
+) : BaseFragment() {
 
     private lateinit var binding: FragmentTorrentListBinding
-    private lateinit var viewModel: TorrentListViewModel
     private lateinit var permissionJob: Job
     private lateinit var selectionTracker: SelectionTracker<String>
     private var actionMode: ActionMode? = null
+    private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
@@ -58,7 +59,6 @@ class TorrentListFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = getViewModel(TorrentListViewModel::class.java)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

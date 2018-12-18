@@ -5,21 +5,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
-import com.redridgeapps.remoteforqbittorrent.util.getViewModel
+import javax.inject.Inject
 
-class ConfigFragment : BaseFragment() {
+class ConfigFragment @Inject constructor(
+        viewModelFactory: ViewModelProvider.Factory
+) : BaseFragment() {
 
     private lateinit var binding: FragmentConfigBinding
-    private lateinit var viewModel: ConfigViewModel
+    private val viewModel by viewModels<ConfigViewModel> { viewModelFactory }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel(ConfigViewModel::class.java)
         compatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
     }
 
