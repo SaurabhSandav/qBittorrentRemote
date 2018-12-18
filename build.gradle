@@ -9,7 +9,7 @@ buildscript {
 
     repositories {
         google()
-        jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -29,7 +29,12 @@ plugins {
 allprojects {
     repositories {
         google()
-        jcenter()
+        mavenCentral()
+        jcenter {
+            content {
+                includeGroup "org.jetbrains.trove4j"
+            }
+        }
 
         // TODO Temporary workaround (Unable to resolve dependencies)
         // https://github.com/afollestad/material-dialogs/issues/1575
