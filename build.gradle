@@ -68,7 +68,7 @@ ext {
 
     dagger_version = '2.20'
 
-    leak_canary_version = '1.6.1'
+    leak_canary_version = '1.6.2'
 
     moshi_version = '1.8.0'
 

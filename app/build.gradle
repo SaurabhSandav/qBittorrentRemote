@@ -81,7 +81,6 @@ dependencies {
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leak_canary_version"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:$moshi_version"
