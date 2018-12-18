@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity(),
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
+    private lateinit var appBarConfiguration: AppBarConfiguration
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -49,6 +50,10 @@ class MainActivity : AppCompatActivity(),
 
         binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
         navController = findNavController(R.id.nav_host_fragment)
+        appBarConfiguration = AppBarConfiguration(
+                setOf(R.id.torrentListFragment, R.id.configFragment),
+                binding.drawerLayout
+        )
 
         setSupportActionBar(binding.toolbar)
         setupNavigation()
@@ -62,7 +67,7 @@ class MainActivity : AppCompatActivity(),
         } else super.onBackPressed()
     }
 
-    override fun onSupportNavigateUp() = navController.navigateUp(binding.drawerLayout)
+    override fun onSupportNavigateUp() = navController.navigateUp(appBarConfiguration)
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         binding.drawerLayout.closeDrawer(GravityCompat.START)
@@ -86,14 +91,9 @@ class MainActivity : AppCompatActivity(),
 
         binding.navView.setNavigationItemSelectedListener(this@MainActivity)
 
-        val appBarConfiguration = AppBarConfiguration(
-                setOf(R.id.torrentListFragment, R.id.configFragment),
-                binding.drawerLayout
-        )
-
         setupActionBarWithNavController(this, appBarConfiguration)
 
-        addOnNavigatedListener { _, destination ->
+        addOnDestinationChangedListener { _, destination, _ ->
             binding.drawerLayout.setDrawerLockMode(
                     if (destination.id == R.id.torrentListFragment) DrawerLayout.LOCK_MODE_UNLOCKED
                     else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
