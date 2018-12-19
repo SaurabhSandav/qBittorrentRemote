@@ -2,6 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.ui.log
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.ResIdMapper
@@ -44,7 +45,7 @@ class LogViewModel @Inject constructor(
         refreshLogList()
     }
 
-    fun refreshLogList() = launch {
+    fun refreshLogList() = viewModelScope.launch {
         val result = qBitRepo.getLog(
                 normal = filterState.normal,
                 info = filterState.info,

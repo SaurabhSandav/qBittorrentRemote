@@ -2,6 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.ui.config
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
@@ -21,7 +22,7 @@ class ConfigViewModel @Inject constructor(
             useHttps: Boolean,
             username: String,
             password: String
-    ) = launch {
+    ) = viewModelScope.launch {
         qBitRepo.saveConfig(host, port, useHttps, username, password)
 
         val result = qBitRepo.login()
