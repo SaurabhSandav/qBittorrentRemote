@@ -10,7 +10,6 @@ import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
-import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import com.redridgeapps.remoteforqbittorrent.util.humanReadableByteCount
 import kotlinx.coroutines.launch
 import java.io.File
@@ -34,8 +33,11 @@ class TorrentListViewModel @Inject constructor(
         refreshTorrentList()
     }
 
-    val genericOpResultLiveData: LiveData<Try<Unit>> = MutableLiveData()
-    val torrentListLiveData: LiveData<Try<List<TorrentListItem>>> = MutableLiveData()
+    private val _genericOpResultLiveData = MutableLiveData<Try<Unit>>()
+    private val _torrentListLiveData = MutableLiveData<Try<List<TorrentListItem>>>()
+
+    val genericOpResultLiveData: LiveData<Try<Unit>> = _genericOpResultLiveData
+    val torrentListLiveData: LiveData<Try<List<TorrentListItem>>> = _torrentListLiveData
 
     init {
         refreshTorrentList()
@@ -43,17 +45,17 @@ class TorrentListViewModel @Inject constructor(
 
     fun refreshTorrentList() = viewModelScope.launch {
         val result = qBitRepo.getTorrentList(filter).map { it.mapToTorrentListItem() }
-        torrentListLiveData.asMutable().setValue(result)
+        _torrentListLiveData.value = result
     }
 
     fun pause(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.pause(hashes)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     fun resume(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.resume(hashes)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     fun delete(
@@ -61,22 +63,22 @@ class TorrentListViewModel @Inject constructor(
             hashes: List<String>? = null
     ) = viewModelScope.launch {
         val result = qBitRepo.delete(deleteFiles, hashes)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     fun recheck(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.recheck(hashes)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     fun addTorrentLinks(links: List<String>) = viewModelScope.launch {
         val result = qBitRepo.addTorrentLinks(links)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     fun addTorrentFiles(file: List<File>) = viewModelScope.launch {
         val result = qBitRepo.addTorrentFiles(file)
-        genericOpResultLiveData.asMutable().setValue(result)
+        _genericOpResultLiveData.value = result
     }
 
     private fun List<Torrent>.mapToTorrentListItem() = map {

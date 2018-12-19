@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
-import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -14,7 +13,9 @@ class ConfigViewModel @Inject constructor(
         private val qBitRepo: QBittorrentRepository
 ) : BaseViewModel() {
 
-    val loginResultLiveData: LiveData<Try<Unit>> = MutableLiveData()
+    private val _loginResultLiveData = MutableLiveData<Try<Unit>>()
+
+    val loginResultLiveData: LiveData<Try<Unit>> = _loginResultLiveData
 
     fun login(
             host: String,
@@ -27,6 +28,6 @@ class ConfigViewModel @Inject constructor(
 
         val result = qBitRepo.login()
 
-        loginResultLiveData.asMutable().setValue(result)
+        _loginResultLiveData.value = result
     }
 }
