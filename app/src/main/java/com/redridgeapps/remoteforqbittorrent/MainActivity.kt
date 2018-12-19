@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(),
             else -> return item.onNavDestinationSelected(navController)
         }
 
-        navigationItemSelectionsLiveData.asMutable().postValue(filter)
+        navigationItemSelectionsLiveData.asMutable().value = filter
         return true
     }
 

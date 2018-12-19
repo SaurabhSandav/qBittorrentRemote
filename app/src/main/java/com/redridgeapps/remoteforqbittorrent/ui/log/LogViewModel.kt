@@ -27,7 +27,7 @@ class LogViewModel @Inject constructor(
     var sortLatest by Delegates.observable(prefRepo.logListSort) { _, _, newValue ->
         prefRepo.logListSort = newValue
         updateList()
-        logListLiveData.asMutable().postValue(Try.just(Unit))
+        logListLiveData.asMutable().setValue(Try.just(Unit))
     }
 
     var filterState: FilterState by Delegates.observable(FilterState()) { _, _, _ ->
@@ -54,7 +54,7 @@ class LogViewModel @Inject constructor(
                 lastId = lastId
         ).map(::updateList)
 
-        logListLiveData.asMutable().postValue(result)
+        logListLiveData.asMutable().setValue(result)
     }
 
     private fun updateList(newLogs: List<QBittorrentLog>? = null) {

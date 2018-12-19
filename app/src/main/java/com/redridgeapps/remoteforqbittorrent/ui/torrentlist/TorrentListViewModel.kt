@@ -22,7 +22,7 @@ class TorrentListViewModel @Inject constructor(
         private val prefRepo: PreferenceRepository
 ) : BaseViewModel() {
 
-    var filter: String? by Delegates.observable<String?>(null) { _, _, _ -> refreshTorrentList() }
+    var filter: String? by Delegates.observable(null) { _, _, _ -> refreshTorrentList() }
 
     var listSort by Delegates.observable(prefRepo.torrentListSort) { _, _, newValue ->
         prefRepo.torrentListSort = newValue
@@ -43,17 +43,17 @@ class TorrentListViewModel @Inject constructor(
 
     fun refreshTorrentList() = viewModelScope.launch {
         val result = qBitRepo.getTorrentList(filter).map { it.mapToTorrentListItem() }
-        torrentListLiveData.asMutable().postValue(result)
+        torrentListLiveData.asMutable().setValue(result)
     }
 
     fun pause(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.pause(hashes)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     fun resume(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.resume(hashes)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     fun delete(
@@ -61,22 +61,22 @@ class TorrentListViewModel @Inject constructor(
             hashes: List<String>? = null
     ) = viewModelScope.launch {
         val result = qBitRepo.delete(deleteFiles, hashes)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     fun recheck(hashes: List<String>? = null) = viewModelScope.launch {
         val result = qBitRepo.recheck(hashes)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     fun addTorrentLinks(links: List<String>) = viewModelScope.launch {
         val result = qBitRepo.addTorrentLinks(links)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     fun addTorrentFiles(file: List<File>) = viewModelScope.launch {
         val result = qBitRepo.addTorrentFiles(file)
-        genericOpResultLiveData.asMutable().postValue(result)
+        genericOpResultLiveData.asMutable().setValue(result)
     }
 
     private fun List<Torrent>.mapToTorrentListItem() = map {

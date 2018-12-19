@@ -27,6 +27,6 @@ class ConfigViewModel @Inject constructor(
 
         val result = qBitRepo.login()
 
-        loginResultLiveData.asMutable().postValue(result)
+        loginResultLiveData.asMutable().setValue(result)
     }
 }
