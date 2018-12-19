@@ -14,6 +14,7 @@ import android.webkit.MimeTypeMap
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.getSystemService
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.selection.SelectionTracker
@@ -30,8 +31,8 @@ import com.afollestad.materialdialogs.input.input
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
+import com.redridgeapps.remoteforqbittorrent.ui.MainViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
-import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -51,6 +52,7 @@ class TorrentListFragment @Inject constructor(
     private lateinit var selectionTracker: SelectionTracker<String>
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
+    private val activityViewModel by activityViewModels<MainViewModel>()
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
@@ -138,9 +140,7 @@ class TorrentListFragment @Inject constructor(
     }
 
     private fun observeActivity() {
-        val contractActivity = activity as? DrawerActivityContract ?: return
-
-        contractActivity.navigationItemSelectionsLiveData.observe(viewLifecycleOwner) {
+        activityViewModel.filterLiveData.observe(viewLifecycleOwner) {
             viewModel.filter = it
         }
     }

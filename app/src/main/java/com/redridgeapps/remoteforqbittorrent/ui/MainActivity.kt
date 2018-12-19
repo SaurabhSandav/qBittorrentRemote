@@ -2,13 +2,12 @@ package com.redridgeapps.remoteforqbittorrent.ui
 
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.databinding.DataBindingUtil
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,8 +19,6 @@ import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
 import com.redridgeapps.remoteforqbittorrent.databinding.ActivityMainBinding
 import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
-import com.redridgeapps.remoteforqbittorrent.ui.base.DrawerActivityContract
-import com.redridgeapps.remoteforqbittorrent.util.asMutable
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -30,8 +27,7 @@ import javax.inject.Inject
 
 class MainActivity : AppCompatActivity(),
         HasSupportFragmentInjector,
-        NavigationView.OnNavigationItemSelectedListener,
-        DrawerActivityContract {
+        NavigationView.OnNavigationItemSelectedListener {
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
@@ -39,11 +35,10 @@ class MainActivity : AppCompatActivity(),
     @Inject
     lateinit var prefRepo: PreferenceRepository
 
-    override val navigationItemSelectionsLiveData: LiveData<String> = MutableLiveData()
-
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
+    private val viewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         AndroidInjection.inject(this)
@@ -83,7 +78,7 @@ class MainActivity : AppCompatActivity(),
             else -> return item.onNavDestinationSelected(navController)
         }
 
-        navigationItemSelectionsLiveData.asMutable().value = filter
+        viewModel.setFilter(filter)
         return true
     }
 
