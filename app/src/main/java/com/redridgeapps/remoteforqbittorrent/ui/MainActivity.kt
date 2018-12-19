@@ -1,4 +1,4 @@
-package com.redridgeapps.remoteforqbittorrent
+package com.redridgeapps.remoteforqbittorrent.ui
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,6 +16,7 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.onNavDestinationSelected
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.android.material.navigation.NavigationView
+import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
 import com.redridgeapps.remoteforqbittorrent.databinding.ActivityMainBinding
 import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
