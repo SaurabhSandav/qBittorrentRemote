@@ -15,8 +15,8 @@ import kotlin.coroutines.suspendCoroutine
 abstract class BaseFragment : Fragment() {
 
     protected fun showError(@StringRes resId: Int? = null, text: String? = null) {
-        resId?.let { Snackbar.make(view!!, it, Snackbar.LENGTH_SHORT).show() }
-        text?.let { Snackbar.make(view!!, it, Snackbar.LENGTH_SHORT).show() }
+        resId?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show() }
+        text?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show() }
     }
 
     protected suspend fun askPermissions(
