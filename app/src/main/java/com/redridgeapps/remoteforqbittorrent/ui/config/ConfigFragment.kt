@@ -8,6 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import arrow.core.Either
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
@@ -39,7 +40,7 @@ class ConfigFragment @Inject constructor(
 
     private fun observeLogin() {
         viewModel.loginResultLiveData.observe(viewLifecycleOwner) { result ->
-            result.fold({ showError(text = it.message) }, { launchMainActivity() })
+            result.fold({ showError(Either.left(R.string.error_generic)) }, { launchMainActivity() })
         }
     }
 

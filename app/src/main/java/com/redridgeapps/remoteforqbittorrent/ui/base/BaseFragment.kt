@@ -1,7 +1,7 @@
 package com.redridgeapps.remoteforqbittorrent.ui.base
 
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import arrow.core.Either
 import com.google.android.material.snackbar.Snackbar
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
@@ -14,9 +14,11 @@ import kotlin.coroutines.suspendCoroutine
 
 abstract class BaseFragment : Fragment() {
 
-    protected fun showError(@StringRes resId: Int? = null, text: String? = null) {
-        resId?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show() }
-        text?.let { Snackbar.make(requireView(), it, Snackbar.LENGTH_SHORT).show() }
+    protected fun showError(error: Either<Int, String>) {
+        when (error) {
+            is Either.Left -> Snackbar.make(requireView(), error.a, Snackbar.LENGTH_SHORT).show()
+            is Either.Right -> Snackbar.make(requireView(), error.b, Snackbar.LENGTH_SHORT).show()
+        }
     }
 
     protected suspend fun askPermissions(

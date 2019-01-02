@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import arrow.core.Either
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.MultiChoiceListener
 import com.redridgeapps.remoteforqbittorrent.R
@@ -78,7 +79,7 @@ class LogFragment @Inject constructor(
 
     private fun observeLogList() {
         viewModel.logListLiveData.observe(viewLifecycleOwner) { result ->
-            result.fold({ showError(R.string.error_generic) }, { logListAdapter.submitList(viewModel.logList) })
+            result.fold({ showError(Either.left(R.string.error_generic)) }, { logListAdapter.submitList(viewModel.logList) })
 
             binding.srl.isRefreshing = false
         }
