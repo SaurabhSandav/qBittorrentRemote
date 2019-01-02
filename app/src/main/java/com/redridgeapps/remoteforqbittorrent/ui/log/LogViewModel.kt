@@ -3,6 +3,7 @@ package com.redridgeapps.remoteforqbittorrent.ui.log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import arrow.core.Success
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.ResIdMapper
@@ -11,7 +12,9 @@ import com.redridgeapps.remoteforqbittorrent.repo.QBittorrentRepository
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.FilterState
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -25,10 +28,9 @@ class LogViewModel @Inject constructor(
 
     private val _logListLiveData = MutableLiveData<Try<Unit>>()
 
-    var sortLatest by Delegates.observable(prefRepo.logListSort) { _, _, newValue ->
+    var sortLatest: Boolean by Delegates.observable(prefRepo.logListSort) { _, _, newValue ->
         prefRepo.logListSort = newValue
-        updateList()
-        _logListLiveData.value = Try.just(Unit)
+        viewModelScope.launch { updateList() }
     }
 
     var filterState: FilterState by Delegates.observable(FilterState()) { _, _, _ ->
@@ -53,30 +55,41 @@ class LogViewModel @Inject constructor(
                 warning = filterState.warning,
                 critical = filterState.critical,
                 lastId = lastId
-        ).map(::updateList)
+        )
 
-        _logListLiveData.value = result
+        if (result is Success) updateList(result.value)
     }
 
-    private fun updateList(newLogs: List<QBittorrentLog>? = null) {
-        if (newLogs?.isNotEmpty() == true) lastId = newLogs.last().id
+    private suspend fun updateList(
+            newLogs: List<QBittorrentLog>? = null
+    ) = withContext(Dispatchers.IO) {
 
-        logList = ArrayList(logList).let { list ->
-            if (newLogs != null) list.addAll(newLogs.mapToLogItem())
+        newLogs?.lastOrNull()?.let { lastId = it.id }
 
-            if (sortLatest) list.sortedByDescending { it.id }
-            else list.sortedBy { it.id }
-        }
+        // Create new List
+        val newList = ArrayList(logList)
+
+        // Map new logs to new List
+        newLogs?.mapTo(newList, this@LogViewModel::toLogItem)
+
+        // Sort new list
+        if (sortLatest) newList.sortByDescending { it.id }
+        else newList.sortBy { it.id }
+
+        // Assign it to class property
+        logList = newList
+
+        _logListLiveData.postValue(Try.just(Unit))
     }
 
-    private fun List<QBittorrentLog>.mapToLogItem() = map {
-        val type = with(ResIdMapper) { it.type.toResId() }
-        val date = Date(it.timestamp)
+    private fun toLogItem(log: QBittorrentLog): LogListItem {
+        val type = with(ResIdMapper) { log.type.toResId() }
+        val date = Date(log.timestamp)
         val timestamp = SimpleDateFormat.getDateTimeInstance().format(date)
 
-        LogListItem(
-                id = it.id,
-                message = it.message,
+        return LogListItem(
+                id = log.id,
+                message = log.message,
                 timestamp = timestamp,
                 type = type
         )
