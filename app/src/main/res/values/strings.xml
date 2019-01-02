@@ -2,6 +2,8 @@
     <string name="app_name">qBittorrent Remote</string>
 
     <string name="title_config_fragment">Configure Server</string>
+    <string name="title_log_fragment">Logs</string>
+    <string name="title_settings_fragment">Settings</string>
 
     <string name="label_cancel">Cancel</string>
 

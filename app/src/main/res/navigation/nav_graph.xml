@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/torrentListFragment">
+    app:startDestination="@id/torrentListFragment"
+    tools:ignore="UnusedNavigation">
 
     <fragment
         android:id="@+id/torrentListFragment"
@@ -38,12 +39,12 @@
     <fragment
         android:id="@+id/logFragment"
         android:name="com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment"
-        android:label="LogFragment"
+        android:label="@string/title_log_fragment"
         tools:layout="@layout/fragment_log" />
 
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.redridgeapps.remoteforqbittorrent.ui.settings.SettingsFragment"
-        android:label="SettingsFragment" />
+        android:label="@string/title_settings_fragment" />
 
 </navigation>
