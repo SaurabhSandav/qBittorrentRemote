@@ -2,7 +2,7 @@ package com.redridgeapps.remoteforqbittorrent.di.module
 
 import androidx.fragment.app.FragmentFactory
 import com.redridgeapps.remoteforqbittorrent.di.PerFragment
-import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
+import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragmentMarker
 import com.redridgeapps.remoteforqbittorrent.ui.base.CustomNavHostFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerFragmentFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment
@@ -24,7 +24,7 @@ import kotlin.reflect.KClass
 )
 @Retention(AnnotationRetention.RUNTIME)
 @MapKey
-internal annotation class FragmentKey(val value: KClass<out BaseFragment>)
+internal annotation class FragmentKey(val value: KClass<out BaseFragmentMarker>)
 
 @Module
 abstract class FragmentBuilder {
@@ -37,25 +37,26 @@ abstract class FragmentBuilder {
     @Binds
     @IntoMap
     @FragmentKey(TorrentListFragment::class)
-    abstract fun bindTorrentListFragment(fragment: TorrentListFragment): BaseFragment
+    abstract fun bindTorrentListFragment(fragment: TorrentListFragment): BaseFragmentMarker
 
     @Binds
     @IntoMap
     @FragmentKey(ConfigFragment::class)
-    abstract fun bindConfigFragment(fragment: ConfigFragment): BaseFragment
+    abstract fun bindConfigFragment(fragment: ConfigFragment): BaseFragmentMarker
 
     @Binds
     @IntoMap
     @FragmentKey(LogFragment::class)
-    abstract fun bindLogFragment(fragment: LogFragment): BaseFragment
+    abstract fun bindLogFragment(fragment: LogFragment): BaseFragmentMarker
+
+    @Binds
+    @IntoMap
+    @FragmentKey(SettingsFragment::class)
+    abstract fun bindSettingsFragment(fragment: SettingsFragment): BaseFragmentMarker
 
     // Field Injection
 
     @PerFragment
     @ContributesAndroidInjector()
     abstract fun bindCustomNavHostFragment(): CustomNavHostFragment
-
-    @PerFragment
-    @ContributesAndroidInjector()
-    abstract fun bindSettingsFragment(): SettingsFragment
 }

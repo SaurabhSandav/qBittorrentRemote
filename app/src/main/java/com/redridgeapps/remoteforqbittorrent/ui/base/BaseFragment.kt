@@ -12,7 +12,9 @@ import com.redridgeapps.remoteforqbittorrent.R
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-abstract class BaseFragment : Fragment() {
+interface BaseFragmentMarker
+
+abstract class BaseFragment : Fragment(), BaseFragmentMarker {
 
     protected fun showError(error: Either<Int, String>) {
         when (error) {

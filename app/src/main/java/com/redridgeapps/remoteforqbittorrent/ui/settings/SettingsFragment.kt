@@ -1,17 +1,12 @@
 package com.redridgeapps.remoteforqbittorrent.ui.settings
 
-import android.content.Context
 import android.os.Bundle
 import androidx.preference.PreferenceFragmentCompat
 import com.redridgeapps.remoteforqbittorrent.R
-import dagger.android.support.AndroidSupportInjection
+import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragmentMarker
+import javax.inject.Inject
 
-class SettingsFragment : PreferenceFragmentCompat() {
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+class SettingsFragment @Inject constructor() : PreferenceFragmentCompat(), BaseFragmentMarker {
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         addPreferencesFromResource(R.xml.prefs)

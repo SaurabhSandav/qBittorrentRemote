@@ -8,9 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import arrow.core.Try
-import arrow.core.getOrDefault
-import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -30,12 +27,10 @@ class CustomFragmentNavigator(
             className: String,
             args: Bundle?
     ): Fragment {
-        return Try { fragmentFactory.instantiate(context.classLoader, className, args) }
-                .getOrDefault { super.instantiateFragment(context, fragmentManager, className, args) }
+        return fragmentFactory.instantiate(context.classLoader, className, args)
     }
 }
 
-@PerFragment
 class CustomNavHostFragment : NavHostFragment() {
 
     @Inject
