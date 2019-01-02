@@ -54,10 +54,10 @@ class QBittorrentInterceptor @Inject constructor(
 
         val sid = QBittorrentService.extractSID(response)
 
-        sid.fold({ return false }, {
+        return sid.exists {
             prefRepo.sid = it
-            return true
-        })
+            true
+        }
     }
 }
 

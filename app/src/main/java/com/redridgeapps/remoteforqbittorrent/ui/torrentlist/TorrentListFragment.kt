@@ -21,6 +21,8 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import arrow.core.Either
+import arrow.core.Failure
+import arrow.core.Success
 import arrow.core.toOption
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.checkbox.checkBoxPrompt
@@ -153,13 +155,16 @@ class TorrentListFragment @Inject constructor(
 
     private fun observeGenericOperations() {
         viewModel.genericOpResultLiveData.observe(viewLifecycleOwner) { result ->
-            result.fold({ showError(Either.left(R.string.error_generic)) }, {})
+            if (result is Failure) showError(Either.left(R.string.error_generic))
         }
     }
 
     private fun observeTorrentList() {
         viewModel.torrentListLiveData.observe(viewLifecycleOwner) { result ->
-            result.fold({ showError(Either.left(R.string.error_generic)) }, torrentListAdapter::submitList)
+            when (result) {
+                is Success -> torrentListAdapter.submitList(result.value)
+                is Failure -> showError(Either.left(R.string.error_generic))
+            }
 
             binding.srl.isRefreshing = false
         }
