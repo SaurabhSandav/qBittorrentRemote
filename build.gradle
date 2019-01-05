@@ -44,7 +44,10 @@ allprojects {
 
         // TODO Temporary workaround (Unable to resolve dependencies)
         // https://github.com/afollestad/material-dialogs/issues/1575
-        maven { url = uri("https://dl.bintray.com/drummer-aidan/maven/") }
+        maven {
+            url = uri("https://dl.bintray.com/drummer-aidan/maven/")
+            content { includeGroup "com.afollestad.material-dialogs" }
+        }
     }
 
     tasks.withType(KotlinCompile).all {
