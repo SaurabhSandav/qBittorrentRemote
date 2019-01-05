@@ -23,7 +23,7 @@ buildscript {
 }
 
 plugins {
-    id "io.gitlab.arturbosch.detekt"  version "1.0.0-RC12"
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
 }
 
 allprojects {
@@ -32,7 +32,13 @@ allprojects {
         mavenCentral()
         jcenter {
             content {
+
+                // LeakCanary
                 includeGroup "org.jetbrains.trove4j"
+
+                // Detekt
+                includeGroup "io.gitlab.arturbosch.detekt"
+                includeGroup "com.beust"
             }
         }
 
