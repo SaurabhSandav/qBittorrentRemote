@@ -43,7 +43,7 @@ allprojects {
     }
 
     tasks.withType(KotlinCompile).all {
-        kotlinOptions.freeCompilerArgs = ['-progressive', '-Xnew-inference']
+        kotlinOptions.freeCompilerArgs += ['-progressive', '-Xnew-inference']
     }
 }
 
