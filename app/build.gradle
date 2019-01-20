@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs'
+    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
 }
 
 android {
@@ -42,6 +43,13 @@ android {
 
 androidExtensions {
     experimental = true
+}
+
+detekt {
+    input = files("$rootDir")
+    config = files("$rootDir/detekt-config.yml")
+    filters = ".*/resources/.*,.*/build/.*"
+    baseline = file("$rootDir/baseline.xml")
 }
 
 dependencies {

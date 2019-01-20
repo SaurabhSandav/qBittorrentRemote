@@ -18,10 +18,6 @@ buildscript {
     }
 }
 
-plugins {
-    id "io.gitlab.arturbosch.detekt" version "1.0.0-RC12"
-}
-
 allprojects {
     repositories {
         google()
@@ -49,8 +45,6 @@ allprojects {
     tasks.withType(KotlinCompile).all {
         kotlinOptions.freeCompilerArgs = ['-progressive', '-Xnew-inference']
     }
-
-    apply from: "$rootDir/detekt.gradle"
 }
 
 task clean(type: Delete) {
