@@ -73,7 +73,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$aac_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$aac_lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$aac_lifecycle_version"
-    kapt "androidx.lifecycle:lifecycle-compiler:$aac_lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-common-java8:$aac_lifecycle_version"
     implementation "android.arch.navigation:navigation-fragment-ktx:$aac_navigation_version"
     implementation "android.arch.navigation:navigation-ui-ktx:$aac_navigation_version"
 
