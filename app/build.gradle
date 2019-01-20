@@ -48,70 +48,70 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     // Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines_version"
+    implementation Kotlin.STDLIB
+    implementation Kotlin.COROUTINES
 
     // Testing
-    testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "androidx.test:runner:$test_runner_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
+    testImplementation Testing.JUNIT
+    androidTestImplementation Testing.TEST_RUNNER
+    androidTestImplementation Testing.ESPRESSO
 
     // Material
-    implementation "com.google.android.material:material:$material_version"
+    implementation Material.MATERIAL
 
     // Jetpack
-    implementation "androidx.activity:activity-ktx:$jetpack_activity_ktx_version"
-    implementation "androidx.appcompat:appcompat:$jetpack_appcompat_version"
-    implementation "androidx.core:core-ktx:$jetpack_core_ktx_version"
-    implementation "androidx.fragment:fragment-ktx:$jetpack_fragment_ktx_version"
-    implementation "androidx.preference:preference-ktx:$jetpack_preference_ktx_version"
-    implementation "androidx.recyclerview:recyclerview:$jetpack_recyclerview_version"
-    implementation "androidx.recyclerview:recyclerview-selection:$jetpack_recyclerview_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraint_layout_version"
+    implementation Jetpack.ACTIVITY_KTX
+    implementation Jetpack.APPCOMPAT
+    implementation Jetpack.CORE_KTX
+    implementation Jetpack.FRAGMENT_KTX
+    implementation Jetpack.PREFERENCE_KTX
+    implementation Jetpack.RECYCLERVIEW
+    implementation Jetpack.RECYCLERVIEW_SELECTION
+    implementation Jetpack.CONSTRAINT_LAYOUT
 
     // Android Architecture Components
-    implementation "androidx.lifecycle:lifecycle-extensions:$aac_lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$aac_lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$aac_lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-common-java8:$aac_lifecycle_version"
-    implementation "android.arch.navigation:navigation-fragment-ktx:$aac_navigation_version"
-    implementation "android.arch.navigation:navigation-ui-ktx:$aac_navigation_version"
+    implementation Lifecycle.EXTENSIONS
+    implementation Lifecycle.LIVEDATA_KTX
+    implementation Lifecycle.VIEWMODEL_KTX
+    implementation Lifecycle.COMMON_JAVA8
+    implementation Navigation.FRAGMENT_KTX
+    implementation Navigation.UI_KTX
 
     // Dagger
-    implementation "com.google.dagger:dagger:$dagger_version"
-    implementation "com.google.dagger:dagger-android-support:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
-    kapt "com.google.dagger:dagger-android-processor:$dagger_version"
+    implementation Dagger.DAGGER
+    implementation Dagger.ANDROID_SUPPORT
+    kapt Dagger.COMPILER
+    kapt Dagger.ANDROID_PROCESSOR
 
     // LeakCanary
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leak_canary_version"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leak_canary_version"
+    debugImplementation LeakCanary.ANDROID
+    releaseImplementation LeakCanary.ANDROID_NO_OP
 
     // Moshi
-    implementation "com.squareup.moshi:moshi:$moshi_version"
-    kapt "com.squareup.moshi:moshi-kotlin-codegen:$moshi_version"
+    implementation Moshi.MOSHI
+    kapt Moshi.KOTLIN_CODEGEN
 
     // Retrofit + ( Converters and Adapters )
-    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
-    implementation "com.squareup.retrofit2:converter-moshi:$retrofit_version"
-    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:$retrofit_coroutines_adapter_version"
+    implementation Retrofit.RETROFIT
+    implementation Retrofit.CONVERTER_SCALARS
+    implementation Retrofit.CONVERTER_MOSHI
+    implementation Retrofit.ADAPTER_COROUTINES
 
     // OkHttp
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation OkHttp.OKHTTP
 
     // Gander
-    debugImplementation "com.ashokvarma.android:gander:$gander_version"
-    releaseImplementation "com.ashokvarma.android:gander-no-op:$gander_version"
+    debugImplementation Gander.GANDER
+    releaseImplementation Gander.GANDER_NO_OP
 
     // Arrow
-    implementation "io.arrow-kt:arrow-core:$arrow_version"
+    implementation Arrow.CORE
 
     // Material Dialogs
-    implementation "com.afollestad.material-dialogs:core:$material_dialogs_version"
-    implementation "com.afollestad.material-dialogs:files:$material_dialogs_version"
-    implementation "com.afollestad.material-dialogs:input:$material_dialogs_version"
+    implementation MaterialDialogs.CORE
+    implementation MaterialDialogs.FILES
+    implementation MaterialDialogs.INPUT
 
     // Dexter
-    implementation "com.karumi:dexter:$dexter_version"
+    implementation Dexter.DEXTER
 }
