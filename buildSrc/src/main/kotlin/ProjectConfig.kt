@@ -13,14 +13,26 @@ object Kotlin {
     const val COROUTINES = "org.jetbrains.kotlinx:kotlinx-coroutines-android:$COROUTINES_VERSION"
 }
 
-object Testing {
+object JUnit {
     private const val JUNIT_VERSION = "4.12"
-    private const val TEST_RUNNER_VERSION = "1.1.1"
-    private const val ESPRESSO_VERSION = "3.1.1"
 
     const val JUNIT = "junit:junit:$JUNIT_VERSION"
-    const val TEST_RUNNER = "androidx.test:runner:$TEST_RUNNER_VERSION"
-    const val ESPRESSO = "androidx.test.espresso:espresso-core:$ESPRESSO_VERSION"
+}
+
+object AndroidXTest {
+    private const val TEST_CORE_KTX_VERSION = "1.1.0"
+    private const val TEST_RUNNER_VERSION = "1.1.1"
+    private const val TEST_EXT_JUNIT_VERSION = "1.1.0"
+
+    const val CORE_KTX = "androidx.test:core-ktx:$TEST_CORE_KTX_VERSION"
+    const val RUNNER = "androidx.test:runner:$TEST_RUNNER_VERSION"
+    const val EXT_JUNIT = "androidx.test.ext:junit:$TEST_EXT_JUNIT_VERSION"
+}
+
+object Espresso {
+    private const val VERSION = "3.1.1"
+
+    const val CORE = "androidx.test.espresso:espresso-core:$VERSION"
 }
 
 object Material {

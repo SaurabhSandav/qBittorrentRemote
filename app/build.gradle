@@ -60,9 +60,11 @@ dependencies {
     implementation Kotlin.COROUTINES
 
     // Testing
-    testImplementation Testing.JUNIT
-    androidTestImplementation Testing.TEST_RUNNER
-    androidTestImplementation Testing.ESPRESSO
+    testImplementation JUnit.JUNIT
+    androidTestImplementation AndroidXTest.CORE_KTX
+    androidTestImplementation AndroidXTest.RUNNER
+    androidTestImplementation AndroidXTest.EXT_JUNIT
+    androidTestImplementation Espresso.CORE
 
     // Material
     implementation Material.MATERIAL
