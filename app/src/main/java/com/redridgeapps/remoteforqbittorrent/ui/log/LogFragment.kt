@@ -20,6 +20,7 @@ import com.afollestad.materialdialogs.list.MultiChoiceListener
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentLogBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
+import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogFilter
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.asLogFilterList
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.getFilterState

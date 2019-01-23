@@ -36,6 +36,8 @@ import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
 import com.redridgeapps.remoteforqbittorrent.ui.MainViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
+import com.redridgeapps.remoteforqbittorrent.ui.base.askPermissions
+import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
 import kotlinx.coroutines.CoroutineScope

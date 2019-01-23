@@ -6,15 +6,15 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.fragment.app.Fragment
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.list.MultiChoiceListener
 import com.afollestad.materialdialogs.list.listItemsMultiChoice
-import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 
 private const val SI_UNITS = 1000
 private const val BINARY_UNITS = 1024
 
-val BaseFragment.compatActivity
+val Fragment.compatActivity
     get() = requireActivity() as AppCompatActivity
 
 fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): String {

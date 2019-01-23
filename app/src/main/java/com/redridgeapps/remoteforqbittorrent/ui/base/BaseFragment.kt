@@ -12,37 +12,36 @@ import com.redridgeapps.remoteforqbittorrent.R
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment : Fragment()
 
-    protected fun showError(error: Either<Int, String>) {
-        when (error) {
-            is Either.Left -> Snackbar.make(requireView(), error.a, Snackbar.LENGTH_SHORT).show()
-            is Either.Right -> Snackbar.make(requireView(), error.b, Snackbar.LENGTH_SHORT).show()
+fun Fragment.showError(error: Either<Int, String>) {
+    when (error) {
+        is Either.Left -> Snackbar.make(requireView(), error.a, Snackbar.LENGTH_SHORT).show()
+        is Either.Right -> Snackbar.make(requireView(), error.b, Snackbar.LENGTH_SHORT).show()
+    }
+}
+
+suspend fun Fragment.askPermissions(
+        errResId: Int, permissions: List<String>
+) = suspendCoroutine<List<String>> { continuation ->
+
+    val snackbarListener = SnackbarOnAnyDeniedMultiplePermissionsListener.Builder
+            .with(view, errResId)
+            .withOpenSettingsButton(R.string.permission_label_settings)
+            .build()
+
+    val listener = object : BaseMultiplePermissionsListener() {
+        override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+            super.onPermissionsChecked(report)
+
+            if (report == null) return
+
+            continuation.resume(report.grantedPermissionResponses.map { it.permissionName })
         }
     }
 
-    protected suspend fun askPermissions(
-            errResId: Int, permissions: List<String>
-    ) = suspendCoroutine<List<String>> { continuation ->
-
-        val snackbarListener = SnackbarOnAnyDeniedMultiplePermissionsListener.Builder
-                .with(view, errResId)
-                .withOpenSettingsButton(R.string.permission_label_settings)
-                .build()
-
-        val listener = object : BaseMultiplePermissionsListener() {
-            override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
-                super.onPermissionsChecked(report)
-
-                if (report == null) return
-
-                continuation.resume(report.grantedPermissionResponses.map { it.permissionName })
-            }
-        }
-
-        Dexter.withActivity(requireActivity())
-                .withPermissions(permissions)
-                .withListener(CompositeMultiplePermissionsListener(listener, snackbarListener))
-                .check()
-    }
+    Dexter.withActivity(requireActivity())
+            .withPermissions(permissions)
+            .withListener(CompositeMultiplePermissionsListener(listener, snackbarListener))
+            .check()
 }
