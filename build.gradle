@@ -6,6 +6,12 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        jcenter {
+            content {
+                // AGP
+                includeGroup "org.jetbrains.trove4j"
+            }
+        }
     }
 
     dependencies {
