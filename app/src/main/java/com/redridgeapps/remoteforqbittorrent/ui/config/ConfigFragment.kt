@@ -8,9 +8,9 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import arrow.core.Either
 import arrow.core.Failure
 import arrow.core.Success
+import arrow.core.left
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
@@ -25,14 +25,17 @@ class ConfigFragment @Inject constructor(
     private lateinit var binding: FragmentConfigBinding
     private val viewModel by viewModels<ConfigViewModel> { viewModelFactory }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        compatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        compatActivity.supportActionBar?.setDisplayHomeAsUpEnabled(false)
+
+        if (viewModel.isInitialConfigFinished()) {
+            launchTorrentListScreen()
+            return null
+        }
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_config, container, false)
         binding.btLetsGo.setOnClickListener { letsGoClicked() }
+
         return binding.root
     }
 
@@ -44,15 +47,14 @@ class ConfigFragment @Inject constructor(
     private fun observeLogin() {
         viewModel.loginResultLiveData.observe(viewLifecycleOwner) { result ->
             when (result) {
-                is Success -> launchMainActivity()
-                is Failure -> showError(Either.left(R.string.error_generic))
+                is Success -> launchTorrentListScreen()
+                is Failure -> showError(R.string.error_generic.left())
             }
         }
     }
 
-    private fun launchMainActivity() = findNavController().run {
-        setGraph(R.navigation.nav_graph)
-        navigate(ConfigFragmentDirections.actionConfigFragmentToTorrentListFragment())
+    private fun launchTorrentListScreen() {
+        findNavController().navigate(ConfigFragmentDirections.actionConfigFragmentToTorrentListFragment())
     }
 
     private fun letsGoClicked() = viewModel.login(

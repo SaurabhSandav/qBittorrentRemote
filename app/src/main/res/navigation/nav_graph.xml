@@ -3,8 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/torrentListFragment"
+    app:startDestination="@id/configFragment"
     tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/configFragment"
+        android:name="com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment"
+        android:label="@string/title_config_fragment"
+        tools:layout="@layout/fragment_config">
+
+        <action
+            android:id="@+id/action_configFragment_to_torrentListFragment"
+            app:destination="@id/torrentListFragment"
+            app:popUpTo="@+id/nav_graph" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/torrentListFragment"
@@ -19,20 +32,6 @@
         <action
             android:id="@+id/action_torrentListFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
-
-    </fragment>
-
-    <fragment
-        android:id="@+id/configFragment"
-        android:name="com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment"
-        android:label="@string/title_config_fragment"
-        tools:layout="@layout/fragment_config">
-
-        <action
-            android:id="@+id/action_configFragment_to_torrentListFragment"
-            app:destination="@id/torrentListFragment"
-            app:popUpTo="@+id/configFragment"
-            app:popUpToInclusive="true" />
 
     </fragment>
 

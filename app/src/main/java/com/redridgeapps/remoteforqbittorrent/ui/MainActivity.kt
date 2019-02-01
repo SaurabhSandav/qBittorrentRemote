@@ -18,7 +18,6 @@ import com.google.android.material.navigation.NavigationView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Filter
 import com.redridgeapps.remoteforqbittorrent.databinding.ActivityMainBinding
-import com.redridgeapps.remoteforqbittorrent.repo.PreferenceRepository
 import dagger.android.AndroidInjection
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
@@ -31,9 +30,6 @@ class MainActivity : AppCompatActivity(),
 
     @Inject
     lateinit var fragmentDispatchingAndroidInjector: DispatchingAndroidInjector<Fragment>
-
-    @Inject
-    lateinit var prefRepo: PreferenceRepository
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
@@ -83,25 +79,17 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun setupNavigation() = with(navController) {
-        inflateGraph()
-
         binding.navView.setNavigationItemSelectedListener(this@MainActivity)
 
         setupActionBarWithNavController(this, appBarConfiguration)
 
         addOnDestinationChangedListener { _, destination, _ ->
-            binding.drawerLayout.setDrawerLockMode(
+
+            val lockMode =
                     if (destination.id == R.id.torrentListFragment) DrawerLayout.LOCK_MODE_UNLOCKED
                     else DrawerLayout.LOCK_MODE_LOCKED_CLOSED
-            )
+
+            binding.drawerLayout.setDrawerLockMode(lockMode)
         }
-    }
-
-    private fun NavController.inflateGraph() {
-        val graph = navInflater.inflate(R.navigation.nav_graph)
-
-        if (!prefRepo.initialConfigFinished) graph.startDestination = R.id.configFragment
-
-        setGraph(graph)
     }
 }
