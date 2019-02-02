@@ -36,15 +36,11 @@ import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService.Sort
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentListBinding
 import com.redridgeapps.remoteforqbittorrent.ui.MainViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
-import com.redridgeapps.remoteforqbittorrent.ui.base.askPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
+import com.redridgeapps.remoteforqbittorrent.ui.base.withPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -54,7 +50,6 @@ class TorrentListFragment @Inject constructor(
 ) : BaseFragment() {
 
     private lateinit var binding: FragmentTorrentListBinding
-    private lateinit var permissionJob: Job
     private lateinit var selectionTracker: SelectionTracker<String>
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
@@ -83,16 +78,6 @@ class TorrentListFragment @Inject constructor(
         super.onViewCreated(view, savedInstanceState)
         observeActivity()
         observeViewModel()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        permissionJob = Job()
-    }
-
-    override fun onStop() {
-        super.onStop()
-        permissionJob.cancel()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -227,33 +212,31 @@ class TorrentListFragment @Inject constructor(
                 }
     }
 
-    private fun addTorrentFile() = CoroutineScope(Dispatchers.Main + permissionJob).launch {
+    private fun addTorrentFile() {
         val permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        val result = askPermissions(R.string.error_need_read_storage_permission, permissions)
+        withPermissions(permissions, R.string.error_need_read_storage_permission) {
 
-        if (!result.containsAll(permissions)) return@launch
+            val filter: FileFilter = { it.isDirectory || fileFilter(it) }
 
-        val filter: FileFilter = { it.isDirectory || fileFilter(it) }
-
-        MaterialDialog(requireContext())
-                .fileChooser(filter = filter) { _, file -> viewModel.addTorrentFiles(listOf(file)) }
-                .negativeButton(android.R.string.cancel)
-                .show()
+            MaterialDialog(requireContext())
+                    .fileChooser(filter = filter) { _, file -> viewModel.addTorrentFiles(listOf(file)) }
+                    .negativeButton(android.R.string.cancel)
+                    .show()
+        }
     }
 
-    private fun addTorrentFilesFromFolder() = CoroutineScope(Dispatchers.Main + permissionJob).launch {
+    private fun addTorrentFilesFromFolder() {
         val permissions = listOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-        val result = askPermissions(R.string.error_need_read_storage_permission, permissions)
+        withPermissions(permissions, R.string.error_need_read_storage_permission) {
 
-        if (!result.containsAll(permissions)) return@launch
-
-        MaterialDialog(requireContext())
-                .folderChooser { _, file ->
-                    val fileList = file.listFiles().toList().filter(fileFilter)
-                    viewModel.addTorrentFiles(fileList)
-                }
-                .negativeButton(android.R.string.cancel)
-                .show()
+            MaterialDialog(requireContext())
+                    .folderChooser { _, file ->
+                        val fileList = file.listFiles().toList().filter(fileFilter)
+                        viewModel.addTorrentFiles(fileList)
+                    }
+                    .negativeButton(android.R.string.cancel)
+                    .show()
+        }
     }
 
     private fun startTorrentListActionMode(): ActionMode? {

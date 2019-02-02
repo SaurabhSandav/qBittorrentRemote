@@ -9,8 +9,6 @@ import com.karumi.dexter.listener.multi.BaseMultiplePermissionsListener
 import com.karumi.dexter.listener.multi.CompositeMultiplePermissionsListener
 import com.karumi.dexter.listener.multi.SnackbarOnAnyDeniedMultiplePermissionsListener
 import com.redridgeapps.remoteforqbittorrent.R
-import kotlin.coroutines.resume
-import kotlin.coroutines.suspendCoroutine
 
 abstract class BaseFragment : Fragment()
 
@@ -21,27 +19,34 @@ fun Fragment.showError(error: Either<Int, String>) {
     }
 }
 
-suspend fun Fragment.askPermissions(
-        errResId: Int, permissions: List<String>
-) = suspendCoroutine<List<String>> { continuation ->
+fun Fragment.withPermissions(
+        permissions: List<String>,
+        errResId: Int = -1,
+        onSuccess: () -> Unit
+) {
 
-    val snackbarListener = SnackbarOnAnyDeniedMultiplePermissionsListener.Builder
-            .with(view, errResId)
-            .withOpenSettingsButton(R.string.permission_label_settings)
-            .build()
+    val permissionBuilder = Dexter.withActivity(requireActivity()).withPermissions(permissions)
 
     val listener = object : BaseMultiplePermissionsListener() {
-        override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
+        override fun onPermissionsChecked(report: MultiplePermissionsReport) {
             super.onPermissionsChecked(report)
 
-            if (report == null) return
-
-            continuation.resume(report.grantedPermissionResponses.map { it.permissionName })
+            if (report.areAllPermissionsGranted()) onSuccess()
         }
     }
 
-    Dexter.withActivity(requireActivity())
-            .withPermissions(permissions)
-            .withListener(CompositeMultiplePermissionsListener(listener, snackbarListener))
-            .check()
+    CompositeMultiplePermissionsListener(listener)
+
+    val compositeListener = if (errResId == -1) {
+        listener
+    } else {
+        val snackbarListener = SnackbarOnAnyDeniedMultiplePermissionsListener.Builder
+                .with(view, errResId)
+                .withOpenSettingsButton(R.string.permission_label_settings)
+                .build()
+
+        CompositeMultiplePermissionsListener(listener, snackbarListener)
+    }
+
+    permissionBuilder.withListener(compositeListener).check()
 }
