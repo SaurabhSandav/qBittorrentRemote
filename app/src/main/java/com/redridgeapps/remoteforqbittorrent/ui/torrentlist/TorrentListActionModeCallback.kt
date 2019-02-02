@@ -20,9 +20,9 @@ class TorrentListActionModeCallback(
         DELETE
     }
 
-    override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
+    override fun onActionItemClicked(mode: ActionMode, item: MenuItem): Boolean {
 
-        val action = when (item?.itemId) {
+        val action = when (item.itemId) {
             R.id.action_select_all -> Action.SELECT_ALL
             R.id.action_select_inverse -> Action.SELECT_INVERSE
             R.id.action_pause -> Action.PAUSE
@@ -32,22 +32,22 @@ class TorrentListActionModeCallback(
             else -> return false
         }
 
-        actionCallback(action, mode!!)
+        actionCallback(action, mode)
 
         return true
     }
 
-    override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        mode?.menuInflater?.inflate(R.menu.selection_menu, menu)
-        mode?.menuInflater?.inflate(R.menu.torrentlist_selection_menu, menu)
+    override fun onCreateActionMode(mode: ActionMode, menu: Menu): Boolean {
+        mode.menuInflater.inflate(R.menu.selection_menu, menu)
+        mode.menuInflater.inflate(R.menu.torrentlist_selection_menu, menu)
 
         return true
     }
 
-    override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-        mode?.title = titleGenerator()
+    override fun onPrepareActionMode(mode: ActionMode, menu: Menu): Boolean {
+        mode.title = titleGenerator()
         return true
     }
 
-    override fun onDestroyActionMode(mode: ActionMode?) = onDestroy()
+    override fun onDestroyActionMode(mode: ActionMode) = onDestroy()
 }
