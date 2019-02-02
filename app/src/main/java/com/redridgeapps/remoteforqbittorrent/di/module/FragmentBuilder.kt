@@ -2,7 +2,6 @@ package com.redridgeapps.remoteforqbittorrent.di.module
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
-import com.redridgeapps.remoteforqbittorrent.di.PerFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.CustomNavHostFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerFragmentFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment
@@ -12,7 +11,6 @@ import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListFragment
 import dagger.Binds
 import dagger.MapKey
 import dagger.Module
-import dagger.android.ContributesAndroidInjector
 import dagger.multibindings.IntoMap
 import kotlin.reflect.KClass
 
@@ -29,10 +27,13 @@ internal annotation class FragmentKey(val value: KClass<out Fragment>)
 @Module
 abstract class FragmentBuilder {
 
-    // Constructor Injection
-
     @Binds
     abstract fun bindFragmentFactory(factory: DaggerFragmentFactory): FragmentFactory
+
+    @Binds
+    @IntoMap
+    @FragmentKey(CustomNavHostFragment::class)
+    abstract fun bindCustomNavHostFragment(factory: CustomNavHostFragment): Fragment
 
     @Binds
     @IntoMap
@@ -53,10 +54,4 @@ abstract class FragmentBuilder {
     @IntoMap
     @FragmentKey(SettingsFragment::class)
     abstract fun bindSettingsFragment(fragment: SettingsFragment): Fragment
-
-    // Field Injection
-
-    @PerFragment
-    @ContributesAndroidInjector()
-    abstract fun bindCustomNavHostFragment(): CustomNavHostFragment
 }

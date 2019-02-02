@@ -8,7 +8,6 @@ import androidx.fragment.app.FragmentManager
 import androidx.navigation.Navigator
 import androidx.navigation.fragment.FragmentNavigator
 import androidx.navigation.fragment.NavHostFragment
-import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -31,15 +30,9 @@ class CustomFragmentNavigator(
     }
 }
 
-class CustomNavHostFragment : NavHostFragment() {
-
-    @Inject
-    lateinit var fragmentFactory: FragmentFactory
-
-    override fun onAttach(context: Context) {
-        AndroidSupportInjection.inject(this)
-        super.onAttach(context)
-    }
+class CustomNavHostFragment @Inject constructor(
+        private val fragmentFactory: FragmentFactory
+) : NavHostFragment() {
 
     override fun createFragmentNavigator() = CustomFragmentNavigator(
             fragmentFactory,
