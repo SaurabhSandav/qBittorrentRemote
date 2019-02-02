@@ -47,14 +47,10 @@ class MainActivity : AppCompatActivity(),
         super.onCreate(savedInstanceState)
 
         binding = DataBindingUtil.setContentView(this@MainActivity, R.layout.activity_main)
-        navController = findNavController(R.id.nav_host_fragment)
-        appBarConfiguration = AppBarConfiguration(
-                setOf(R.id.torrentListFragment, R.id.configFragment),
-                binding.drawerLayout
-        )
-
         setSupportActionBar(binding.toolbar)
         setupNavigation()
+
+        binding.navView.setNavigationItemSelectedListener(this@MainActivity)
     }
 
     override fun supportFragmentInjector(): AndroidInjector<Fragment> = fragmentDispatchingAndroidInjector
@@ -84,12 +80,20 @@ class MainActivity : AppCompatActivity(),
         return true
     }
 
-    private fun setupNavigation() = with(navController) {
-        binding.navView.setNavigationItemSelectedListener(this@MainActivity)
+    private fun setupNavigation() {
+        navController = findNavController(R.id.nav_host_fragment)
 
-        setupActionBarWithNavController(this, appBarConfiguration)
+        // Declare Top level destinations
+        appBarConfiguration = AppBarConfiguration(
+                setOf(R.id.torrentListFragment, R.id.configFragment),
+                binding.drawerLayout
+        )
 
-        addOnDestinationChangedListener { _, destination, _ ->
+        // Disable Up button for Top level destinations
+        setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // Lock Drawer outside TorrentList screen
+        navController.addOnDestinationChangedListener { _, destination, _ ->
 
             val lockMode =
                     if (destination.id == R.id.torrentListFragment) DrawerLayout.LOCK_MODE_UNLOCKED
