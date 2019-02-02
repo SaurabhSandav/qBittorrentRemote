@@ -1,5 +1,6 @@
 package com.redridgeapps.remoteforqbittorrent.ui.base
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -30,6 +31,7 @@ class CustomFragmentNavigator(
     }
 }
 
+@SuppressLint("ValidFragment")
 class CustomNavHostFragment @Inject constructor(
         private val fragmentFactory: FragmentFactory
 ) : NavHostFragment() {
