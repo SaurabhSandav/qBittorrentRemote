@@ -36,7 +36,7 @@ object Espresso {
 }
 
 object Material {
-    private const val VERSION = "1.1.0-alpha02"
+    private const val VERSION = "1.1.0-alpha03"
 
     const val MATERIAL = "com.google.android.material:material:$VERSION"
 }
