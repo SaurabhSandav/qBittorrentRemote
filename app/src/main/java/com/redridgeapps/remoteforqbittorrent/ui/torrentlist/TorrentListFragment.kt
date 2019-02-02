@@ -38,6 +38,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.MainViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.askPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
+import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
 import kotlinx.coroutines.CoroutineScope
@@ -184,7 +185,7 @@ class TorrentListFragment @Inject constructor(
         selectionTracker.onRestoreInstanceState(savedInstanceState)
 
         if (selectionTracker.selection.size() > 0)
-            actionMode = compatActivity.startSupportActionMode(ActionModeCallback())
+            actionMode = startTorrentListActionMode()
     }
 
     private fun setSort(item: MenuItem, sort: String): Boolean {
@@ -255,91 +256,59 @@ class TorrentListFragment @Inject constructor(
                 .show()
     }
 
-    private inner class SelectionObserver : SelectionTracker.SelectionObserver<String>() {
+    private fun startTorrentListActionMode(): ActionMode? {
 
+        val actionCallback = { action: Action, actionMode: ActionMode ->
+
+            fun finishMode(operation: () -> Unit) {
+                operation()
+                actionMode.finish()
+            }
+
+            when (action) {
+                Action.SELECT_ALL -> torrentListAdapter.selectAll()
+                Action.SELECT_INVERSE -> torrentListAdapter.selectInverse()
+                Action.PAUSE -> finishMode { viewModel.pause(selectionTracker.selection.toList()) }
+                Action.RESUME -> finishMode { viewModel.resume(selectionTracker.selection.toList()) }
+                Action.RECHECK -> finishMode { viewModel.recheck(selectionTracker.selection.toList()) }
+                Action.DELETE -> deleteTorrents(actionMode)
+            }
+        }
+
+        return compatActivity.startSupportActionMode(TorrentListActionModeCallback(
+                titleGenerator = { selectionTracker.selection.size().toString() },
+                actionCallback = actionCallback,
+                onDestroy = {
+                    selectionTracker.clearSelection()
+                    actionMode = null
+                }
+        ))
+    }
+
+    private fun deleteTorrents(mode: ActionMode?) {
+        MaterialDialog(requireContext())
+                .title(R.string.torrentlist_dialog_label_are_you_sure)
+                .checkBoxPrompt(R.string.torrentlist_dialog_label_delete_with_data) {}
+                .positiveButton(R.string.torrentlist_selection_delete) { dialog ->
+                    val isChecked = dialog.isCheckPromptChecked()
+                    viewModel.delete(isChecked, selectionTracker.selection.toList())
+
+                    mode?.finish()
+                }
+                .negativeButton(R.string.label_cancel)
+                .show()
+    }
+
+    private inner class SelectionObserver : SelectionTracker.SelectionObserver<String>() {
         override fun onSelectionChanged() {
             super.onSelectionChanged()
             val selectionSize = selectionTracker.selection.size()
 
             when {
                 selectionSize <= 0 -> actionMode?.finish()
-                actionMode == null -> actionMode = compatActivity.startSupportActionMode(ActionModeCallback())
+                actionMode == null -> actionMode = startTorrentListActionMode()
                 else -> actionMode?.invalidate()
             }
-        }
-    }
-
-    private inner class ActionModeCallback : ActionMode.Callback {
-
-        override fun onActionItemClicked(mode: ActionMode?, item: MenuItem?): Boolean {
-            fun finishMode(operation: () -> Unit) {
-                operation()
-                mode?.finish()
-            }
-
-            when (item?.itemId) {
-                R.id.action_select_all -> selectAll()
-                R.id.action_select_inverse -> selectInverse()
-                R.id.action_pause -> finishMode { viewModel.pause(selectionTracker.selection.toList()) }
-                R.id.action_resume -> finishMode { viewModel.resume(selectionTracker.selection.toList()) }
-                R.id.action_recheck -> finishMode { viewModel.recheck(selectionTracker.selection.toList()) }
-                R.id.action_delete -> deleteTorrents(mode)
-                else -> return false
-            }
-
-            return true
-        }
-
-        override fun onCreateActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            mode?.menuInflater?.inflate(R.menu.selection_menu, menu)
-            mode?.menuInflater?.inflate(R.menu.torrentlist_selection_menu, menu)
-
-            return true
-        }
-
-        override fun onPrepareActionMode(mode: ActionMode?, menu: Menu?): Boolean {
-            val selectionSize = selectionTracker.selection.size()
-
-            mode?.title = selectionSize.toString()
-
-            return true
-        }
-
-        override fun onDestroyActionMode(mode: ActionMode?) {
-            selectionTracker.clearSelection()
-            actionMode = null
-        }
-
-        private fun selectAll(): Boolean {
-            torrentListAdapter.torrentList
-                    .map { it.hash }
-                    .let { selectionTracker.setItemsSelected(it, true) }
-            return true
-        }
-
-        private fun selectInverse(): Boolean {
-            torrentListAdapter.torrentList
-                    .map { it.hash }
-                    .partition { selectionTracker.isSelected(it) }
-                    .apply {
-                        selectionTracker.setItemsSelected(second, true)
-                        selectionTracker.setItemsSelected(first, false)
-                    }
-            return true
-        }
-
-        private fun deleteTorrents(mode: ActionMode?) {
-            MaterialDialog(requireContext())
-                    .title(R.string.torrentlist_dialog_label_are_you_sure)
-                    .checkBoxPrompt(R.string.torrentlist_dialog_label_delete_with_data) {}
-                    .positiveButton(R.string.torrentlist_selection_delete) { dialog ->
-                        val isChecked = dialog.isCheckPromptChecked()
-                        viewModel.delete(isChecked, selectionTracker.selection.toList())
-
-                        mode?.finish()
-                    }
-                    .negativeButton(R.string.label_cancel)
-                    .show()
         }
     }
 }
