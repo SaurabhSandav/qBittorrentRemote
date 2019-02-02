@@ -37,14 +37,10 @@ allprojects {
                 // Detekt
                 includeGroup "io.gitlab.arturbosch.detekt"
                 includeGroup "com.beust"
-            }
-        }
 
-        // TODO Temporary workaround (Unable to resolve dependencies)
-        // https://github.com/afollestad/material-dialogs/issues/1575
-        maven {
-            url = uri("https://dl.bintray.com/drummer-aidan/maven/")
-            content { includeGroup "com.afollestad.material-dialogs" }
+                // Material Dialogs
+                includeGroup "com.afollestad.material-dialogs"
+            }
         }
     }
 

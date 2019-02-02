@@ -131,7 +131,7 @@ object Arrow {
 }
 
 object MaterialDialogs {
-    private const val VERSION = "2.0.0-rc9"
+    private const val VERSION = "2.0.0-rc10"
 
     const val CORE = "com.afollestad.material-dialogs:core:$VERSION"
     const val FILES = "com.afollestad.material-dialogs:files:$VERSION"
