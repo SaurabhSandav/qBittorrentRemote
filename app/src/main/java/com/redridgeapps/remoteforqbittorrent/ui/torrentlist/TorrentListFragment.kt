@@ -54,7 +54,7 @@ class TorrentListFragment @Inject constructor(
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
-    private val torrentListAdapter by lazy { torrentListAdapterFactory.create() }
+    private val torrentListAdapter by lazy { torrentListAdapterFactory.create(binding.recyclerView) }
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
@@ -167,7 +167,8 @@ class TorrentListFragment @Inject constructor(
         layoutManager = linearLayoutManager
         addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
 
-        selectionTracker = torrentListAdapter.setupSelectionTracker(this, SelectionObserver())
+        selectionTracker = torrentListAdapter.selectionTracker
+        selectionTracker.addObserver(SelectionObserver())
         selectionTracker.onRestoreInstanceState(savedInstanceState)
 
         if (selectionTracker.selection.size() > 0)

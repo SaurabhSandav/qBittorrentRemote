@@ -16,14 +16,30 @@ import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListIte
 import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
-class TorrentListAdapter : ListAdapter<TorrentListItem, TorrentViewHolder>(TorrentListItem.DiffCallback) {
+class TorrentListAdapter(
+        recyclerView: RecyclerView
+) : ListAdapter<TorrentListItem, TorrentViewHolder>(TorrentListItem.DiffCallback) {
 
     class Factory @Inject constructor() {
-        fun create() = TorrentListAdapter()
+        fun create(recyclerView: RecyclerView) = TorrentListAdapter(recyclerView)
     }
 
     var torrentList: List<TorrentListItem> = ArrayList()
-    var selectionTracker: SelectionTracker<String>? = null
+    val selectionTracker: SelectionTracker<String> by lazy {
+
+        val torrentKeyProvider = TorrentKeyProvider(
+                keyFromPositionGenerator = { torrentList[it].hash },
+                positionFromKeyGenerator = { key -> torrentList.indexOfFirst { it.hash == key } }
+        )
+
+        SelectionTracker.Builder(
+                javaClass.simpleName,
+                recyclerView,
+                torrentKeyProvider,
+                TorrentDetailsLookup(recyclerView),
+                StorageStrategy.createStringStorage()
+        ).build()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TorrentViewHolder {
         val binding: ListItemTorrentBinding = parent.recyclerDataBindingInflate(R.layout.list_item_torrent)
@@ -32,7 +48,7 @@ class TorrentListAdapter : ListAdapter<TorrentListItem, TorrentViewHolder>(Torre
 
     override fun onBindViewHolder(holder: TorrentViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, selectionTracker?.isSelected(item.hash) ?: false)
+        holder.bind(item, selectionTracker.isSelected(item.hash))
     }
 
     override fun submitList(list: List<TorrentListItem>?) {
@@ -40,42 +56,19 @@ class TorrentListAdapter : ListAdapter<TorrentListItem, TorrentViewHolder>(Torre
         torrentList = list!!
     }
 
-    fun setupSelectionTracker(
-            recyclerView: RecyclerView,
-            selectionObserver: SelectionTracker.SelectionObserver<String>
-    ): SelectionTracker<String> {
-
-        val torrentKeyProvider = TorrentKeyProvider(
-                keyFromPositionGenerator = { torrentList[it].hash },
-                positionFromKeyGenerator = { key -> torrentList.indexOfFirst { it.hash == key } }
-        )
-
-        selectionTracker = SelectionTracker.Builder(
-                javaClass.simpleName,
-                recyclerView,
-                torrentKeyProvider,
-                TorrentDetailsLookup(recyclerView),
-                StorageStrategy.createStringStorage()
-        ).build()
-
-        selectionTracker!!.addObserver(selectionObserver)
-
-        return selectionTracker!!
-    }
-
     fun selectAll() {
         torrentList
                 .map { it.hash }
-                .let { selectionTracker!!.setItemsSelected(it, true) }
+                .let { selectionTracker.setItemsSelected(it, true) }
     }
 
     fun selectInverse() {
         torrentList
                 .map { it.hash }
-                .partition { selectionTracker!!.isSelected(it) }
+                .partition { selectionTracker.isSelected(it) }
                 .apply {
-                    selectionTracker!!.setItemsSelected(second, true)
-                    selectionTracker!!.setItemsSelected(first, false)
+                    selectionTracker.setItemsSelected(second, true)
+                    selectionTracker.setItemsSelected(first, false)
                 }
     }
 
