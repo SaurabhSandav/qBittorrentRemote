@@ -11,12 +11,16 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ListItemTorrentBinding
+import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListAdapter.TorrentViewHolder
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
-class TorrentListAdapter @Inject constructor()
-    : ListAdapter<TorrentListItem, TorrentListAdapter.TorrentViewHolder>(TorrentListItem.DiffCallback) {
+class TorrentListAdapter : ListAdapter<TorrentListItem, TorrentViewHolder>(TorrentListItem.DiffCallback) {
+
+    class Factory @Inject constructor() {
+        fun create() = TorrentListAdapter()
+    }
 
     var torrentList: List<TorrentListItem> = ArrayList()
     var selectionTracker: SelectionTracker<String>? = null
@@ -116,7 +120,7 @@ class TorrentDetailsLookup(private val recyclerView: RecyclerView)
 
     override fun getItemDetails(e: MotionEvent): ItemDetails<String>? {
         val view = recyclerView.findChildViewUnder(e.x, e.y) ?: return null
-        val holder = recyclerView.getChildViewHolder(view) as? TorrentListAdapter.TorrentViewHolder
+        val holder = recyclerView.getChildViewHolder(view) as? TorrentViewHolder
         return holder?.getItemDetails()
     }
 }

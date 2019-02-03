@@ -45,7 +45,7 @@ import java.io.File
 import javax.inject.Inject
 
 class TorrentListFragment @Inject constructor(
-        val torrentListAdapter: TorrentListAdapter,
+        private val torrentListAdapterFactory: TorrentListAdapter.Factory,
         viewModelFactory: ViewModelProvider.Factory
 ) : BaseFragment() {
 
@@ -54,6 +54,7 @@ class TorrentListFragment @Inject constructor(
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
+    private val torrentListAdapter by lazy { torrentListAdapterFactory.create() }
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
