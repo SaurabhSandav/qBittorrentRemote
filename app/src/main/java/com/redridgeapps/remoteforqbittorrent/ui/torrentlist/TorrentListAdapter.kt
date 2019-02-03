@@ -72,8 +72,9 @@ class TorrentListAdapter(
                 }
     }
 
-    inner class TorrentViewHolder(private val binding: ListItemTorrentBinding)
-        : RecyclerView.ViewHolder(binding.root) {
+    inner class TorrentViewHolder(
+            private val binding: ListItemTorrentBinding
+    ) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(torrent: TorrentListItem, isActive: Boolean) {
             binding.torrent = torrent
@@ -108,8 +109,9 @@ class TorrentKeyProvider(
     override fun getPosition(key: String) = positionFromKeyGenerator(key)
 }
 
-class TorrentDetailsLookup(private val recyclerView: RecyclerView)
-    : ItemDetailsLookup<String>() {
+class TorrentDetailsLookup(
+        private val recyclerView: RecyclerView
+) : ItemDetailsLookup<String>() {
 
     override fun getItemDetails(e: MotionEvent): ItemDetails<String>? {
         val view = recyclerView.findChildViewUnder(e.x, e.y) ?: return null
