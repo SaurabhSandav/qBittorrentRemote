@@ -40,10 +40,16 @@ class TorrentListAdapter @Inject constructor()
             recyclerView: RecyclerView,
             selectionObserver: SelectionTracker.SelectionObserver<String>
     ): SelectionTracker<String> {
-        selectionTracker = SelectionTracker.Builder<String>(
+
+        val torrentKeyProvider = TorrentKeyProvider(
+                keyFromPositionGenerator = { torrentList[it].hash },
+                positionFromKeyGenerator = { key -> torrentList.indexOfFirst { it.hash == key } }
+        )
+
+        selectionTracker = SelectionTracker.Builder(
                 javaClass.simpleName,
                 recyclerView,
-                TorrentKeyProvider(this),
+                torrentKeyProvider,
                 TorrentDetailsLookup(recyclerView),
                 StorageStrategy.createStringStorage()
         ).build()
@@ -95,12 +101,14 @@ class TorrentListItemDetails(
     override fun getPosition() = itemPosition
 }
 
-class TorrentKeyProvider(private val torrentAdapter: TorrentListAdapter)
-    : ItemKeyProvider<String>(SCOPE_MAPPED) {
+class TorrentKeyProvider(
+        private val keyFromPositionGenerator: (Int) -> String,
+        private val positionFromKeyGenerator: (String) -> Int
+) : ItemKeyProvider<String>(SCOPE_MAPPED) {
 
-    override fun getKey(position: Int) = torrentAdapter.torrentList[position].hash
+    override fun getKey(position: Int) = keyFromPositionGenerator(position)
 
-    override fun getPosition(key: String) = torrentAdapter.torrentList.indexOfFirst { it.hash == key }
+    override fun getPosition(key: String) = positionFromKeyGenerator(key)
 }
 
 class TorrentDetailsLookup(private val recyclerView: RecyclerView)
