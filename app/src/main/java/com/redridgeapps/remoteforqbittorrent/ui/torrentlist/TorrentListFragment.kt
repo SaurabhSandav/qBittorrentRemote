@@ -183,8 +183,21 @@ class TorrentListFragment @Inject constructor(
     }
 
     private fun setupSelection(savedInstanceState: Bundle?) {
+        val selectionObserver = object : SelectionTracker.SelectionObserver<String>() {
+            override fun onSelectionChanged() {
+                super.onSelectionChanged()
+                val selectionSize = selectionTrackerExtra.selection.size()
+
+                when {
+                    selectionSize <= 0 -> actionMode?.finish()
+                    actionMode == null -> actionMode = startTorrentListActionMode()
+                    else -> actionMode?.invalidate()
+                }
+            }
+        }
+
         selectionTrackerExtra = torrentListAdapter.selectionTrackerExtra
-        selectionTrackerExtra.addObserver(SelectionObserver())
+        selectionTrackerExtra.addObserver(selectionObserver)
         selectionTrackerExtra.onRestoreInstanceState(savedInstanceState)
 
         if (selectionTrackerExtra.selection.size() > 0)
@@ -286,19 +299,6 @@ class TorrentListFragment @Inject constructor(
                 }
                 .negativeButton(R.string.label_cancel)
                 .show()
-    }
-
-    private inner class SelectionObserver : SelectionTracker.SelectionObserver<String>() {
-        override fun onSelectionChanged() {
-            super.onSelectionChanged()
-            val selectionSize = selectionTrackerExtra.selection.size()
-
-            when {
-                selectionSize <= 0 -> actionMode?.finish()
-                actionMode == null -> actionMode = startTorrentListActionMode()
-                else -> actionMode?.invalidate()
-            }
-        }
     }
 }
 
