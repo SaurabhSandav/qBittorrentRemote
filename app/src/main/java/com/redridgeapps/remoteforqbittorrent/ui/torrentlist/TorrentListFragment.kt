@@ -75,7 +75,9 @@ class TorrentListFragment @Inject constructor(
         binding.srl.setOnRefreshListener { viewModel.refreshTorrentList() }
         binding.srl.isRefreshing = true
 
-        setupRecyclerView(savedInstanceState)
+        setupRecyclerView()
+        setupSelection(savedInstanceState)
+
         return binding.root
     }
 
@@ -171,14 +173,16 @@ class TorrentListFragment @Inject constructor(
         }
     }
 
-    private fun setupRecyclerView(savedInstanceState: Bundle?) = binding.recyclerView.run {
+    private fun setupRecyclerView() = binding.recyclerView.run {
         val linearLayoutManager = LinearLayoutManager(requireContext())
 
         setHasFixedSize(true)
         adapter = torrentListAdapter
         layoutManager = linearLayoutManager
         addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
+    }
 
+    private fun setupSelection(savedInstanceState: Bundle?) {
         selectionTrackerExtra = torrentListAdapter.selectionTrackerExtra
         selectionTrackerExtra.addObserver(SelectionObserver())
         selectionTrackerExtra.onRestoreInstanceState(savedInstanceState)
