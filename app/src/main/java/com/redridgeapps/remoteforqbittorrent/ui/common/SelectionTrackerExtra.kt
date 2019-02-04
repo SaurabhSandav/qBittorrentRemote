@@ -28,8 +28,8 @@ class SelectionTrackerExtra<K>(
 
     fun selectInverse() {
         val (selected, nonSelected) = keyListGenerator().partition(selectionTracker::isSelected)
-        selectionTracker.setItemsSelected(selected, false) // Un-select selected
         selectionTracker.setItemsSelected(nonSelected, true) // Select nonSelected
+        selectionTracker.setItemsSelected(selected, false) // Un-select selected
     }
 }
 
