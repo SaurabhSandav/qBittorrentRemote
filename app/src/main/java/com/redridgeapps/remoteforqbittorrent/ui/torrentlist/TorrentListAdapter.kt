@@ -59,22 +59,6 @@ class TorrentListAdapter(
         torrentList = list!!
     }
 
-    fun selectAll() {
-        torrentList
-                .map { it.hash }
-                .let { selectionTrackerExtra.setItemsSelected(it, true) }
-    }
-
-    fun selectInverse() {
-        torrentList
-                .map { it.hash }
-                .partition { selectionTrackerExtra.isSelected(it) }
-                .apply {
-                    selectionTrackerExtra.setItemsSelected(second, true)
-                    selectionTrackerExtra.setItemsSelected(first, false)
-                }
-    }
-
     inner class TorrentViewHolder(
             private val binding: ListItemTorrentBinding
     ) : RecyclerView.ViewHolder(binding.root) {

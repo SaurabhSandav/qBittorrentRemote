@@ -255,8 +255,8 @@ class TorrentListFragment @Inject constructor(
             }
 
             when (action) {
-                Action.SELECT_ALL -> torrentListAdapter.selectAll()
-                Action.SELECT_INVERSE -> torrentListAdapter.selectInverse()
+                Action.SELECT_ALL -> selectionTrackerExtra.selectAll()
+                Action.SELECT_INVERSE -> selectionTrackerExtra.selectInverse()
                 Action.PAUSE -> finishMode { viewModel.pause(selectionTrackerExtra.selection.toList()) }
                 Action.RESUME -> finishMode { viewModel.resume(selectionTrackerExtra.selection.toList()) }
                 Action.RECHECK -> finishMode { viewModel.recheck(selectionTrackerExtra.selection.toList()) }

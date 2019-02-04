@@ -18,11 +18,19 @@ class SelectionTrackerExtra<K>(
 
     fun clearSelection() = selectionTracker.clearSelection()
 
-    fun setItemsSelected(keys: Iterable<K>, selected: Boolean) = selectionTracker.setItemsSelected(keys, selected)
-
     fun onSaveInstanceState(state: Bundle) = selectionTracker.onSaveInstanceState(state)
 
     fun onRestoreInstanceState(state: Bundle?) = selectionTracker.onRestoreInstanceState(state)
+
+    fun selectAll() {
+        keyListGenerator().let { selectionTracker.setItemsSelected(it, true) }
+    }
+
+    fun selectInverse() {
+        val (selected, nonSelected) = keyListGenerator().partition(selectionTracker::isSelected)
+        selectionTracker.setItemsSelected(selected, false) // Un-select selected
+        selectionTracker.setItemsSelected(nonSelected, true) // Select nonSelected
+    }
 }
 
 fun <K> SelectionTracker<K>.withExtras(keyListGenerator: () -> List<K>): SelectionTrackerExtra<K> {
