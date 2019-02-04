@@ -13,6 +13,7 @@ import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ListItemTorrentBinding
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListAdapter.TorrentViewHolder
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
+import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
 import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
@@ -25,7 +26,7 @@ class TorrentListAdapter(
     }
 
     var torrentList: List<TorrentListItem> = ArrayList()
-    val selectionTracker: SelectionTracker<String> by lazy {
+    val selectionTracker: SelectionTracker<String> by lazyUnsynchronized {
 
         val torrentKeyProvider = TorrentKeyProvider(
                 keyFromPositionGenerator = { torrentList[it].hash },

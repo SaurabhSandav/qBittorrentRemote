@@ -41,6 +41,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.withPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
+import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
 import java.io.File
 import javax.inject.Inject
 
@@ -54,7 +55,9 @@ class TorrentListFragment @Inject constructor(
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
-    private val torrentListAdapter by lazy { torrentListAdapterFactory.create(binding.recyclerView) }
+    private val torrentListAdapter by lazyUnsynchronized {
+        torrentListAdapterFactory.create(binding.recyclerView)
+    }
 
     private val fileFilter: (File) -> Boolean = {
         MimeTypeMap.getSingleton().getMimeTypeFromExtension(it.extension) == MIME_TYPE_TORRENT_FILE
