@@ -57,3 +57,5 @@ fun MaterialDialog.listItemsMultiChoiceCustom(
         initialSelection = initialSelection.map { items.indexOf(it) }.toIntArray(),
         selection = selection
 )
+
+fun <T> lazyUnsynchronized(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)
