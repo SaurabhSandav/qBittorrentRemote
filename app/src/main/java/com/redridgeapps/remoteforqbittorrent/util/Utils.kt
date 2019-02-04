@@ -22,7 +22,7 @@ fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): 
     val unit = if (si) SI_UNITS else BINARY_UNITS
     val speed = if (isSpeed) "/s" else ""
 
-    if (bytes < unit) return bytes.toString() + " B" + speed
+    if (bytes < unit) return "$bytes B$speed"
 
     val exp = (Math.log(bytes.toDouble()) / Math.log(unit.toDouble())).toInt()
     val pre = (if (si) "kMGTPE" else "KMGTPE")[exp - 1] + if (si) "" else "i"
