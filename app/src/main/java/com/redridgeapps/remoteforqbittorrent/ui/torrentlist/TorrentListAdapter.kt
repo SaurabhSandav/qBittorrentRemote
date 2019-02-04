@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ListItemTorrentBinding
+import com.redridgeapps.remoteforqbittorrent.ui.common.SelectionTrackerExtra
+import com.redridgeapps.remoteforqbittorrent.ui.common.withExtras
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListAdapter.TorrentViewHolder
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
@@ -26,7 +28,7 @@ class TorrentListAdapter(
     }
 
     var torrentList: List<TorrentListItem> = ArrayList()
-    val selectionTracker: SelectionTracker<String> by lazyUnsynchronized {
+    val selectionTrackerExtra: SelectionTrackerExtra<String> by lazyUnsynchronized {
 
         val torrentKeyProvider = TorrentKeyProvider(
                 keyFromPositionGenerator = { torrentList[it].hash },
@@ -39,7 +41,7 @@ class TorrentListAdapter(
                 torrentKeyProvider,
                 TorrentDetailsLookup(recyclerView),
                 StorageStrategy.createStringStorage()
-        ).build()
+        ).build().withExtras { torrentList.map { it.hash } }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TorrentViewHolder {
@@ -49,7 +51,7 @@ class TorrentListAdapter(
 
     override fun onBindViewHolder(holder: TorrentViewHolder, position: Int) {
         val item = getItem(position)
-        holder.bind(item, selectionTracker.isSelected(item.hash))
+        holder.bind(item, selectionTrackerExtra.isSelected(item.hash))
     }
 
     override fun submitList(list: List<TorrentListItem>?) {
@@ -60,16 +62,16 @@ class TorrentListAdapter(
     fun selectAll() {
         torrentList
                 .map { it.hash }
-                .let { selectionTracker.setItemsSelected(it, true) }
+                .let { selectionTrackerExtra.setItemsSelected(it, true) }
     }
 
     fun selectInverse() {
         torrentList
                 .map { it.hash }
-                .partition { selectionTracker.isSelected(it) }
+                .partition { selectionTrackerExtra.isSelected(it) }
                 .apply {
-                    selectionTracker.setItemsSelected(second, true)
-                    selectionTracker.setItemsSelected(first, false)
+                    selectionTrackerExtra.setItemsSelected(second, true)
+                    selectionTrackerExtra.setItemsSelected(first, false)
                 }
     }
 

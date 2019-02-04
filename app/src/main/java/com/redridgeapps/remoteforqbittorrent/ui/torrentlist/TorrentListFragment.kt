@@ -38,6 +38,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.MainViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.ui.base.withPermissions
+import com.redridgeapps.remoteforqbittorrent.ui.common.SelectionTrackerExtra
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
@@ -51,7 +52,7 @@ class TorrentListFragment @Inject constructor(
 ) : BaseFragment() {
 
     private lateinit var binding: FragmentTorrentListBinding
-    private lateinit var selectionTracker: SelectionTracker<String>
+    private lateinit var selectionTrackerExtra: SelectionTrackerExtra<String>
     private var actionMode: ActionMode? = null
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
@@ -86,7 +87,7 @@ class TorrentListFragment @Inject constructor(
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        selectionTracker.onSaveInstanceState(outState)
+        selectionTrackerExtra.onSaveInstanceState(outState)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -170,11 +171,11 @@ class TorrentListFragment @Inject constructor(
         layoutManager = linearLayoutManager
         addItemDecoration(DividerItemDecoration(requireContext(), linearLayoutManager.orientation))
 
-        selectionTracker = torrentListAdapter.selectionTracker
-        selectionTracker.addObserver(SelectionObserver())
-        selectionTracker.onRestoreInstanceState(savedInstanceState)
+        selectionTrackerExtra = torrentListAdapter.selectionTrackerExtra
+        selectionTrackerExtra.addObserver(SelectionObserver())
+        selectionTrackerExtra.onRestoreInstanceState(savedInstanceState)
 
-        if (selectionTracker.selection.size() > 0)
+        if (selectionTrackerExtra.selection.size() > 0)
             actionMode = startTorrentListActionMode()
     }
 
@@ -256,18 +257,18 @@ class TorrentListFragment @Inject constructor(
             when (action) {
                 Action.SELECT_ALL -> torrentListAdapter.selectAll()
                 Action.SELECT_INVERSE -> torrentListAdapter.selectInverse()
-                Action.PAUSE -> finishMode { viewModel.pause(selectionTracker.selection.toList()) }
-                Action.RESUME -> finishMode { viewModel.resume(selectionTracker.selection.toList()) }
-                Action.RECHECK -> finishMode { viewModel.recheck(selectionTracker.selection.toList()) }
+                Action.PAUSE -> finishMode { viewModel.pause(selectionTrackerExtra.selection.toList()) }
+                Action.RESUME -> finishMode { viewModel.resume(selectionTrackerExtra.selection.toList()) }
+                Action.RECHECK -> finishMode { viewModel.recheck(selectionTrackerExtra.selection.toList()) }
                 Action.DELETE -> deleteTorrents(actionMode)
             }
         }
 
         return compatActivity.startSupportActionMode(TorrentListActionModeCallback(
-                titleGenerator = { selectionTracker.selection.size().toString() },
+                titleGenerator = { selectionTrackerExtra.selection.size().toString() },
                 actionCallback = actionCallback,
                 onDestroy = {
-                    selectionTracker.clearSelection()
+                    selectionTrackerExtra.clearSelection()
                     actionMode = null
                 }
         ))
@@ -279,7 +280,7 @@ class TorrentListFragment @Inject constructor(
                 .checkBoxPrompt(R.string.torrentlist_dialog_label_delete_with_data) {}
                 .positiveButton(R.string.torrentlist_selection_delete) { dialog ->
                     val isChecked = dialog.isCheckPromptChecked()
-                    viewModel.delete(isChecked, selectionTracker.selection.toList())
+                    viewModel.delete(isChecked, selectionTrackerExtra.selection.toList())
 
                     mode?.finish()
                 }
@@ -290,7 +291,7 @@ class TorrentListFragment @Inject constructor(
     private inner class SelectionObserver : SelectionTracker.SelectionObserver<String>() {
         override fun onSelectionChanged() {
             super.onSelectionChanged()
-            val selectionSize = selectionTracker.selection.size()
+            val selectionSize = selectionTrackerExtra.selection.size()
 
             when {
                 selectionSize <= 0 -> actionMode?.finish()
