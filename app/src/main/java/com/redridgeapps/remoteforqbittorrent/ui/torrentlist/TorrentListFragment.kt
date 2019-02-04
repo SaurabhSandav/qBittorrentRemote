@@ -113,6 +113,11 @@ class TorrentListFragment @Inject constructor(
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         var result = true
 
+        fun setSort(item: MenuItem, sort: String) {
+            item.isChecked = true
+            viewModel.listSort = sort
+        }
+
         when (item.itemId) {
             R.id.action_add_link -> addTorrentLink()
             R.id.action_add_file -> addTorrentFile()
@@ -126,7 +131,10 @@ class TorrentListFragment @Inject constructor(
             R.id.action_sort_state -> setSort(item, Sort.STATE)
             R.id.action_sort_download_speed -> setSort(item, Sort.DLSPEED)
             R.id.action_sort_upload_speed -> setSort(item, Sort.UPSPEED)
-            R.id.action_sort_reverse -> setSortReverse(item)
+            R.id.action_sort_reverse -> {
+                item.isChecked = !item.isChecked
+                viewModel.listSortReverse = item.isChecked
+            }
             R.id.action_pause_all -> viewModel.pause()
             R.id.action_resume_all -> viewModel.resume()
             else -> result = super.onOptionsItemSelected(item)
@@ -177,18 +185,6 @@ class TorrentListFragment @Inject constructor(
 
         if (selectionTrackerExtra.selection.size() > 0)
             actionMode = startTorrentListActionMode()
-    }
-
-    private fun setSort(item: MenuItem, sort: String): Boolean {
-        item.isChecked = true
-        viewModel.listSort = sort
-        return true
-    }
-
-    private fun setSortReverse(item: MenuItem): Boolean {
-        item.isChecked = !item.isChecked
-        viewModel.listSortReverse = item.isChecked
-        return true
     }
 
     private fun addTorrentLink() {
