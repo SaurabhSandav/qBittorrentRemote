@@ -70,7 +70,7 @@ object Lifecycle {
 }
 
 object Navigation {
-    private const val VERSION = "1.0.0-alpha11"
+    private const val VERSION = "1.0.0-beta01"
 
     const val FRAGMENT_KTX = "android.arch.navigation:navigation-fragment-ktx:$VERSION"
     const val UI_KTX = "android.arch.navigation:navigation-ui-ktx:$VERSION"
@@ -112,7 +112,7 @@ object Retrofit {
 }
 
 object OkHttp {
-    private const val VERSION = "3.12.1"
+    private const val VERSION = "3.13.1"
 
     const val OKHTTP = "com.squareup.okhttp3:okhttp:$VERSION"
 }
@@ -131,7 +131,7 @@ object Arrow {
 }
 
 object MaterialDialogs {
-    private const val VERSION = "2.0.0-rc10"
+    private const val VERSION = "2.0.0-rc11"
 
     const val CORE = "com.afollestad.material-dialogs:core:$VERSION"
     const val FILES = "com.afollestad.material-dialogs:files:$VERSION"
