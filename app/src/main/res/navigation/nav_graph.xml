@@ -13,7 +13,7 @@
         tools:layout="@layout/fragment_config">
 
         <action
-            android:id="@+id/action_configFragment_to_torrentListFragment"
+            android:id="@+id/to_torrent_list_screen"
             app:destination="@id/torrentListFragment"
             app:popUpTo="@+id/nav_graph" />
 
@@ -26,11 +26,11 @@
         tools:layout="@layout/fragment_torrent_list">
 
         <action
-            android:id="@+id/action_torrentListFragment_to_logFragment"
+            android:id="@+id/to_log_screen"
             app:destination="@id/logFragment" />
 
         <action
-            android:id="@+id/action_torrentListFragment_to_settingsFragment"
+            android:id="@+id/to_settings_screen"
             app:destination="@id/settingsFragment" />
 
     </fragment>

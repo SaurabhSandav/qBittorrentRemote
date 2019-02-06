@@ -54,7 +54,7 @@ class ConfigFragment @Inject constructor(
     }
 
     private fun launchTorrentListScreen() {
-        findNavController().navigate(ConfigFragmentDirections.actionConfigFragmentToTorrentListFragment())
+        findNavController().navigate(ConfigFragmentDirections.toTorrentListScreen())
     }
 
     private fun letsGoClicked() = viewModel.login(
