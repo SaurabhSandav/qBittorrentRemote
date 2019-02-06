@@ -17,6 +17,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -40,6 +41,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.ui.base.withPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.common.SelectionTrackerExtra
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
+import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
 import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
@@ -57,7 +59,7 @@ class TorrentListFragment @Inject constructor(
     private val viewModel by viewModels<TorrentListViewModel> { viewModelFactory }
     private val activityViewModel by activityViewModels<MainViewModel>()
     private val torrentListAdapter by lazyUnsynchronized {
-        torrentListAdapterFactory.create(binding.recyclerView)
+        torrentListAdapterFactory.create(binding.recyclerView, this::launchTorrentDetailsScreen)
     }
 
     private val fileFilter: (File) -> Boolean = {
@@ -299,6 +301,12 @@ class TorrentListFragment @Inject constructor(
                 }
                 .negativeButton(R.string.label_cancel)
                 .show()
+    }
+
+    private fun launchTorrentDetailsScreen(torrentListItem: TorrentListItem) {
+        findNavController().navigate(
+                TorrentListFragmentDirections.toTorrentDetailsScreen(torrentListItem.hash)
+        )
     }
 }
 

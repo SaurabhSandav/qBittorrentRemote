@@ -26,12 +26,27 @@
         tools:layout="@layout/fragment_torrent_list">
 
         <action
+            android:id="@+id/to_torrent_details_screen"
+            app:destination="@id/torrentDetailsFragment" />
+
+        <action
             android:id="@+id/to_log_screen"
             app:destination="@id/logFragment" />
 
         <action
             android:id="@+id/to_settings_screen"
             app:destination="@id/settingsFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/torrentDetailsFragment"
+        android:name="com.redridgeapps.remoteforqbittorrent.ui.torrentdetails.TorrentDetailsFragment"
+        tools:layout="@layout/fragment_torrent_details">
+
+        <argument
+            android:name="torrent_hash"
+            app:argType="string" />
 
     </fragment>
 

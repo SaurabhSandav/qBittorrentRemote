@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.navArgs
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentDetailsBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
@@ -18,6 +19,7 @@ class TorrentDetailsFragment @Inject constructor(
 
     private lateinit var binding: FragmentTorrentDetailsBinding
     private val viewModel by viewModels<TorrentDetailsViewModel> { viewModelFactory }
+    private val args by navArgs<TorrentDetailsFragmentArgs>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_torrent_details, container, false)

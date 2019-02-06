@@ -20,11 +20,18 @@ import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
 class TorrentListAdapter(
+        private val clickListener: (TorrentListItem) -> Unit,
         recyclerView: RecyclerView
 ) : ListAdapter<TorrentListItem, TorrentViewHolder>(TorrentListItem.DiffCallback) {
 
     class Factory @Inject constructor() {
-        fun create(recyclerView: RecyclerView) = TorrentListAdapter(recyclerView)
+
+        fun create(
+                recyclerView: RecyclerView,
+                clickListener: (TorrentListItem) -> Unit
+        ): TorrentListAdapter {
+            return TorrentListAdapter(clickListener, recyclerView)
+        }
     }
 
     var torrentList: List<TorrentListItem> = ArrayList()
@@ -46,7 +53,16 @@ class TorrentListAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TorrentViewHolder {
         val binding: ListItemTorrentBinding = parent.recyclerDataBindingInflate(R.layout.list_item_torrent)
-        return TorrentViewHolder(binding)
+
+        val viewHolder = TorrentViewHolder(binding)
+
+        binding.root.setOnClickListener {
+            if (viewHolder.adapterPosition != RecyclerView.NO_POSITION) {
+                clickListener(getItem(viewHolder.adapterPosition))
+            }
+        }
+
+        return viewHolder
     }
 
     override fun onBindViewHolder(holder: TorrentViewHolder, position: Int) {
