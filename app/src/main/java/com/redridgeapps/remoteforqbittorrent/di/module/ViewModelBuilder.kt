@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerViewModelFactory
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogViewModel
+import com.redridgeapps.remoteforqbittorrent.ui.torrentdetails.TorrentDetailsViewModel
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListViewModel
 import dagger.Binds
 import dagger.MapKey
@@ -32,6 +33,11 @@ abstract class ViewModelBuilder {
     @IntoMap
     @ViewModelKey(TorrentListViewModel::class)
     abstract fun bindTorrentListViewModel(viewModel: TorrentListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TorrentDetailsViewModel::class)
+    abstract fun bindTorrentDetailsViewModel(viewModel: TorrentDetailsViewModel): ViewModel
 
     @Binds
     @IntoMap

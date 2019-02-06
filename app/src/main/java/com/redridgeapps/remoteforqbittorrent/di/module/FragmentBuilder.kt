@@ -7,6 +7,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.dagger.DaggerFragmentFactor
 import com.redridgeapps.remoteforqbittorrent.ui.config.ConfigFragment
 import com.redridgeapps.remoteforqbittorrent.ui.log.LogFragment
 import com.redridgeapps.remoteforqbittorrent.ui.settings.SettingsFragment
+import com.redridgeapps.remoteforqbittorrent.ui.torrentdetails.TorrentDetailsFragment
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListFragment
 import dagger.Binds
 import dagger.MapKey
@@ -39,6 +40,11 @@ abstract class FragmentBuilder {
     @IntoMap
     @FragmentKey(TorrentListFragment::class)
     abstract fun bindTorrentListFragment(fragment: TorrentListFragment): Fragment
+
+    @Binds
+    @IntoMap
+    @FragmentKey(TorrentDetailsFragment::class)
+    abstract fun bindTorrentDetailsFragment(fragment: TorrentDetailsFragment): Fragment
 
     @Binds
     @IntoMap
