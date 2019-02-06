@@ -13,7 +13,6 @@ import android.view.ViewGroup
 import android.webkit.MimeTypeMap
 import androidx.appcompat.view.ActionMode
 import androidx.core.content.getSystemService
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
@@ -44,6 +43,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionMod
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
+import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
 import java.io.File
 import javax.inject.Inject
@@ -72,7 +72,7 @@ class TorrentListFragment @Inject constructor(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_torrent_list, container, false)
+        binding = inflater.dataBindingInflate(R.layout.fragment_torrent_list, container)
 
         binding.srl.setOnRefreshListener { viewModel.refreshTorrentList() }
         binding.srl.isRefreshing = true

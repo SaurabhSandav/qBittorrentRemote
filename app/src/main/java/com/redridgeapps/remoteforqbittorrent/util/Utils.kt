@@ -35,6 +35,14 @@ fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): 
     )
 }
 
+fun <T : ViewDataBinding> LayoutInflater.dataBindingInflate(
+        @LayoutRes resource: Int,
+        root: ViewGroup?,
+        attachToParent: Boolean = false
+): T {
+    return DataBindingUtil.inflate(this, resource, root, attachToParent)
+}
+
 fun <T : ViewDataBinding> ViewGroup.recyclerDataBindingInflate(
         @LayoutRes layoutRes: Int,
         parent: ViewGroup = this,

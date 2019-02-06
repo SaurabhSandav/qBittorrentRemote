@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -16,6 +15,7 @@ import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.util.compatActivity
+import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
 import javax.inject.Inject
 
 class ConfigFragment @Inject constructor(
@@ -33,7 +33,7 @@ class ConfigFragment @Inject constructor(
             return null
         }
 
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_config, container, false)
+        binding = inflater.dataBindingInflate(R.layout.fragment_config, container)
         binding.btLetsGo.setOnClickListener { letsGoClicked() }
 
         return binding.root

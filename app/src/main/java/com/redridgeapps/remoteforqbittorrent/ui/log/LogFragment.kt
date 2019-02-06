@@ -7,7 +7,6 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -24,6 +23,7 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogFilter
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.asLogFilterList
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.getFilterState
+import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.util.listItemsMultiChoiceCustom
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class LogFragment @Inject constructor(
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_log, container, false)
+        binding = inflater.dataBindingInflate(R.layout.fragment_log, container)
 
         binding.srl.setOnRefreshListener { viewModel.refreshLogList() }
         binding.srl.isRefreshing = true
