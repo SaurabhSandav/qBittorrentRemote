@@ -5,8 +5,8 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ItemLogListBinding
+import com.redridgeapps.remoteforqbittorrent.ui.common.recyclerDataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogListItem
-import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
 class LogListAdapter @Inject constructor() :

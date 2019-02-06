@@ -14,8 +14,8 @@ import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentConfigBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
-import com.redridgeapps.remoteforqbittorrent.util.compatActivity
-import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
+import com.redridgeapps.remoteforqbittorrent.ui.common.compatActivity
+import com.redridgeapps.remoteforqbittorrent.ui.common.dataBindingInflate
 import javax.inject.Inject
 
 class ConfigFragment @Inject constructor(

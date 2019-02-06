@@ -12,11 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.ListItemTorrentBinding
 import com.redridgeapps.remoteforqbittorrent.ui.common.SelectionTrackerExtra
+import com.redridgeapps.remoteforqbittorrent.ui.common.recyclerDataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.ui.common.withExtras
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListAdapter.TorrentViewHolder
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
-import com.redridgeapps.remoteforqbittorrent.util.recyclerDataBindingInflate
 import javax.inject.Inject
 
 class TorrentListAdapter(

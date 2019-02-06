@@ -1,21 +1,7 @@
 package com.redridgeapps.remoteforqbittorrent.util
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.annotation.LayoutRes
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
-import androidx.fragment.app.Fragment
-import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.list.MultiChoiceListener
-import com.afollestad.materialdialogs.list.listItemsMultiChoice
-
 private const val SI_UNITS = 1000
 private const val BINARY_UNITS = 1024
-
-val Fragment.compatActivity
-    get() = requireActivity() as AppCompatActivity
 
 fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): String {
     val bytes = this
@@ -34,30 +20,5 @@ fun Long.humanReadableByteCount(isSpeed: Boolean = false, si: Boolean = false): 
             speed
     )
 }
-
-fun <T : ViewDataBinding> LayoutInflater.dataBindingInflate(
-        @LayoutRes resource: Int,
-        root: ViewGroup?,
-        attachToParent: Boolean = false
-): T {
-    return DataBindingUtil.inflate(this, resource, root, attachToParent)
-}
-
-fun <T : ViewDataBinding> ViewGroup.recyclerDataBindingInflate(
-        @LayoutRes resource: Int,
-        attachToParent: Boolean = false
-): T {
-    return LayoutInflater.from(context).dataBindingInflate(resource, this, attachToParent)
-}
-
-fun MaterialDialog.listItemsMultiChoiceCustom(
-        items: List<String>,
-        initialSelection: List<String>,
-        selection: MultiChoiceListener
-) = listItemsMultiChoice(
-        items = items,
-        initialSelection = initialSelection.map { items.indexOf(it) }.toIntArray(),
-        selection = selection
-)
 
 fun <T> lazyUnsynchronized(initializer: () -> T) = lazy(LazyThreadSafetyMode.NONE, initializer)

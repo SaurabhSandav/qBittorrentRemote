@@ -39,11 +39,11 @@ import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
 import com.redridgeapps.remoteforqbittorrent.ui.base.withPermissions
 import com.redridgeapps.remoteforqbittorrent.ui.common.SelectionTrackerExtra
+import com.redridgeapps.remoteforqbittorrent.ui.common.compatActivity
+import com.redridgeapps.remoteforqbittorrent.ui.common.dataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.TorrentListActionModeCallback.Action
 import com.redridgeapps.remoteforqbittorrent.ui.torrentlist.model.TorrentListItem
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
-import com.redridgeapps.remoteforqbittorrent.util.compatActivity
-import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
 import com.redridgeapps.remoteforqbittorrent.util.lazyUnsynchronized
 import java.io.File
 import javax.inject.Inject

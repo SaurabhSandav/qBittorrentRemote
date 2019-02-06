@@ -10,7 +10,7 @@ import androidx.navigation.fragment.navArgs
 import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentTorrentDetailsBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
-import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
+import com.redridgeapps.remoteforqbittorrent.ui.common.dataBindingInflate
 import javax.inject.Inject
 
 class TorrentDetailsFragment @Inject constructor(

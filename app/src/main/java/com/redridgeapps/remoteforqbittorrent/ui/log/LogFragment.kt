@@ -20,11 +20,11 @@ import com.redridgeapps.remoteforqbittorrent.R
 import com.redridgeapps.remoteforqbittorrent.databinding.FragmentLogBinding
 import com.redridgeapps.remoteforqbittorrent.ui.base.BaseFragment
 import com.redridgeapps.remoteforqbittorrent.ui.base.showError
+import com.redridgeapps.remoteforqbittorrent.ui.common.dataBindingInflate
+import com.redridgeapps.remoteforqbittorrent.ui.common.listItemsMultiChoiceCustom
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.LogFilter
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.asLogFilterList
 import com.redridgeapps.remoteforqbittorrent.ui.log.model.getFilterState
-import com.redridgeapps.remoteforqbittorrent.util.dataBindingInflate
-import com.redridgeapps.remoteforqbittorrent.util.listItemsMultiChoiceCustom
 import javax.inject.Inject
 
 class LogFragment @Inject constructor(
