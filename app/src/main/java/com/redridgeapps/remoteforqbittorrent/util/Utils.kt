@@ -44,16 +44,10 @@ fun <T : ViewDataBinding> LayoutInflater.dataBindingInflate(
 }
 
 fun <T : ViewDataBinding> ViewGroup.recyclerDataBindingInflate(
-        @LayoutRes layoutRes: Int,
-        parent: ViewGroup = this,
+        @LayoutRes resource: Int,
         attachToParent: Boolean = false
 ): T {
-    return DataBindingUtil.inflate(
-            LayoutInflater.from(parent.context),
-            layoutRes,
-            parent,
-            attachToParent
-    )
+    return LayoutInflater.from(context).dataBindingInflate(resource, this, attachToParent)
 }
 
 fun MaterialDialog.listItemsMultiChoiceCustom(
