@@ -42,6 +42,12 @@ allprojects {
                 includeGroup "com.afollestad.material-dialogs"
             }
         }
+
+        // Retrofit Snapshots
+        maven {
+            url "https://oss.sonatype.org/content/repositories/snapshots"
+            content { includeGroup "com.squareup.retrofit2" }
+        }
     }
 
     tasks.withType(KotlinCompile).all {
