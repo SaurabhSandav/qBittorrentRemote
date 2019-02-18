@@ -31,7 +31,7 @@ class CustomFragmentNavigator(
     }
 }
 
-@SuppressLint("ValidFragment")
+@SuppressLint("Instantiatable")
 class CustomNavHostFragment @Inject constructor(
         private val fragmentFactory: FragmentFactory
 ) : NavHostFragment() {
