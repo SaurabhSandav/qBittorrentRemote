@@ -5,11 +5,9 @@ import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
 import com.redridgeapps.remoteforqbittorrent.util.MIME_TYPE_TORRENT_FILE
-import kotlinx.coroutines.Deferred
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -34,105 +32,95 @@ class QBittorrentRepository @Inject constructor(
         }
     }
 
-    suspend fun login(): Try<Boolean> {
+    suspend fun login(): Try<Boolean> = Try {
 
-        val request = qBitService.login(
+        val response = qBitService.login(
                 baseUrl = prefRepo.baseUrl,
                 username = prefRepo.username,
                 password = prefRepo.password
         )
 
-        return request.processResponse().map { response ->
-            val sid = QBittorrentService.extractSID(response.raw())
+        val sid = QBittorrentService.extractSID(response.raw())
 
-            sid?.let {
-                prefRepo.initialConfigFinished = true
-                prefRepo.sid = it
-            }
-
-            !sid.isNullOrBlank()
+        sid?.let {
+            prefRepo.initialConfigFinished = true
+            prefRepo.sid = it
         }
+
+        return@Try !sid.isNullOrBlank()
     }
 
     suspend fun getTorrentList(
             filter: String? = null
-    ): Try<List<Torrent>> {
+    ): Try<List<Torrent>> = Try {
 
-        val request = qBitService.getTorrentList(
+        return@Try qBitService.getTorrentList(
                 baseUrl = prefRepo.baseUrl,
                 filter = filter,
                 sort = prefRepo.torrentListSort,
                 reverse = prefRepo.torrentListSortReverse
         )
-
-        return request.processResult()
     }
 
-    suspend fun pause(hashes: List<String>? = null): Try<Unit> {
-        val request = qBitService.pause(
+    suspend fun pause(hashes: List<String>? = null): Try<Unit> = Try {
+
+        qBitService.pause(
                 baseUrl = prefRepo.baseUrl,
                 hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
                         ?: QBittorrentService.HASHES_ALL
         )
-
-        return request.processResult()
     }
 
-    suspend fun resume(hashes: List<String>? = null): Try<Unit> {
-        val request = qBitService.resume(
+    suspend fun resume(hashes: List<String>? = null): Try<Unit> = Try {
+
+        qBitService.resume(
                 baseUrl = prefRepo.baseUrl,
                 hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
                         ?: QBittorrentService.HASHES_ALL
         )
-
-        return request.processResult()
     }
 
     suspend fun delete(
             deleteFiles: Boolean,
             hashes: List<String>? = null
-    ): Try<Unit> {
-        val request = qBitService.delete(
+    ): Try<Unit> = Try {
+
+        qBitService.delete(
                 baseUrl = prefRepo.baseUrl,
                 hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
                         ?: QBittorrentService.HASHES_ALL,
                 deleteFiles = deleteFiles
         )
-
-        return request.processResult()
     }
 
-    suspend fun recheck(hashes: List<String>? = null): Try<Unit> {
-        val request = qBitService.recheck(
+    suspend fun recheck(hashes: List<String>? = null): Try<Unit> = Try {
+
+        qBitService.recheck(
                 baseUrl = prefRepo.baseUrl,
                 hashes = hashes?.joinToString(QBittorrentService.HASHES_SEPARATOR)
                         ?: QBittorrentService.HASHES_ALL
         )
-
-        return request.processResult()
     }
 
-    suspend fun addTorrentLinks(links: List<String>): Try<Unit> {
-        val request = qBitService.addTorrents(
+    suspend fun addTorrentLinks(links: List<String>): Try<Unit> = Try {
+
+        qBitService.addTorrents(
                 baseUrl = prefRepo.baseUrl,
                 urls = links.joinToString("\n")
         )
-
-        return request.processResult()
     }
 
-    suspend fun addTorrentFiles(files: List<File>): Try<Unit> {
+    suspend fun addTorrentFiles(files: List<File>): Try<Unit> = Try {
+
         val torrents = files.map {
             val requestFile = RequestBody.create(MediaType.parse(MIME_TYPE_TORRENT_FILE), it)
             MultipartBody.Part.createFormData(LABEL_PARAMETER_NAME_TORRENTS, it.name, requestFile)
         }
 
-        val request = qBitService.addTorrents(
+        qBitService.addTorrents(
                 baseUrl = prefRepo.baseUrl,
                 torrents = torrents
         )
-
-        return request.processResult()
     }
 
     suspend fun getLog(
@@ -141,8 +129,9 @@ class QBittorrentRepository @Inject constructor(
             warning: Boolean = true,
             critical: Boolean = true,
             lastId: Int = -1
-    ): Try<List<QBittorrentLog>> {
-        val request = qBitService.getLog(
+    ): Try<List<QBittorrentLog>> = Try {
+
+        return@Try qBitService.getLog(
                 baseUrl = prefRepo.baseUrl,
                 normal = normal,
                 info = info,
@@ -150,13 +139,7 @@ class QBittorrentRepository @Inject constructor(
                 critical = critical,
                 lastKnownId = lastId
         )
-
-        return request.processResult()
     }
-
-    private suspend fun <T> Deferred<Response<T>>.processResponse() = processResult()
-
-    private suspend fun <T> Deferred<T>.processResult() = Try { await() }
 }
 
 private const val LABEL_PARAMETER_NAME_TORRENTS = "torrents"

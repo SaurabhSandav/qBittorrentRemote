@@ -3,7 +3,6 @@ package com.redridgeapps.remoteforqbittorrent.api
 import arrow.core.toOption
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
-import kotlinx.coroutines.Deferred
 import okhttp3.HttpUrl
 import okhttp3.MultipartBody
 import retrofit2.Response
@@ -101,15 +100,15 @@ interface QBittorrentService {
 
     @FormUrlEncoded
     @POST
-    fun login(
+    suspend fun login(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, AUTH_LOGIN),
             @Field("username") username: String,
             @Field("password") password: String
-    ): Deferred<Response<Unit>>
+    ): Response<String>
 
     @GET
-    fun getLog(
+    suspend fun getLog(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, LOG_MAIN),
             @Query("normal") normal: Boolean? = null,
@@ -117,10 +116,10 @@ interface QBittorrentService {
             @Query("warning") warning: Boolean? = null,
             @Query("critical") critical: Boolean? = null,
             @Query("last_known_id") lastKnownId: Int? = null
-    ): Deferred<List<QBittorrentLog>>
+    ): List<QBittorrentLog>
 
     @GET
-    fun getTorrentList(
+    suspend fun getTorrentList(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_INFO),
             @Query("filter") filter: String? = null,
@@ -130,44 +129,44 @@ interface QBittorrentService {
             @Query("limit") limit: Int? = null,
             @Query("offset") offset: Int? = null,
             @Query("hashes") hashes: String? = null
-    ): Deferred<List<Torrent>>
+    ): List<Torrent>
 
     @FormUrlEncoded
     @POST
-    fun pause(
+    suspend fun pause(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_PAUSE),
             @Field("hashes") hashes: String
-    ): Deferred<Unit>
+    )
 
     @FormUrlEncoded
     @POST
-    fun resume(
+    suspend fun resume(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RESUME),
             @Field("hashes") hashes: String
-    ): Deferred<Unit>
+    )
 
     @FormUrlEncoded
     @POST
-    fun delete(
+    suspend fun delete(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_DELETE),
             @Field("hashes") hashes: String,
             @Field("deleteFiles") deleteFiles: Boolean
-    ): Deferred<Unit>
+    )
 
     @FormUrlEncoded
     @POST
-    fun recheck(
+    suspend fun recheck(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_RECHECK),
             @Field("hashes") hashes: String
-    ): Deferred<Unit>
+    )
 
     @Multipart
     @POST
-    fun addTorrents(
+    suspend fun addTorrents(
             @Header(HEADER_LABEL_REFERER) baseUrl: String,
             @Url url: String = buildURL(baseUrl, TORRENTS_ADD),
             @Part("urls") urls: String? = null,
@@ -183,5 +182,5 @@ interface QBittorrentService {
             @Part("dlLimit") dlLimit: Int? = null,
             @Part("sequentialDownload") sequentialDownload: Boolean? = null,
             @Part("firstLastPiecePrio") firstLastPiecePriority: Boolean? = null
-    ): Deferred<Unit>
+    )
 }
