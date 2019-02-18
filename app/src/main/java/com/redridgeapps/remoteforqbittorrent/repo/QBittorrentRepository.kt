@@ -34,7 +34,7 @@ class QBittorrentRepository @Inject constructor(
         }
     }
 
-    suspend fun login(): Try<Unit> {
+    suspend fun login(): Try<Boolean> {
 
         val request = qBitService.login(
                 baseUrl = prefRepo.baseUrl,
@@ -49,6 +49,8 @@ class QBittorrentRepository @Inject constructor(
                 prefRepo.initialConfigFinished = true
                 prefRepo.sid = it
             }
+
+            !sid.isNullOrBlank()
         }
     }
 

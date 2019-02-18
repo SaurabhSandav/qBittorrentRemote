@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import arrow.core.Failure
 import arrow.core.Success
 import arrow.core.left
 import com.redridgeapps.remoteforqbittorrent.R
@@ -46,9 +45,9 @@ class ConfigFragment @Inject constructor(
 
     private fun observeLogin() {
         viewModel.loginResultLiveData.observe(viewLifecycleOwner) { result ->
-            when (result) {
-                is Success -> launchTorrentListScreen()
-                is Failure -> showError(R.string.error_generic.left())
+            when {
+                result is Success && result.value -> launchTorrentListScreen()
+                else -> showError(R.string.error_generic.left())
             }
         }
     }

@@ -15,9 +15,9 @@ class ConfigViewModel @Inject constructor(
         private val prefRepo: PreferenceRepository
 ) : BaseViewModel() {
 
-    private val _loginResultLiveData = MutableLiveData<Try<Unit>>()
+    private val _loginResultLiveData = MutableLiveData<Try<Boolean>>()
 
-    val loginResultLiveData: LiveData<Try<Unit>> = _loginResultLiveData
+    val loginResultLiveData: LiveData<Try<Boolean>> = _loginResultLiveData
 
     fun login(
             host: String,
