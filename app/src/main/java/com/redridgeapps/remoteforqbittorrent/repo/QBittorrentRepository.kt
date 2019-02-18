@@ -1,6 +1,5 @@
 package com.redridgeapps.remoteforqbittorrent.repo
 
-import arrow.core.Some
 import arrow.core.Try
 import com.redridgeapps.remoteforqbittorrent.api.QBittorrentService
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
@@ -45,9 +44,10 @@ class QBittorrentRepository @Inject constructor(
 
         return request.processResponse().map { response ->
             val sid = QBittorrentService.extractSID(response.raw())
-            if (sid is Some) {
+
+            sid?.let {
                 prefRepo.initialConfigFinished = true
-                prefRepo.sid = sid.t
+                prefRepo.sid = it
             }
         }
     }

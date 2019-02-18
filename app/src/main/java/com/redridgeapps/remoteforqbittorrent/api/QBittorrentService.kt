@@ -1,6 +1,5 @@
 package com.redridgeapps.remoteforqbittorrent.api
 
-import arrow.core.Option
 import arrow.core.toOption
 import com.redridgeapps.remoteforqbittorrent.model.QBittorrentLog
 import com.redridgeapps.remoteforqbittorrent.model.Torrent
@@ -58,11 +57,12 @@ interface QBittorrentService {
 
         fun buildURL(baseUrl: String, path: String): String = baseUrl + path
 
-        fun extractSID(resp: okhttp3.Response): Option<String> {
+        fun extractSID(resp: okhttp3.Response): String? {
             return resp.headers().get(HEADER_SET_COOKIE)
                     .toOption()
                     .map { Regex(SID_REGEX_PATTERN).find(it)?.groupValues?.get(1) }
                     .map { "SID=$it" }
+                    .orNull()
         }
 
         private fun getScheme(useHttps: Boolean) = if (useHttps) SCHEME_HTTPS else SCHEME_HTTP
